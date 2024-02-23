@@ -1,4 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Users/Choaib ELMADI/Downloads/D.I.F.Y/Manim Animations/media/videos/basic/720p30/partial_movie_files/WriteStuff/2016333726_703900322_223132457.mp4'
-file 'file:C:/Users/Choaib ELMADI/Downloads/D.I.F.Y/Manim Animations/media/videos/basic/720p30/partial_movie_files/WriteStuff/543634251_1866176301_2535856037.mp4'
-file 'file:C:/Users/Choaib ELMADI/Downloads/D.I.F.Y/Manim Animations/media/videos/basic/720p30/partial_movie_files/WriteStuff/543634251_1704852926_2761092635.mp4'

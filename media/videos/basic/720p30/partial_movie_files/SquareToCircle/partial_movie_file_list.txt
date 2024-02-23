@@ -1,4 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Users/Choaib ELMADI/Downloads/D.I.F.Y/Manim Animations/media/videos/basic/720p30/partial_movie_files/SquareToCircle/2016333726_1084572684_223132457.mp4'
-file 'file:C:/Users/Choaib ELMADI/Downloads/D.I.F.Y/Manim Animations/media/videos/basic/720p30/partial_movie_files/SquareToCircle/543634251_2751405428_666618010.mp4'
-file 'file:C:/Users/Choaib ELMADI/Downloads/D.I.F.Y/Manim Animations/media/videos/basic/720p30/partial_movie_files/SquareToCircle/543634251_2577770312_666618010.mp4'
