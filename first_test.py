@@ -17,6 +17,3 @@ class MoveAround(Scene):
         self.play(box.animate.shift(UP * 3), run_time=2)
         self.play(box.animate.shift(DOWN * 5 + LEFT * 5), run_time=2)
         self.play(box.animate.shift(UP * 1.5 + RIGHT * 1), run_time=2)
-
-
-print("Hi")
