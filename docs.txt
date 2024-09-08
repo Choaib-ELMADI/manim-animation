@@ -1,8 +1,0 @@
-1. Moving things around on the screen:
-2. 2D graphing aspects:
-3. Linear algebra things:
-4. Basic 3d scenes:
-5. Complex animations:
-6. Probability simulations:
-7. Advanced 3d scenes:
-8. Pendulum animation:
