@@ -87,10 +87,16 @@ To enhance your development environment, you should install the following extens
 - **Pylance**: Offers fast and feature-rich Python language support, with type checking, IntelliSense, and more.
 - **Manim SideView**: A useful extension for visualizing Manim animations directly within VS Code, providing a side-by-side preview.
 
+<div align="center">
+
+![Manim SideView](./Images/manim-sideview.png)
+
+</div>
+
 You can install these extensions directly from the VS Code Extensions Marketplace.
 
-## Important Note on Folder Naming
+![Important Note](https://img.shields.io/badge/⚠︎_Important_Note-fb151a?style=for-the-badge)
 
-Make sure the folders for your Manim projects **do not contain spaces**. Spaces in folder names can cause issues when running your Manim program, leading to errors during execution. It's recommended to use underscores (\_) or hyphens (-) instead of spaces to ensure smooth execution.
+Make sure the folders for your Manim projects **do not contain spaces**. Spaces in folder names can cause issues when running your Manim program, leading to errors during execution. It's recommended to use underscores `_` or hyphens `-` instead of spaces to ensure smooth execution.
 
 Feel free to explore each folder to access these resources and projects!
