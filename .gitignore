@@ -1,10 +1,10 @@
 __pycache__
 
-media/*
+# Ignore everything in the media folder
+media/**
+
+# Un-ignore the videos folder and its contents
 !media/videos/
-media/videos/*
 !media/videos/main/
-media/videos/main/*
 !media/videos/main/1080p60/
-media/videos/main/1080p60/*
 !media/videos/main/1080p60/Main.mp4
