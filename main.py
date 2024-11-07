@@ -3,6 +3,6 @@ from manim import *
 
 class Main(Scene):
     def construct(self):
-        text = Text("Choaib ELMADI")
+        text = Tex("1 2 3")
         self.play(Write(text))
-        self.wait(3)
+        self.wait(1)
