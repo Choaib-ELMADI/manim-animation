@@ -1,10 +1,13 @@
 __pycache__
 
+media
 media/*
-!media/videos/
-media/videos/*
-!media/videos/main/
-media/videos/main/*
-!media/videos/main/1080p60/
-media/videos/main/1080p60/*
+# !media/videos/
+# media/videos/*
+# !media/videos/main/
+# media/videos/main/*
+# !media/videos/main/1080p60/
+# media/videos/main/1080p60/*
+# media/videos/main/1080p60/partial_movie_files
+# media/videos/main/1080p60/partial_movie_files/*
 !media/videos/main/1080p60/Main.mp4

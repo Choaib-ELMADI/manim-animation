@@ -15,11 +15,11 @@ class Main(Scene):
         # self.play(Create(square_1), run_time=3)
         # self.wait()
 
-        self.play(Create(square_1), run_time=2)
-        self.wait(2)
+        self.play(Create(square_1), run_time=1)
+        self.wait()
 
-        self.play(Create(square_2), run_time=2)
-        self.wait(2)
+        self.play(Create(square_2), run_time=1)
+        self.wait()
 
-        self.play(Create(square_3), run_time=2)
-        self.wait(2)
+        self.play(Create(square_3), run_time=1)
+        self.wait()
