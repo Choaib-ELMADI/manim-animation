@@ -1,5 +1,0 @@
-==> add     --> self.add(elt): This immediately adds `elt` to the scene.
-
-==> play    --> self.play(Create(elt)): This animates the creation of `elt` step-by-step, gradually drawing it on the screen.
-
-==> run_time -> self.play(Create(elt), run_time=n): The run_time parameter controls the duration of the animation. 
