@@ -1,0 +1,12 @@
+*------------------------------*
+.                              .
+.          PARAMETERS          .
+.                              .
+*------------------------------*
+
+
+==> run_time -> self.play(Create(elt), run_time=n): The run_time parameter controls the duration of the animation. 
+
+==> grid_xstep 
+
+==> grid_ystep 
