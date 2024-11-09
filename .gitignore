@@ -4,4 +4,12 @@ __pycache__
 !Main.mp4
 
 *.tex
+
 *.svg
+!electron.svg
+!home.svg
+!nasa.svg
+!nature.svg
+!robot.svg
+!seecs_1.svg
+!seecs_2.svg
