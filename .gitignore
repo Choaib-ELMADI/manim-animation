@@ -2,3 +2,6 @@ __pycache__
 
 *.mp4
 !Main.mp4
+
+*.tex
+*.svg
