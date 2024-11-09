@@ -1,3 +1,4 @@
 __pycache__
 
-Notes/Basic_Shapes/Square/media/videos/main/1080p60/partial_movie_files/Main
+*.mp4
+!Main.mp4

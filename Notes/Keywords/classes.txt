@@ -7,6 +7,8 @@
 
 ==> Group               --> This groups multiple shapes together.
 
+==> VGroup              --> 
+
 ==> Tex                 --> This renders LaTeX-formatted mathematical expressions or text.
 
 ==> Write               --> This animates the appearance of text or LaTeX expressions as if they are being written on the screen, letter by letter.
