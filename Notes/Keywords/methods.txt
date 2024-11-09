@@ -5,14 +5,16 @@
 *------------------------------*
 
 
-==> add         --> This immediately adds an element to the scene.
+==> add             --> This immediately adds an element to the scene.
 
-==> play        --> This animates the creation of an element step-by-step, gradually drawing it on the screen.
+==> play            --> This animates the creation of an element step-by-step, gradually drawing it on the screen.
 
-==> scale       --> This resizes an element by a specified factor.
+==> scale           --> This resizes an element by a specified factor.
 
-==> rotate      --> This rotates an element by a specified angle (in radians), turning it around its center point.
+==> rotate          --> This rotates an element by a specified angle (in radians), turning it around its center point.
 
-==> to_edge     --> This positions an element at a specified edge of the scene.
+==> to_edge         --> This positions an element at a specified edge of the scene.
 
-==> x.animate.y --> Here, x is an object, animate is the animation directive, and y is the attribute to change.
+==> x.animate.y     --> Here, x is an object, animate is the animation directive, and y is the attribute to change.
+
+==> always_redraw   --> This is an updater function.
