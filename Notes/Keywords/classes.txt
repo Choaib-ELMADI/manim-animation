@@ -5,13 +5,13 @@
 *------------------------------*
 
 
-==> Group               --> This groups multiple shapes together.
+==> Group               --> This groups multiple objects together.
 
-==> VGroup              --> 
+==> VGroup              --> This groups multiple objects vertically, stacking them on top of each other or arranging them in a column.
 
 ==> Tex                 --> This renders LaTeX-formatted mathematical expressions or text.
 
-==> MathTex             --> 
+==> MathTex             --> This renders mathematical expressions using LaTeX specifically for math, making it easy to display formulas or equations.
 
 ==> Write               --> This animates the appearance of text or LaTeX expressions as if they are being written on the screen, letter by letter.
 
