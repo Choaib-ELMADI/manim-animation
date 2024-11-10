@@ -27,7 +27,11 @@ class Main(Scene):
                 color="BLUE" if is_transmitting else "YELLOW",
             )
             curr_bit_text = (
-                Text(f"{ bit }", color="BLUE" if is_transmitting else "YELLOW")
+                Text(
+                    f"{ bit }",
+                    font="Cascadia Code",
+                    color="BLUE" if is_transmitting else "YELLOW",
+                )
                 .scale(0.5)
                 .next_to(line, UP, buff=0.1)
             )
@@ -66,14 +70,41 @@ class Main(Scene):
         )
 
         borders = SurroundingRectangle(
-            axe, color="PURPLE", fill_opacity=0.1, fill_color="PURPLE", buff=0.25
+            axe,
+            color="BLACK",
+            fill_color="PURPLE",
+            fill_opacity=0,
+            buff=0.25,
         )
 
         title = (
-            Text("UART Communication Protocol", color="RED")
+            Text(
+                "UART Communication Protocol",
+                font="Cascadia Code",
+                font_size=54,
+                color="RED",
+            )
             .scale(0.5)
-            .next_to(axe, UP)
-            .shift(UP * 0.25)
+            .next_to(borders, UP)
+            .shift(UP * 0)
+        )
+
+        data_line_label = (
+            Text("→ Data", font="Cascadia Code", color="BLUE")
+            .scale(0.5)
+            .next_to(borders, DOWN)
+            .align_to(borders, LEFT)
+        )
+        transition_line_label = (
+            Text("→ Transition", font="Cascadia Code", color="GREEN")
+            .scale(0.5)
+            .next_to(borders, DOWN)
+        )
+        inactive_line_label = (
+            Text("→ Inactive", font="Cascadia Code", color="YELLOW")
+            .scale(0.5)
+            .next_to(borders, DOWN)
+            .align_to(borders, RIGHT)
         )
 
         self.wait(0.25)
@@ -83,10 +114,22 @@ class Main(Scene):
 
         self.plot_step_function(data_bits, axe)
 
-        self.wait(1)
-        self.play(DrawBorderThenFill(borders))
-        # self.add(borders)
-        self.wait(1)
+        self.wait(0.25)
+        ## self.play(DrawBorderThenFill(borders))
+        ## self.add(borders)
+        ## self.wait(1)
+
+        self.play(Write(data_line_label))
+        # self.add(data_line_label)
+        self.wait(0.25)
+        self.play(Write(transition_line_label))
+        # self.add(transition_line_label)
+        self.wait(0.25)
+        self.play(Write(inactive_line_label))
+        # self.add(inactive_line_label)
+
+        self.wait(0.5)
         self.play(Write(title))
         # self.add(title)
+
         self.wait(2)

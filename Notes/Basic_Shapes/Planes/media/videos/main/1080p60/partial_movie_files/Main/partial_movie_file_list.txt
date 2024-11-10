@@ -1,5 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Manim/Notes/Basic_Shapes/Planes/media/videos/main/1080p60/partial_movie_files/Main/3977891868_3609651019_223132457.mp4'
-file 'file:C:/Manim/Notes/Basic_Shapes/Planes/media/videos/main/1080p60/partial_movie_files/Main/2852726489_3534282484_639412656.mp4'
-file 'file:C:/Manim/Notes/Basic_Shapes/Planes/media/videos/main/1080p60/partial_movie_files/Main/2852726489_1704852926_3181645270.mp4'
-file 'file:C:/Manim/Notes/Basic_Shapes/Planes/media/videos/main/1080p60/partial_movie_files/Main/2852726489_373499479_1231510168.mp4'

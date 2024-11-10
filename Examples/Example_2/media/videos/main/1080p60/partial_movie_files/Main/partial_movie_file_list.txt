@@ -1,8 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Manim/Examples/Example_2/media/videos/main/1080p60/partial_movie_files/Main/3977891868_4052245336_223132457.mp4'
-file 'file:C:/Manim/Examples/Example_2/media/videos/main/1080p60/partial_movie_files/Main/2852726489_1704852926_1211166791.mp4'
-file 'file:C:/Manim/Examples/Example_2/media/videos/main/1080p60/partial_movie_files/Main/2852726489_2326593800_994581750.mp4'
-file 'file:C:/Manim/Examples/Example_2/media/videos/main/1080p60/partial_movie_files/Main/2852726489_1704852926_2729377939.mp4'
-file 'file:C:/Manim/Examples/Example_2/media/videos/main/1080p60/partial_movie_files/Main/2852726489_3149464393_2433908476.mp4'
-file 'file:C:/Manim/Examples/Example_2/media/videos/main/1080p60/partial_movie_files/Main/2852726489_1704852926_2105781837.mp4'
-file 'file:C:/Manim/Examples/Example_2/media/videos/main/1080p60/partial_movie_files/Main/2852726489_3630035870_3212711915.mp4'
