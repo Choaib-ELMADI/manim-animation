@@ -18,3 +18,6 @@
 ==> x.animate.y     --> Here, x is an object, animate is the animation directive, and y is the attribute to change.
 
 ==> always_redraw   --> This method continuously updates an element on the screen by re-evaluating its properties based on changes in other objects or variables.
+
+==> c2p             --> Short for coords_to_point, this method converts coordinates from a "graph's coordinate" system to "screen coordinates" in the scene.
+                    --> It's useful in graphing or plotting, where you need to specify points in terms of the graph's axes.
