@@ -21,11 +21,13 @@ class Main(Scene):
 
             #! TRANSMIT DATA
             end_x = i + 1
+
             line = Line(
                 axe.c2p(start_x, start_y),
                 axe.c2p(end_x, start_y),
                 color="BLUE" if is_transmitting else "YELLOW",
             )
+
             curr_bit_text = (
                 Text(
                     f"{ bit }",
@@ -35,9 +37,10 @@ class Main(Scene):
                 .scale(0.5)
                 .next_to(line, UP, buff=0.1)
             )
+
             self.play(Create(line), run_time=0.5)
             # self.add(line)
-            self.play(Write(curr_bit_text))
+            self.play(Write(curr_bit_text), run_time=0.1)
             # self.add(curr_bit_text)
 
             #! TRANSITION BETWEEN 1 AND 0
@@ -47,6 +50,7 @@ class Main(Scene):
                     axe.c2p(end_x, data_bits[i + 1]),
                     color="GREEN",
                 )
+
                 self.play(Create(vert_line), run_time=0.25)
                 # self.add(vert_line)
 
@@ -54,7 +58,7 @@ class Main(Scene):
             start_y = data_bits[i + 1] if i < len(data_bits) - 1 else start_y
 
     def construct(self):
-        #            .  .  s  d_____a________t_____a  e  .  .
+        #             .  .  s  d_____a_________t_____a  e  .  .
         data_bits = [1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1]
 
         #! ---- --- -- - ---- --- -- - ---- --- -- - ---- --- -- - !#
@@ -91,19 +95,19 @@ class Main(Scene):
             .shift(UP * 0)
         )
 
-        data_line_label = (
-            Text("→ Data", font="Cascadia Code", color="BLUE")
+        inactive_line_label = (
+            Text("→ Inactive", font="Cascadia Code", color="YELLOW")
             .scale(0.5)
             .next_to(borders, DOWN)
             .align_to(borders, LEFT)
         )
-        transition_line_label = (
-            Text("→ Transition", font="Cascadia Code", color="GREEN")
+        data_line_label = (
+            Text("→ Data", font="Cascadia Code", color="BLUE")
             .scale(0.5)
             .next_to(borders, DOWN)
         )
-        inactive_line_label = (
-            Text("→ Inactive", font="Cascadia Code", color="YELLOW")
+        transition_line_label = (
+            Text("→ Transition", font="Cascadia Code", color="GREEN")
             .scale(0.5)
             .next_to(borders, DOWN)
             .align_to(borders, RIGHT)
@@ -112,9 +116,8 @@ class Main(Scene):
         #! ---- --- -- - ---- --- -- - ---- --- -- - ---- --- -- - !#
 
         self.wait(0.25)
-        self.play(Create(axe))
-        # self.add(axe)
-        self.wait(1)
+        self.add(axe)
+        self.wait(0.5)
 
         self.plot_step_function(data_bits, axe)
 
@@ -123,14 +126,14 @@ class Main(Scene):
         ## self.add(borders)
         ## self.wait(1)
 
+        self.play(Write(inactive_line_label))
+        # self.add(inactive_line_label)
+        self.wait(0.25)
         self.play(Write(data_line_label))
         # self.add(data_line_label)
         self.wait(0.25)
         self.play(Write(transition_line_label))
         # self.add(transition_line_label)
-        self.wait(0.25)
-        self.play(Write(inactive_line_label))
-        # self.add(inactive_line_label)
 
         self.wait(0.5)
         self.play(Write(title))
