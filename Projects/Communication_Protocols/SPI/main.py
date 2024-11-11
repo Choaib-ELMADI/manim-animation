@@ -2,7 +2,7 @@ from manim import *
 
 
 class Main(Scene):
-    def plot_step_function(self, data_bits, axe, color, initial_y):
+    def plot_step_function(self, data_bits, axe, color, initial_y, dy=0):
         start_x = 0
         start_y = initial_y
 
@@ -20,7 +20,7 @@ class Main(Scene):
             if i < len(data_bits) - 1 and data_bits[i + 1] != bit:
                 transition_line = Line(
                     axe.c2p(end_x, start_y),
-                    axe.c2p(end_x, initial_y - 1 + data_bits[i + 1]),
+                    axe.c2p(end_x, initial_y - dy + data_bits[i + 1]),
                     color=color,
                 )
                 # self.play(Create(transition_line), run_time=0.1)
@@ -28,9 +28,9 @@ class Main(Scene):
 
             start_x = end_x
             start_y = (
-                initial_y - 1 + data_bits[i + 1]
+                initial_y - dy + data_bits[i + 1]
                 if i < len(data_bits) - 1
-                else initial_y - 1
+                else initial_y - dy
             )
 
     def generate_clock_signal(self, length, axe, color, initial_y):
@@ -94,20 +94,34 @@ class Main(Scene):
 
         axe.add(no_clock_line_2)
 
+    def create_dotted_lines(self, axe, length):
+        for i in range(1, length + 1):
+            dotted_line = DashedLine(
+                axe.c2p(i, 0),
+                axe.c2p(i, 7.25),
+                dash_length=0.05,
+                dashed_ratio=0.3,
+                color="GREY",
+            )
+            self.add(dotted_line)
+
     def construct(self):
         cs_line_data = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        mosi_line_data = [0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0]
 
         #! ---- --- -- - ---- --- -- - ---- --- -- - ---- --- -- - !#
 
         axe = (
             Axes(
                 x_range=[0, 14, 1],
-                y_range=[0, 7, 1],
+                y_range=[0, 7.25, 1],
                 x_length=28,
                 y_length=14,
                 axis_config={"tip_shape": StealthTip, "tip_length": 0.1},
                 x_axis_config={
                     "include_numbers": True,
+                    "include_tip": False,
+                    "numbers_to_exclude": [0, 14],
                 },
             )
             .scale(0.45)
@@ -119,7 +133,7 @@ class Main(Scene):
             .scale(0.5)
             .next_to(axe, LEFT, buff=0.1)
             .align_to(axe, DOWN)
-            .shift(UP * 6, DOWN * 0.3)
+            .shift(UP * 6, DOWN * 0.5)
         )
         cs_transition_line = Line(
             axe.c2p(13, 6),
@@ -161,19 +175,23 @@ class Main(Scene):
         self.wait(0.25)
         # self.play(Create(axe))
         self.add(axe)
+        self.wait(0.25)
+        self.create_dotted_lines(axe, 13)
         self.wait(1)
 
         #! CS/SS
         # self.play(Write(cs_line_label))
         self.add(cs_line_label)
         self.wait(0.25)
-        self.plot_step_function(cs_line_data, axe, "BLUE", initial_y=7)
+        self.plot_step_function(cs_line_data, axe, "BLUE", initial_y=7, dy=1)
+        self.wait(0.25)
 
         #! SCLK
         # self.play(Write(sclk_line_label))
         self.add(sclk_line_label)
         self.wait(0.25)
         self.generate_clock_signal(12, axe, "RED", initial_y=4)
+        self.wait(0.25)
 
         #! MOSI
         # self.play(Write(mosi_line_label))
@@ -183,6 +201,8 @@ class Main(Scene):
         #! MISO
         # self.play(Write(miso_line_label))
         self.add(miso_line_label)
+        self.wait(0.25)
+        self.plot_step_function(mosi_line_data, axe, "PURPLE", initial_y=2)
         self.wait(0.25)
 
         #! END CS/SS
