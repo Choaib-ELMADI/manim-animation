@@ -15,8 +15,8 @@ class Main(Scene):
                 axe.c2p(initial_x, start_y),
                 color=color,
             )
-            # self.play(Create(additional_line), run_time=0.25)
-            self.add(additional_line)
+            self.play(Create(additional_line), run_time=0.25)
+            # self.add(additional_line)
 
         for i, bit in enumerate(data_bits):
             end_x = initial_x + i + 1
@@ -29,8 +29,8 @@ class Main(Scene):
             if CPHA and i == len(data_bits) - 1:
                 pass
             else:
-                # self.play(Create(line), run_time=0.25)
-                self.add(line)
+                self.play(Create(line), run_time=0.25)
+                # self.add(line)
 
             if i < len(data_bits) - 1 and data_bits[i + 1] != bit:
                 transition_line = Line(
@@ -38,8 +38,8 @@ class Main(Scene):
                     axe.c2p(end_x, initial_y - dy + data_bits[i + 1]),
                     color=color,
                 )
-                # self.play(Create(transition_line), run_time=0.1)
-                self.add(transition_line)
+                self.play(Create(transition_line), run_time=0.1)
+                # self.add(transition_line)
 
             start_x = end_x
             start_y = (
@@ -54,8 +54,8 @@ class Main(Scene):
                 axe.c2p(14, start_y),
                 color=color,
             )
-            # self.play(Create(additional_line), run_time=0.25)
-            self.add(additional_line)
+            self.play(Create(additional_line), run_time=0.25)
+            # self.add(additional_line)
 
     def generate_clock_signal(self, length, axe, color, initial_y, CPOL=0):
         start_x = 1
@@ -66,8 +66,8 @@ class Main(Scene):
             axe.c2p(start_x, start_y),
             color=color,
         )
-        # self.play(Create(no_clock_line_1), run_time=0.25)
-        self.add(no_clock_line_1)
+        self.play(Create(no_clock_line_1), run_time=0.25)
+        # self.add(no_clock_line_1)
 
         for i in range(start_x, length + 1):
             end_x = i + 0.25
@@ -107,16 +107,16 @@ class Main(Scene):
                 color=color,
             )
 
-            # self.play(Create(low_state_start), run_time=0.1)
-            self.add(low_state_start)
-            # self.play(Create(rising_edge), run_time=0.25)
-            self.add(rising_edge)
-            # self.play(Create(high_state), run_time=0.1)
-            self.add(high_state)
-            # self.play(Create(falling_edge), run_time=0.25)
-            self.add(falling_edge)
-            # self.play(Create(low_state_end), run_time=0.1)
-            self.add(low_state_end)
+            self.play(Create(low_state_start), run_time=0.1)
+            # self.add(low_state_start)
+            self.play(Create(rising_edge), run_time=0.25)
+            # self.add(rising_edge)
+            self.play(Create(high_state), run_time=0.1)
+            # self.add(high_state)
+            self.play(Create(falling_edge), run_time=0.25)
+            # self.add(falling_edge)
+            self.play(Create(low_state_end), run_time=0.1)
+            # self.add(low_state_end)
 
             start_x = start_x + 1
 
@@ -125,8 +125,8 @@ class Main(Scene):
             axe.c2p(14, start_y),
             color=color,
         )
-        # self.play(Create(no_clock_line_2), run_time=0.25)
-        self.add(no_clock_line_2)
+        self.play(Create(no_clock_line_2), run_time=0.25)
+        # self.add(no_clock_line_2)
 
     def create_dotted_lines(self, axe, length):
         for i in range(1, length + 1):
@@ -137,8 +137,8 @@ class Main(Scene):
                 dashed_ratio=0.3,
                 color="GREY",
             )
-            # self.play(Create(dotted_line), run_time=0.1)
-            self.add(dotted_line)
+            self.play(Create(dotted_line), run_time=0.1)
+            # self.add(dotted_line)
 
     def construct(self):
         cs_line_data = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -160,8 +160,8 @@ class Main(Scene):
                     "numbers_to_exclude": [0, 14],
                 },
             )
-            .scale(0.45)
-            .shift(RIGHT * 0.5)
+            .scale(0.35)
+            .shift(RIGHT * 0.5, DOWN * 0.25)
         )
         extra_y_axis = (
             axe.get_y_axis()
@@ -176,7 +176,7 @@ class Main(Scene):
             .scale(0.5)
             .next_to(axe, LEFT, buff=0.1)
             .align_to(axe, DOWN)
-            .shift(UP * 6, DOWN * 0.5)
+            .shift(UP * 4.25)
         )
         cs_transition_line = Line(
             axe.c2p(13, 6),
@@ -194,7 +194,7 @@ class Main(Scene):
             .scale(0.5)
             .next_to(axe, LEFT, buff=0.1)
             .align_to(axe, DOWN)
-            .shift(UP * 4, DOWN * 0.2)
+            .shift(UP * 2.9)
         )
 
         mosi_line_label = (
@@ -202,7 +202,7 @@ class Main(Scene):
             .scale(0.5)
             .next_to(axe, LEFT, buff=0.1)
             .align_to(axe, DOWN)
-            .shift(UP * 2)
+            .shift(UP * 1.55)
         )
 
         miso_line_label = (
@@ -211,6 +211,26 @@ class Main(Scene):
             .next_to(axe, LEFT, buff=0.1)
             .align_to(axe, DOWN)
             .shift(UP * 0.25)
+        )
+
+        borders = SurroundingRectangle(
+            axe,
+            color="BLACK",
+            fill_color="PURPLE",
+            fill_opacity=0,
+            buff=0.25,
+        )
+
+        title = (
+            Text(
+                "SPI Communication Protocol - CPOL = 1, CPHA = 1",
+                font="Cascadia Code",
+                font_size=54,
+                color="RED",
+            )
+            .scale(0.5)
+            .next_to(borders, UP)
+            .shift(UP * 0)
         )
 
         #! ---- --- -- - ---- --- -- - ---- --- -- - ---- --- -- - !#
@@ -222,27 +242,27 @@ class Main(Scene):
         self.wait(0.5)
 
         #! CS/SS
-        # self.play(Write(cs_line_label))
-        self.add(cs_line_label)
+        self.play(Write(cs_line_label))
+        # self.add(cs_line_label)
         self.wait(0.25)
         self.plot_step_function(cs_line_data, axe, "BLUE", initial_y=7, dy=1)
         self.wait(0.25)
 
         #! SCLK
-        # self.play(Write(sclk_line_label))
-        self.add(sclk_line_label)
+        self.play(Write(sclk_line_label))
+        # self.add(sclk_line_label)
         self.wait(0.25)
         #
         #! CPOL est CLOCK POLARITY
         #! CPOL = 0 horloge est active en etat HIGH
         #! CPOL = 1 horloge est active en etat LOW
         #
-        self.generate_clock_signal(12, axe, "RED", initial_y=4, CPOL=0)
+        self.generate_clock_signal(12, axe, "RED", initial_y=4, CPOL=1)
         self.wait(0.25)
 
         #! MOSI
-        # self.play(Write(mosi_line_label))
-        self.add(mosi_line_label)
+        self.play(Write(mosi_line_label))
+        # self.add(mosi_line_label)
         self.wait(0.25)
         #
         #! CPHA est CLOCK PHASE
@@ -255,8 +275,8 @@ class Main(Scene):
         self.wait(0.25)
 
         #! MISO
-        # self.play(Write(miso_line_label))
-        self.add(miso_line_label)
+        self.play(Write(miso_line_label))
+        # self.add(miso_line_label)
         self.wait(0.25)
         #
         #! CPHA est CLOCK PHASE
@@ -269,10 +289,14 @@ class Main(Scene):
         self.wait(0.25)
 
         #! END CS/SS
-        # self.play(Create(cs_transition_line), run_time=0.1)
-        self.add(cs_transition_line)
+        self.play(Create(cs_transition_line), run_time=0.1)
+        # self.add(cs_transition_line)
         self.wait(0.25)
-        # self.play(Create(cs_disable_line), run_time=0.25)
-        self.add(cs_disable_line)
+        self.play(Create(cs_disable_line), run_time=0.25)
+        # self.add(cs_disable_line)
+
+        self.wait(0.5)
+        self.play(Write(title))
+        # self.add(title)
 
         self.wait(2)
