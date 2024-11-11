@@ -57,6 +57,8 @@ class Main(Scene):
         #            .  .  s  d_____a________t_____a  e  .  .
         data_bits = [1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1]
 
+        #! ---- --- -- - ---- --- -- - ---- --- -- - ---- --- -- - !#
+
         axe = (
             Axes(
                 x_range=[0, 14, 1],
@@ -106,6 +108,8 @@ class Main(Scene):
             .next_to(borders, DOWN)
             .align_to(borders, RIGHT)
         )
+
+        #! ---- --- -- - ---- --- -- - ---- --- -- - ---- --- -- - !#
 
         self.wait(0.25)
         self.play(Create(axe))
