@@ -27,14 +27,14 @@ class Main(Scene):
             color="YELLOW",
         )
 
-        # self.play(Create(initial_no_data_line_1), run_time=0.25)
-        self.add(initial_no_data_line_1)
-        # self.play(Create(no_data_transition_line_1), run_time=0.1)
-        self.add(no_data_transition_line_1)
-        # self.play(Create(initial_no_data_line_2), run_time=0.25)
-        self.add(initial_no_data_line_2)
-        # self.play(Create(no_data_transition_line_2), run_time=0.1)
-        self.add(no_data_transition_line_2)
+        self.play(Create(initial_no_data_line_1), run_time=0.25)
+        # self.add(initial_no_data_line_1)
+        self.play(Create(no_data_transition_line_1), run_time=0.1)
+        # self.add(no_data_transition_line_1)
+        self.play(Create(initial_no_data_line_2), run_time=0.25)
+        # self.add(initial_no_data_line_2)
+        self.play(Create(no_data_transition_line_2), run_time=0.1)
+        # self.add(no_data_transition_line_2)
 
         for i, bit in enumerate(data_bits):
             custom_color = (
@@ -62,10 +62,10 @@ class Main(Scene):
                 .next_to(line, UP, buff=0.1)
             )
 
-            # self.play(Create(line), run_time=0.5)
-            self.add(line)
-            # self.play(Write(curr_bit_text), run_time=0.1)
-            self.add(curr_bit_text)
+            self.play(Create(line), run_time=0.5)
+            # self.add(line)
+            self.play(Write(curr_bit_text), run_time=0.1)
+            # self.add(curr_bit_text)
 
             #! TRANSITION BETWEEN 1 AND 0
             if i < len(data_bits) - 1 and data_bits[i + 1] != bit:
@@ -75,8 +75,8 @@ class Main(Scene):
                     color=custom_color,
                 )
 
-                # self.play(Create(transition_line), run_time=0.25)
-                self.add(transition_line)
+                self.play(Create(transition_line), run_time=0.25)
+                # self.add(transition_line)
 
             start_x = end_x
             start_y = (
@@ -104,14 +104,14 @@ class Main(Scene):
             color="YELLOW",
         )
 
-        # self.play(Create(end_no_data_transition_line_1), run_time=0.1)
-        self.add(end_no_data_transition_line_1)
-        # self.play(Create(end_no_data_line_1), run_time=0.25)
-        self.add(end_no_data_line_1)
-        # self.play(Create(end_no_data_transition_line_2), run_time=0.1)
-        self.add(end_no_data_transition_line_2)
-        # self.play(Create(end_no_data_line_2), run_time=0.25)
-        self.add(end_no_data_line_2)
+        self.play(Create(end_no_data_transition_line_1), run_time=0.1)
+        # self.add(end_no_data_transition_line_1)
+        self.play(Create(end_no_data_line_1), run_time=0.25)
+        # self.add(end_no_data_line_1)
+        self.play(Create(end_no_data_transition_line_2), run_time=0.1)
+        # self.add(end_no_data_transition_line_2)
+        self.play(Create(end_no_data_line_2), run_time=0.25)
+        # self.add(end_no_data_line_2)
 
     def generate_clock_signal(self, length, axe, color, initial_y):
         start_x = 1
@@ -133,12 +133,12 @@ class Main(Scene):
             color="YELLOW",
         )
 
-        # self.play(Create(initial_no_clock_line_1), run_time=0.25)
-        self.add(initial_no_clock_line_1)
-        # self.play(Create(initial_clock_transition_line), run_time=0.1)
-        self.add(initial_clock_transition_line)
-        # self.play(Create(initial_no_clock_line_2), run_time=0.25)
-        self.add(initial_no_clock_line_2)
+        self.play(Create(initial_no_clock_line_1), run_time=0.25)
+        # self.add(initial_no_clock_line_1)
+        self.play(Create(initial_clock_transition_line), run_time=0.1)
+        # self.add(initial_clock_transition_line)
+        self.play(Create(initial_no_clock_line_2), run_time=0.25)
+        # self.add(initial_no_clock_line_2)
 
         for i in range(start_x, length + 1):
             end_x = i + 0.25
@@ -173,16 +173,16 @@ class Main(Scene):
                 color=color,
             )
 
-            # self.play(Create(low_state_start), run_time=0.1)
-            self.add(low_state_start)
-            # self.play(Create(rising_edge), run_time=0.25)
-            self.add(rising_edge)
-            # self.play(Create(high_state), run_time=0.1)
-            self.add(high_state)
-            # self.play(Create(falling_edge), run_time=0.25)
-            self.add(falling_edge)
-            # self.play(Create(low_state_end), run_time=0.1)
-            self.add(low_state_end)
+            self.play(Create(low_state_start), run_time=0.1)
+            # self.add(low_state_start)
+            self.play(Create(rising_edge), run_time=0.25)
+            # self.add(rising_edge)
+            self.play(Create(high_state), run_time=0.1)
+            # self.add(high_state)
+            self.play(Create(falling_edge), run_time=0.25)
+            # self.add(falling_edge)
+            self.play(Create(low_state_end), run_time=0.1)
+            # self.add(low_state_end)
 
             start_x = start_x + 1
 
@@ -202,12 +202,12 @@ class Main(Scene):
             color="YELLOW",
         )
 
-        # self.play(Create(end_no_clock_line_1), run_time=0.25)
-        self.add(end_no_clock_line_1)
-        # self.play(Create(end_clock_transition_line), run_time=0.1)
-        self.add(end_clock_transition_line)
-        # self.play(Create(end_no_clock_line_2), run_time=0.25)
-        self.add(end_no_clock_line_2)
+        self.play(Create(end_no_clock_line_1), run_time=0.25)
+        # self.add(end_no_clock_line_1)
+        self.play(Create(end_clock_transition_line), run_time=0.1)
+        # self.add(end_clock_transition_line)
+        self.play(Create(end_no_clock_line_2), run_time=0.25)
+        # self.add(end_no_clock_line_2)
 
     def create_dotted_lines(self, axe, length):
         for i in range(1, length + 1):
@@ -218,8 +218,8 @@ class Main(Scene):
                 dashed_ratio=0.3,
                 color="GREY",
             )
-            # self.play(Create(dotted_line), run_time=0.1)
-            self.add(dotted_line)
+            self.play(Create(dotted_line), run_time=0.1)
+            # self.add(dotted_line)
 
     def construct(self):
         #             add______re_______ss RW  AK d____a___________t____a  AK
@@ -242,6 +242,26 @@ class Main(Scene):
             .shift(RIGHT * 0.25)
         )
 
+        borders = SurroundingRectangle(
+            axe,
+            color="BLACK",
+            fill_color="PURPLE",
+            fill_opacity=0,
+            buff=0.25,
+        )
+
+        title = (
+            Text(
+                "I2C Communication Protocol",
+                font="Cascadia Code",
+                font_size=54,
+                color="RED",
+            )
+            .scale(0.5)
+            .next_to(borders, UP)
+            .shift(UP * 0)
+        )
+
         sda_line_label = (
             Text("SDA", font="Cascadia Code", color="PURPLE")
             .scale(0.5)
@@ -258,6 +278,13 @@ class Main(Scene):
             .shift(UP * 0.2)
         )
 
+        inactive_line_label = (
+            Text("→ Inactive", font="Cascadia Code", color="YELLOW")
+            .scale(0.5)
+            .next_to(borders, DOWN)
+            .align_to(borders, LEFT)
+        )
+
         #! ---- --- -- - ---- --- -- - ---- --- -- - ---- --- -- - !#
 
         self.wait(0.25)
@@ -266,15 +293,23 @@ class Main(Scene):
         self.create_dotted_lines(axe, 19)
         self.wait(0.5)
 
-        # self.play(Write(sda_line_label))
-        self.add(sda_line_label)
+        self.play(Write(sda_line_label), run_time=0.2)
+        # self.add(sda_line_label)
         self.wait(0.25)
         self.plot_step_function(data_bits, axe, initial_y=2)
         self.wait(0.25)
 
-        # self.play(Write(scl_line_label))
-        self.add(scl_line_label)
+        self.play(Write(scl_line_label), run_time=0.2)
+        # self.add(scl_line_label)
         self.wait(0.25)
         self.generate_clock_signal(18, axe, "RED", initial_y=1)
+
+        self.wait(0.25)
+        self.play(Write(inactive_line_label))
+        # self.add(inactive_line_label)
+
+        self.wait(0.5)
+        self.play(Write(title))
+        # self.add(title)
 
         self.wait(2)
