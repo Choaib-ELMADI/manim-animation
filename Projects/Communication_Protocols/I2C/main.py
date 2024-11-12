@@ -300,6 +300,27 @@ class Main(Scene):
             .next_to(borders, DOWN)
             .align_to(borders, LEFT)
         )
+        address_line_label = (
+            Text("→ Address", font="Cascadia Code", color="GREEN")
+            .scale(0.5)
+            .next_to(inactive_line_label, RIGHT, buff=0.5)
+        )
+        RW_line_label = (
+            Text("→ Read/Write", font="Cascadia Code", color="RED")
+            .scale(0.5)
+            .next_to(borders, DOWN)
+        )
+        data_line_label = (
+            Text("→ Data", font="Cascadia Code", color="ORANGE")
+            .scale(0.5)
+            .next_to(borders, DOWN)
+            .align_to(borders, RIGHT)
+        )
+        ACK_line_label = (
+            Text("→ ACK/NACK", font="Cascadia Code", color="BLUE")
+            .scale(0.5)
+            .next_to(data_line_label, LEFT, buff=0.5)
+        )
 
         #! ---- --- -- - ---- --- -- - ---- --- -- - ---- --- -- - !#
 
@@ -330,6 +351,18 @@ class Main(Scene):
 
         self.play(Write(inactive_line_label))
         # self.add(inactive_line_label)
+        self.wait(0.25)
+        self.play(Write(address_line_label))
+        # self.add(address_line_label)
+        self.wait(0.25)
+        self.play(Write(RW_line_label))
+        # self.add(RW_line_label)
+        self.wait(0.25)
+        self.play(Write(ACK_line_label))
+        # self.add(ACK_line_label)
+        self.wait(0.25)
+        self.play(Write(data_line_label))
+        # self.add(data_line_label)
 
         self.wait(0.5)
         self.play(Write(title))

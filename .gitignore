@@ -2,12 +2,18 @@ __pycache__
 
 *.mp4
 !Main.mp4
+
 !UART.mp4
+
 !SPI__CPOL0__CPHA0.mp4
 !SPI__CPOL0__CPHA1.mp4
 !SPI__CPOL1__CPHA0.mp4
 !SPI__CPOL1__CPHA1.mp4
+
 !I2C.mp4
+!I2C__1.mp4
+!I2C__2.mp4
+!I2C__3.mp4
 
 *.tex
 
