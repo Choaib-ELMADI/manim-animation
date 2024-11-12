@@ -3,24 +3,48 @@ from manim import *
 
 class Main(Scene):
     def plot_step_function(self, data_bits, axe, initial_y):
-        start_x = 0
+        start_x = 1
         start_y = initial_y + 1
+
+        initial_no_data_line_1 = Line(
+            axe.c2p(0, start_y),
+            axe.c2p(0.5, start_y),
+            color="YELLOW",
+        )
+        no_data_transition_line_1 = Line(
+            axe.c2p(0.5, start_y),
+            axe.c2p(0.5, start_y - 1),
+            color="YELLOW",
+        )
+        initial_no_data_line_2 = Line(
+            axe.c2p(0.5, start_y - 1),
+            axe.c2p(1, start_y - 1),
+            color="YELLOW",
+        )
+        no_data_transition_line_2 = Line(
+            axe.c2p(1, start_y - 1),
+            axe.c2p(1, start_y),
+            color="YELLOW",
+        )
+
+        # self.play(Create(initial_no_data_line_1), run_time=0.25)
+        self.add(initial_no_data_line_1)
+        # self.play(Create(no_data_transition_line_1), run_time=0.1)
+        self.add(no_data_transition_line_1)
+        # self.play(Create(initial_no_data_line_2), run_time=0.25)
+        self.add(initial_no_data_line_2)
+        # self.play(Create(no_data_transition_line_2), run_time=0.1)
+        self.add(no_data_transition_line_2)
 
         for i, bit in enumerate(data_bits):
             custom_color = (
-                "YELLOW"
-                if i == 0 or i == len(data_bits) - 1
-                else (
-                    "GREEN"
-                    if i in [1, 2, 3, 4, 5, 6, 7]
-                    else (
-                        "RED" if i == 8 else ("BLUE" if i == 9 or i == 18 else "ORANGE")
-                    )
-                )
+                "GREEN"
+                if i in [0, 1, 2, 3, 4, 5, 6]
+                else ("RED" if i == 7 else ("BLUE" if i == 8 or i == 17 else "ORANGE"))
             )
 
             #! TRANSMIT DATA
-            end_x = i + 1
+            end_x = i + 2
 
             line = Line(
                 axe.c2p(start_x, start_y),
@@ -59,26 +83,62 @@ class Main(Scene):
                 initial_y + data_bits[i + 1] if i < len(data_bits) - 1 else start_y
             )
 
+        end_no_data_transition_line_1 = Line(
+            axe.c2p(19, start_y),
+            axe.c2p(19, start_y - 1),
+            color="YELLOW",
+        )
+        end_no_data_line_1 = Line(
+            axe.c2p(19, start_y - 1),
+            axe.c2p(19.5, start_y - 1),
+            color="YELLOW",
+        )
+        end_no_data_transition_line_2 = Line(
+            axe.c2p(19.5, start_y - 1),
+            axe.c2p(19.5, start_y),
+            color="YELLOW",
+        )
+        end_no_data_line_2 = Line(
+            axe.c2p(19.5, start_y),
+            axe.c2p(20, start_y),
+            color="YELLOW",
+        )
+
+        # self.play(Create(end_no_data_transition_line_1), run_time=0.1)
+        self.add(end_no_data_transition_line_1)
+        # self.play(Create(end_no_data_line_1), run_time=0.25)
+        self.add(end_no_data_line_1)
+        # self.play(Create(end_no_data_transition_line_2), run_time=0.1)
+        self.add(end_no_data_transition_line_2)
+        # self.play(Create(end_no_data_line_2), run_time=0.25)
+        self.add(end_no_data_line_2)
+
     def generate_clock_signal(self, length, axe, color, initial_y):
         start_x = 1
         start_y = initial_y
 
-        no_clock_line = Line(
+        initial_no_clock_line_1 = Line(
             axe.c2p(0, start_y),
-            axe.c2p(start_x, start_y),
-            color=color,
+            axe.c2p(0.5, start_y),
+            color="YELLOW",
         )
-
         initial_clock_transition_line = Line(
-            axe.c2p(start_x, start_y),
+            axe.c2p(0.5, start_y),
+            axe.c2p(0.5, start_y - 1),
+            color="YELLOW",
+        )
+        initial_no_clock_line_2 = Line(
+            axe.c2p(0.5, start_y - 1),
             axe.c2p(start_x, start_y - 1),
-            color=color,
+            color="YELLOW",
         )
 
-        # self.play(Create(no_clock_line), run_time=0.25)
-        self.add(no_clock_line)
+        # self.play(Create(initial_no_clock_line_1), run_time=0.25)
+        self.add(initial_no_clock_line_1)
         # self.play(Create(initial_clock_transition_line), run_time=0.1)
         self.add(initial_clock_transition_line)
+        # self.play(Create(initial_no_clock_line_2), run_time=0.25)
+        self.add(initial_no_clock_line_2)
 
         for i in range(start_x, length + 1):
             end_x = i + 0.25
@@ -126,22 +186,28 @@ class Main(Scene):
 
             start_x = start_x + 1
 
-        no_clock_line = Line(
-            axe.c2p(19, start_y),
-            axe.c2p(20, start_y),
-            color=color,
-        )
-
-        end_clock_transition_line = Line(
+        end_no_clock_line_1 = Line(
             axe.c2p(19, start_y - 1),
-            axe.c2p(19, start_y),
-            color=color,
+            axe.c2p(19.5, start_y - 1),
+            color="YELLOW",
+        )
+        end_clock_transition_line = Line(
+            axe.c2p(19.5, start_y - 1),
+            axe.c2p(19.5, start_y),
+            color="YELLOW",
+        )
+        end_no_clock_line_2 = Line(
+            axe.c2p(19.5, start_y),
+            axe.c2p(20, start_y),
+            color="YELLOW",
         )
 
-        # self.play(Create(no_clock_line), run_time=0.25)
-        self.add(no_clock_line)
+        # self.play(Create(end_no_clock_line_1), run_time=0.25)
+        self.add(end_no_clock_line_1)
         # self.play(Create(end_clock_transition_line), run_time=0.1)
         self.add(end_clock_transition_line)
+        # self.play(Create(end_no_clock_line_2), run_time=0.25)
+        self.add(end_no_clock_line_2)
 
     def create_dotted_lines(self, axe, length):
         for i in range(1, length + 1):
@@ -156,8 +222,8 @@ class Main(Scene):
             self.add(dotted_line)
 
     def construct(self):
-        #           str  add______re_______ss RW  AK  d____a__________t____a  AK stp
-        data_bits = [1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1]
+        #             add______re_______ss RW  AK d____a___________t____a  AK
+        data_bits = [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1]
 
         #! ---- --- -- - ---- --- -- - ---- --- -- - ---- --- -- - !#
 
