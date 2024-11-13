@@ -1,5 +1,8 @@
 from manim import *
 
+CPOL = 0
+CPHA = 0
+
 
 class Main(Scene):
     def plot_step_function(
@@ -223,7 +226,7 @@ class Main(Scene):
 
         title = (
             Text(
-                "SPI Communication Protocol - CPOL = 1, CPHA = 1",
+                f"SPI Communication Protocol - CPOL = {CPOL}, CPHA = {CPHA}",
                 font="Cascadia Code",
                 font_size=54,
                 color="RED",
@@ -257,7 +260,7 @@ class Main(Scene):
         #! CPOL = 0 horloge est active en etat HIGH
         #! CPOL = 1 horloge est active en etat LOW
         #
-        self.generate_clock_signal(12, axe, "RED", initial_y=4, CPOL=1)
+        self.generate_clock_signal(12, axe, "RED", initial_y=4, CPOL=CPOL)
         self.wait(0.25)
 
         #! MOSI
@@ -270,7 +273,7 @@ class Main(Scene):
         #! CPHA = 1 lecture en trailing (2ème) edge
         #
         self.plot_step_function(
-            mosi_line_data, axe, "PURPLE", CPHA=1, initial_y=2, disabled=False
+            mosi_line_data, axe, "PURPLE", CPHA=CPHA, initial_y=2, disabled=False
         )
         self.wait(0.25)
 
@@ -284,7 +287,7 @@ class Main(Scene):
         #! CPHA = 1 lecture en trailing (2ème) edge
         #
         self.plot_step_function(
-            miso_line_data, axe, "GREEN", CPHA=1, initial_y=0, disabled=False
+            miso_line_data, axe, "GREEN", CPHA=CPHA, initial_y=0, disabled=False
         )
         self.wait(0.25)
 
