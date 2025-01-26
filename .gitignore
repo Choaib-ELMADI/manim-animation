@@ -3,13 +3,16 @@ __pycache__
 *.mp4
 !Main.mp4
 
+#! Communication_Protocols / UART
 !UART.mp4
 
+#! Communication_Protocols / SPI
 !SPI__CPOL0__CPHA0.mp4
 !SPI__CPOL0__CPHA1.mp4
 !SPI__CPOL1__CPHA0.mp4
 !SPI__CPOL1__CPHA1.mp4
 
+#! Communication_Protocols / I2C
 !I2C.mp4
 !I2C__1.mp4
 !I2C__2.mp4
