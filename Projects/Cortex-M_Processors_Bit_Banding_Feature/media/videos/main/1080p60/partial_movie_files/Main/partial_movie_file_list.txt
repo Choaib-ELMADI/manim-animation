@@ -1,0 +1,10 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Manim/Projects/Cortex-M_Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/3977891868_3649372508_3249559772.mp4'
+file 'file:C:/Manim/Projects/Cortex-M_Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_1959358871_17082618.mp4'
+file 'file:C:/Manim/Projects/Cortex-M_Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_79640510_944472435.mp4'
+file 'file:C:/Manim/Projects/Cortex-M_Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_79640510_4272970379.mp4'
+file 'file:C:/Manim/Projects/Cortex-M_Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_79640510_242957900.mp4'
+file 'file:C:/Manim/Projects/Cortex-M_Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_79640510_3092013161.mp4'
+file 'file:C:/Manim/Projects/Cortex-M_Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_79640510_2052975940.mp4'
+file 'file:C:/Manim/Projects/Cortex-M_Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_1970087293_225750461.mp4'
+file 'file:C:/Manim/Projects/Cortex-M_Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_1141282389_1080395237.mp4'
