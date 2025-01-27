@@ -1,18 +1,19 @@
 from manim import *
 
+IS_DEBUGGING = False
+
 
 class Main(Scene):
     def construct(self):
-        title = (
-            Text(
-                "Cortex-M3/4 Processors Bit Banding Feature",
-                font="Cascadia Code",
-                font_size=54,
-                color="RED",
-            )
-            .scale(0.5)
-            .to_edge(UP)  #!
-        )
+        title = Text(
+            "Cortex-M3/4 Processors Bit Banding Feature",
+            font="Cascadia Code",
+            font_size=54,
+            color="RED",
+        ).scale(0.5)
+
+        if IS_DEBUGGING:
+            title.to_edge(UP)
 
         topics = Paragraph(
             "Definition",
@@ -46,9 +47,14 @@ class Main(Scene):
 
         # ! ---- ---- ---- ---- ----
 
-        # self.play(Write(title), run_time=1.5)
-        self.add(title)
-        self.play(title.animate.to_edge(UP), run_time=1)  # type: ignore
+        if not IS_DEBUGGING:
+            self.play(Write(title), run_time=1.5)
+        else:
+            self.add(title)
+
+        if not IS_DEBUGGING:
+            self.play(title.animate.to_edge(UP), run_time=1)  # type: ignore
+
         self.wait(0.5)
 
         topics[int(topics_length / 2)].next_to(title, DOWN, buff=0.2)
@@ -57,8 +63,11 @@ class Main(Scene):
         for i in range(int(topics_length / 2), topics_length - 1):
             topics[i + 1].next_to(topics[i], RIGHT, buff=0.15)
 
-        # self.play(Write(topics), run_time=1.5)
-        self.add(topics)
+        if not IS_DEBUGGING:
+            self.play(Write(topics), run_time=1.5)
+        else:
+            self.add(topics)
+
         self.wait(1)
 
         # * Definition:
@@ -67,9 +76,13 @@ class Main(Scene):
         self.wait(0.5)
 
         for line in bit_banding_def:
-            # self.play(Write(line), run_time=1)
-            self.add(line)
+            if not IS_DEBUGGING:
+                self.play(Write(line), run_time=1)
+            else:
+                self.add(line)
+
             self.wait(0.25)
+
         self.wait(2)
 
         self.play(FadeOut(bit_banding_def, shift=DOWN * 0.5))  # type: ignore
@@ -82,30 +95,59 @@ class Main(Scene):
         self.wait(0.5)
 
         memory_areas = [
-            {"name": "Code Area", "size": "0.5 GB", "height": 0.75, "color": YELLOW_C},
-            {"name": "SRAM", "size": "0.5 GB", "height": 0.75, "color": GREEN_A},
-            {"name": "Peripheral", "size": "0.5 GB", "height": 0.75, "color": BLUE},
+            {
+                "name": "Code Area",
+                "size": "0.5GB",
+                "start_address": "0x00000000",
+                "end_address": "0x1FFFFFFF",
+                "height": 0.75,
+                "color": YELLOW_C,
+            },
+            {
+                "name": "SRAM",
+                "size": "0.5GB",
+                "start_address": "0x20000000",
+                "end_address": "0x3FFFFFFF",
+                "height": 0.75,
+                "color": GREEN_A,
+            },
+            {
+                "name": "Peripheral",
+                "size": "0.5GB",
+                "start_address": "0x40000000",
+                "end_address": "0x5FFFFFFF",
+                "height": 0.75,
+                "color": BLUE,
+            },
             {
                 "name": "Vendor Specific",
-                "size": "-.- --",
+                "size": "511MB",
+                "start_address": "0xE0100000",
+                "end_address": "0xFFFFFFFF",
                 "height": 0.75,
                 "color": PURPLE_B,
             },
             {
                 "name": "Private Peripheral Bus",
-                "size": "-.- --",
+                "size": "1.0MB",
+                "start_address": "0xE0000000",
+                "end_address": "0xE00FFFFF",
                 "height": 0.75,
                 "color": GREEN_B,
             },
             {
                 "name": "External Device",
-                "size": "1.0 GB",
+                "size": "1.0GB",
+                "start_address": "0xA0000000",
+                "end_address": "0xDFFFFFFF",
                 "height": 0.75,
-                "color": YELLOW_A,
+                "color": WHITE,
             },
             {
                 "name": "External RAM",
-                "size": "1.0 GB",
+                "size": "1.0GB",
+                "start_address": "0x60000000",
+                "end_address": "0x9FFFFFFF",
                 "height": 0.75,
                 "color": YELLOW_B,
             },
@@ -113,29 +155,39 @@ class Main(Scene):
         memory_areas_rectangles = []
         memory_areas_names = []
         memory_areas_sizes = []
+        memory_areas_starts = []
+        memory_areas_ends = []
 
         for i, memory_area in enumerate(memory_areas):
             for j, rect in enumerate(memory_areas_rectangles):
                 if j <= 2 and len(memory_areas_rectangles) <= 3:
-                    # self.play(
-                    #     VGroup(*memory_areas_rectangles[0 : min(2, len(memory_areas_rectangles)) + 1], *memory_areas_names[0 : min(2, len(memory_areas_rectangles)) + 1], *memory_areas_sizes[0 : min(2, len(memory_areas_rectangles)) + 1]).animate.shift(  # type: ignore
-                    #         DOWN * rect.get_height()
-                    #     )
-                    # )
-                    # break
-                    rect.shift(DOWN * rect.get_height())
-                    memory_areas_names[j].shift(DOWN * rect.get_height())
-                    memory_areas_sizes[j].shift(DOWN * rect.get_height())
+                    if not IS_DEBUGGING:
+                        self.play(
+                            VGroup(*memory_areas_rectangles[0 : min(2, len(memory_areas_rectangles)) + 1], *memory_areas_names[0 : min(2, len(memory_areas_rectangles)) + 1], *memory_areas_sizes[0 : min(2, len(memory_areas_rectangles)) + 1], *memory_areas_starts[0 : min(2, len(memory_areas_rectangles)) + 1], *memory_areas_ends[0 : min(2, len(memory_areas_rectangles)) + 1]).animate.shift(  # type: ignore
+                                DOWN * rect.get_height()
+                            )
+                        )
+                        break
+                    else:
+                        rect.shift(DOWN * rect.get_height())
+                        memory_areas_names[j].shift(DOWN * rect.get_height())
+                        memory_areas_sizes[j].shift(DOWN * rect.get_height())
+                        memory_areas_starts[j].shift(DOWN * rect.get_height())
+                        memory_areas_ends[j].shift(DOWN * rect.get_height())
                 if j >= 3:
-                    # self.play(
-                    #     VGroup(*memory_areas_rectangles[3 : min(5, len(memory_areas_rectangles)) + 1], *memory_areas_names[3 : min(5, len(memory_areas_rectangles)) + 1], *memory_areas_sizes[3 : min(5, len(memory_areas_rectangles)) + 1]).animate.shift(  # type: ignore
-                    #         UP * rect.get_height()
-                    #     )
-                    # )
-                    # break
-                    rect.shift(UP * rect.get_height())
-                    memory_areas_names[j].shift(UP * rect.get_height())
-                    memory_areas_sizes[j].shift(UP * rect.get_height())
+                    if not IS_DEBUGGING:
+                        self.play(
+                            VGroup(*memory_areas_rectangles[3 : min(5, len(memory_areas_rectangles)) + 1], *memory_areas_names[3 : min(5, len(memory_areas_rectangles)) + 1], *memory_areas_sizes[3 : min(5, len(memory_areas_rectangles)) + 1], *memory_areas_starts[3 : min(5, len(memory_areas_rectangles)) + 1], *memory_areas_ends[3 : min(5, len(memory_areas_rectangles)) + 1]).animate.shift(  # type: ignore
+                                UP * rect.get_height()
+                            )
+                        )
+                        break
+                    else:
+                        rect.shift(UP * rect.get_height())
+                        memory_areas_names[j].shift(UP * rect.get_height())
+                        memory_areas_sizes[j].shift(UP * rect.get_height())
+                        memory_areas_starts[j].shift(UP * rect.get_height())
+                        memory_areas_ends[j].shift(UP * rect.get_height())
 
             memory_area_rectangle = Rectangle(
                 color=memory_area["color"],
@@ -146,8 +198,12 @@ class Main(Scene):
             memory_area_rectangle.move_to(
                 DOWN * memory_area_rectangle.get_height() * 0.75
             )
-            # self.play(DrawBorderThenFill(memory_area_rectangle), run_time=1.5)
-            self.add(memory_area_rectangle)
+
+            if not IS_DEBUGGING:
+                self.play(DrawBorderThenFill(memory_area_rectangle), run_time=1.25)
+            else:
+                self.add(memory_area_rectangle)
+
             memory_areas_rectangles.append(memory_area_rectangle)
 
             memory_area_name = Text(
@@ -156,8 +212,12 @@ class Main(Scene):
                 font_size=16,
                 color=memory_area["color"],
             ).move_to(memory_area_rectangle.get_center())
-            # self.play(Write(memory_area_name))
-            self.add(memory_area_name)
+
+            if not IS_DEBUGGING:
+                self.play(Write(memory_area_name))
+            else:
+                self.add(memory_area_name)
+
             memory_areas_names.append(memory_area_name)
 
             memory_area_size = Text(
@@ -166,14 +226,52 @@ class Main(Scene):
                 font_size=16,
                 color=memory_area["color"],
             ).next_to(memory_area_rectangle, RIGHT, buff=0.25)
-            # self.play(Write(memory_area_size))
-            self.add(memory_area_size)
+
+            if not IS_DEBUGGING:
+                self.play(Write(memory_area_size))
+            else:
+                self.add(memory_area_size)
+
             memory_areas_sizes.append(memory_area_size)
+
+            memory_area_start = (
+                Text(
+                    memory_area["start_address"],
+                    font="Cascadia Code",
+                    font_size=12,
+                    color=memory_area["color"],
+                )
+                .next_to(memory_area_rectangle, LEFT, buff=0.25)
+                .shift(DOWN * (memory_area_rectangle.get_height() / 2) * 0.7)
+            )
+
+            memory_area_end = (
+                Text(
+                    memory_area["end_address"],
+                    font="Cascadia Code",
+                    font_size=14,
+                    color=memory_area["color"],
+                )
+                .next_to(memory_area_rectangle, LEFT, buff=0.25)
+                .shift(UP * (memory_area_rectangle.get_height() / 2) * 0.7)
+            )
+
+            if not IS_DEBUGGING:
+                self.play(Write(memory_area_start), Write(memory_area_end))
+            else:
+                self.add(memory_area_start)
+                self.add(memory_area_end)
+
+            memory_areas_starts.append(memory_area_start)
+
+            memory_areas_ends.append(memory_area_end)
 
             self.wait(0.25)
 
         self.wait(1)
 
-        #! ---- ---- ---- ---- ----
+        # * Formula:
+
+        # ! ---- ---- ---- ---- ----
 
         self.wait(2)
