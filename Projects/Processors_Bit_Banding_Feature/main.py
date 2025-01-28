@@ -1,6 +1,6 @@
 from manim import *
 
-IS_DEBUGGING = False
+IS_DEBUGGING = True
 
 
 class Main(Scene):
@@ -267,6 +267,107 @@ class Main(Scene):
             memory_areas_ends.append(memory_area_end)
 
             self.wait(0.25)
+
+        self.wait(1)
+        self.play(FadeOut(*memory_areas_sizes, shift=DOWN * 0.5))  # type: ignore
+
+        if not IS_DEBUGGING:
+            self.play(
+                VGroup(*memory_areas_starts, *memory_areas_ends).animate.next_to(  # type: ignore
+                    memory_areas_rectangles[6], RIGHT, buff=0.25
+                )
+            )
+        else:
+            VGroup(*memory_areas_starts, *memory_areas_ends).next_to(
+                memory_areas_rectangles[6], RIGHT, buff=0.25
+            )
+
+        if not IS_DEBUGGING:
+            self.play(
+                VGroup(
+                    *memory_areas_rectangles,
+                    *memory_areas_names,
+                    *memory_areas_starts,
+                    *memory_areas_ends
+                ).animate.shift(  # type: ignore
+                    RIGHT * 3.25
+                )
+            )
+        else:
+            VGroup(
+                *memory_areas_rectangles,
+                *memory_areas_names,
+                *memory_areas_starts,
+                *memory_areas_ends
+            ).shift(RIGHT * 3.25)
+
+        bitband_sram_region = Rectangle(
+            GREEN_A,
+            height=0.75 * 3,
+            width=4,
+            fill_opacity=0.1,
+        )
+        bitband_sram_region.move_to(DOWN * 0.75 * (0.75 + 2) + LEFT * 3.25)
+
+        bitband_sram_region_line_1 = Line(
+            start=memory_areas_rectangles[1].get_corner(DL),
+            end=bitband_sram_region.get_corner(DR),
+            color=GREEN_A,
+        )
+        bitband_sram_region_line_2 = Line(
+            start=bitband_sram_region.get_corner(UR),
+            end=memory_areas_rectangles[1].get_corner(UL) + DOWN * 0.4,
+            color=GREEN_A,
+        )
+
+        if IS_DEBUGGING:
+            self.play(Create(bitband_sram_region_line_1))
+        else:
+            self.add(bitband_sram_region_line_1)
+
+        if IS_DEBUGGING:
+            self.play(DrawBorderThenFill(bitband_sram_region), run_time=1.5)
+        else:
+            self.add(bitband_sram_region)
+
+        if IS_DEBUGGING:
+            self.play(Create(bitband_sram_region_line_2))
+        else:
+            self.add(bitband_sram_region_line_2)
+
+        bitband_peri_region = Rectangle(
+            BLUE,
+            height=0.75 * 3,
+            width=4,
+            fill_opacity=0.1,
+        )
+        bitband_peri_region.move_to(UP * 0.75 * (0.75 + 0.5) + LEFT * 3.25)
+
+        bitband_peri_region_line_1 = Line(
+            start=memory_areas_rectangles[2].get_corner(DL),
+            end=bitband_peri_region.get_corner(DR),
+            color=BLUE,
+        )
+        bitband_peri_region_line_2 = Line(
+            start=bitband_peri_region.get_corner(UR),
+            end=memory_areas_rectangles[2].get_corner(UL) + DOWN * 0.4,
+            color=BLUE,
+        )
+
+        if IS_DEBUGGING:
+            self.play(Create(bitband_peri_region_line_1))
+        else:
+            self.add(bitband_peri_region_line_1)
+
+        if IS_DEBUGGING:
+            self.play(DrawBorderThenFill(bitband_peri_region), run_time=1.5)
+        else:
+            self.add(bitband_peri_region)
+
+        if IS_DEBUGGING:
+            self.play(Create(bitband_peri_region_line_2))
+        else:
+            self.add(bitband_peri_region_line_2)
 
         self.wait(1)
 
