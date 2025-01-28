@@ -1,6 +1,6 @@
 from manim import *
 
-IS_DEBUGGING = True
+IS_DEBUGGING = False
 
 
 class Main(Scene):
@@ -44,6 +44,8 @@ class Main(Scene):
         )
         bit_banding_def[0].set_color(YELLOW)
         bit_banding_def[-1].set_color(ORANGE)
+
+        self.wait(0.25)
 
         # ! ---- ---- ---- ---- ----
 
@@ -200,7 +202,7 @@ class Main(Scene):
             )
 
             if not IS_DEBUGGING:
-                self.play(DrawBorderThenFill(memory_area_rectangle), run_time=1.25)
+                self.play(DrawBorderThenFill(memory_area_rectangle), run_time=1)
             else:
                 self.add(memory_area_rectangle)
 
@@ -238,7 +240,7 @@ class Main(Scene):
                 Text(
                     memory_area["start_address"],
                     font="Cascadia Code",
-                    font_size=12,
+                    font_size=14,
                     color=memory_area["color"],
                 )
                 .next_to(memory_area_rectangle, LEFT, buff=0.25)
@@ -259,11 +261,9 @@ class Main(Scene):
             if not IS_DEBUGGING:
                 self.play(Write(memory_area_start), Write(memory_area_end))
             else:
-                self.add(memory_area_start)
-                self.add(memory_area_end)
+                self.add(memory_area_start, memory_area_end)
 
             memory_areas_starts.append(memory_area_start)
-
             memory_areas_ends.append(memory_area_end)
 
             self.wait(0.25)
@@ -301,6 +301,8 @@ class Main(Scene):
                 *memory_areas_ends
             ).shift(RIGHT * 3.25)
 
+        # & ---- ---- ---- ---- ----
+
         bitband_sram_region = Rectangle(
             GREEN_A,
             height=0.75 * 3,
@@ -315,25 +317,143 @@ class Main(Scene):
             color=GREEN_A,
         )
         bitband_sram_region_line_2 = Line(
-            start=bitband_sram_region.get_corner(UR),
-            end=memory_areas_rectangles[1].get_corner(UL) + DOWN * 0.4,
+            start=memory_areas_rectangles[1].get_corner(UL) + DOWN * 0.4,
+            end=bitband_sram_region.get_corner(UR),
             color=GREEN_A,
         )
 
-        if IS_DEBUGGING:
-            self.play(Create(bitband_sram_region_line_1))
-        else:
-            self.add(bitband_sram_region_line_1)
+        bitband_sram_region_divider_1 = Line(
+            start=bitband_sram_region.get_corner(DL) + UP * 0.75 * 0.5,
+            end=bitband_sram_region.get_corner(DR) + UP * 0.75 * 0.5,
+            color=GREEN_A,
+        )
+        bitband_sram_region_divider_2 = Line(
+            start=bitband_sram_region.get_corner(DL) + UP * 0.75 * (2 - 0.25),
+            end=bitband_sram_region.get_corner(DR) + UP * 0.75 * (2 - 0.25),
+            color=GREEN_A,
+        )
 
-        if IS_DEBUGGING:
+        # * 1
+        midpoint = 0.5 * (  # type: ignore
+            bitband_sram_region.get_edge_center(DOWN)
+            + bitband_sram_region_divider_1.get_center()
+        )
+        bitband_sram_region_1_size = (
+            Text(
+                "1MB",
+                font="Cascadia Code",
+                font_size=14,
+            )
+            .move_to(midpoint)
+            .shift(LEFT * (2 - 0.35))
+        )
+        bitband_sram_region_1_name = Text(
+            "Bit-band region",
+            font="Cascadia Code",
+            font_size=16,
+            color=GREEN_A,
+        ).move_to(midpoint)
+        # * 2
+        midpoint = 0.5 * (  # type: ignore
+            bitband_sram_region_divider_1.get_center()
+            + bitband_sram_region_divider_2.get_center()
+        )
+        bitband_sram_region_2_size = (
+            Text(
+                "31MB",
+                font="Cascadia Code",
+                font_size=14,
+            )
+            .move_to(midpoint)
+            .shift(LEFT * (2 - 0.35))
+        )
+        # * 3
+        midpoint = 0.5 * (  # type: ignore
+            bitband_sram_region.get_edge_center(UP)
+            + bitband_sram_region_divider_2.get_center()
+        )
+        bitband_sram_region_3_size = (
+            Text(
+                "32MB",
+                font="Cascadia Code",
+                font_size=14,
+            )
+            .move_to(midpoint)
+            .shift(LEFT * (2 - 0.35))
+        )
+        bitband_sram_region_3_name = Text(
+            "Bit-band alias",
+            font="Cascadia Code",
+            font_size=16,
+            color=GREEN_A,
+        ).move_to(midpoint)
+
+        if not IS_DEBUGGING:
+            self.play(
+                Create(bitband_sram_region_line_1), Create(bitband_sram_region_line_2)
+            )
+        else:
+            self.add(bitband_sram_region_line_1, bitband_sram_region_line_2)
+
+        if not IS_DEBUGGING:
             self.play(DrawBorderThenFill(bitband_sram_region), run_time=1.5)
         else:
             self.add(bitband_sram_region)
 
-        if IS_DEBUGGING:
-            self.play(Create(bitband_sram_region_line_2))
+        bitband_sram_region_start = (
+            Text(
+                "0x20000000",
+                font="Cascadia Code",
+                font_size=14,
+                color=GREEN_A,
+            )
+            .next_to(bitband_sram_region, LEFT, buff=0.25)
+            .shift(DOWN * (bitband_sram_region.get_height() / 2) * 0.9)
+        )
+
+        bitband_sram_region_end = (
+            Text(
+                "0x23FFFFFF",
+                font="Cascadia Code",
+                font_size=14,
+                color=GREEN_A,
+            )
+            .next_to(bitband_sram_region, LEFT, buff=0.25)
+            .shift(UP * (bitband_sram_region.get_height() / 2) * 0.9)
+        )
+
+        if not IS_DEBUGGING:
+            self.play(Write(bitband_sram_region_start), Write(bitband_sram_region_end))
         else:
-            self.add(bitband_sram_region_line_2)
+            self.add(bitband_sram_region_start, bitband_sram_region_end)
+
+        if not IS_DEBUGGING:
+            self.play(
+                Create(bitband_sram_region_divider_1),
+                Create(bitband_sram_region_divider_2),
+            )
+        else:
+            self.add(bitband_sram_region_divider_1, bitband_sram_region_divider_2)
+
+        if not IS_DEBUGGING:
+            self.play(
+                Write(bitband_sram_region_1_size),
+                Write(bitband_sram_region_1_name),
+                Write(bitband_sram_region_2_size),
+                Write(bitband_sram_region_3_size),
+                Write(bitband_sram_region_3_name),
+            )
+        else:
+            self.add(
+                bitband_sram_region_1_size,
+                bitband_sram_region_1_name,
+                bitband_sram_region_2_size,
+                bitband_sram_region_3_size,
+                bitband_sram_region_3_name,
+            )
+
+        # & ---- ---- ---- ---- ----
+        self.wait(1)
 
         bitband_peri_region = Rectangle(
             BLUE,
@@ -349,27 +469,142 @@ class Main(Scene):
             color=BLUE,
         )
         bitband_peri_region_line_2 = Line(
-            start=bitband_peri_region.get_corner(UR),
-            end=memory_areas_rectangles[2].get_corner(UL) + DOWN * 0.4,
+            start=memory_areas_rectangles[2].get_corner(UL) + DOWN * 0.4,
+            end=bitband_peri_region.get_corner(UR),
             color=BLUE,
         )
 
-        if IS_DEBUGGING:
-            self.play(Create(bitband_peri_region_line_1))
-        else:
-            self.add(bitband_peri_region_line_1)
+        bitband_peri_region_divider_1 = Line(
+            start=bitband_peri_region.get_corner(DL) + UP * 0.75 * 0.5,
+            end=bitband_peri_region.get_corner(DR) + UP * 0.75 * 0.5,
+            color=BLUE,
+        )
+        bitband_peri_region_divider_2 = Line(
+            start=bitband_peri_region.get_corner(DL) + UP * 0.75 * (2 - 0.25),
+            end=bitband_peri_region.get_corner(DR) + UP * 0.75 * (2 - 0.25),
+            color=BLUE,
+        )
 
-        if IS_DEBUGGING:
+        # * 1
+        midpoint = 0.5 * (  # type: ignore
+            bitband_peri_region.get_edge_center(DOWN)
+            + bitband_peri_region_divider_1.get_center()
+        )
+        bitband_peri_region_1_size = (
+            Text(
+                "1MB",
+                font="Cascadia Code",
+                font_size=14,
+            )
+            .move_to(midpoint)
+            .shift(LEFT * (2 - 0.35))
+        )
+        bitband_peri_region_1_name = Text(
+            "Bit-band region",
+            font="Cascadia Code",
+            font_size=16,
+            color=BLUE,
+        ).move_to(midpoint)
+        # * 2
+        midpoint = 0.5 * (  # type: ignore
+            bitband_peri_region_divider_1.get_center()
+            + bitband_peri_region_divider_2.get_center()
+        )
+        bitband_peri_region_2_size = (
+            Text(
+                "31MB",
+                font="Cascadia Code",
+                font_size=14,
+            )
+            .move_to(midpoint)
+            .shift(LEFT * (2 - 0.35))
+        )
+        # * 3
+        midpoint = 0.5 * (  # type: ignore
+            bitband_peri_region.get_edge_center(UP)
+            + bitband_peri_region_divider_2.get_center()
+        )
+        bitband_peri_region_3_size = (
+            Text(
+                "32MB",
+                font="Cascadia Code",
+                font_size=14,
+            )
+            .move_to(midpoint)
+            .shift(LEFT * (2 - 0.35))
+        )
+        bitband_peri_region_3_name = Text(
+            "Bit-band alias",
+            font="Cascadia Code",
+            font_size=16,
+            color=BLUE,
+        ).move_to(midpoint)
+
+        if not IS_DEBUGGING:
+            self.play(
+                Create(bitband_peri_region_line_1), Create(bitband_peri_region_line_2)
+            )
+        else:
+            self.add(bitband_peri_region_line_1, bitband_peri_region_line_2)
+
+        if not IS_DEBUGGING:
             self.play(DrawBorderThenFill(bitband_peri_region), run_time=1.5)
         else:
             self.add(bitband_peri_region)
 
-        if IS_DEBUGGING:
-            self.play(Create(bitband_peri_region_line_2))
-        else:
-            self.add(bitband_peri_region_line_2)
+        bitband_peri_region_start = (
+            Text(
+                "0x40000000",
+                font="Cascadia Code",
+                font_size=14,
+                color=BLUE,
+            )
+            .next_to(bitband_peri_region, LEFT, buff=0.25)
+            .shift(DOWN * (bitband_peri_region.get_height() / 2) * 0.9)
+        )
 
-        self.wait(1)
+        bitband_peri_region_end = (
+            Text(
+                "0x43FFFFFF",
+                font="Cascadia Code",
+                font_size=14,
+                color=BLUE,
+            )
+            .next_to(bitband_peri_region, LEFT, buff=0.25)
+            .shift(UP * (bitband_peri_region.get_height() / 2) * 0.9)
+        )
+
+        if not IS_DEBUGGING:
+            self.play(Write(bitband_peri_region_start), Write(bitband_peri_region_end))
+        else:
+            self.add(bitband_peri_region_start, bitband_peri_region_end)
+
+        if not IS_DEBUGGING:
+            self.play(
+                Create(bitband_peri_region_divider_1),
+                Create(bitband_peri_region_divider_2),
+            )
+        else:
+            self.add(bitband_peri_region_divider_1, bitband_peri_region_divider_2)
+
+        if not IS_DEBUGGING:
+            self.play(
+                Write(bitband_peri_region_1_size),
+                Write(bitband_peri_region_1_name),
+                Write(bitband_peri_region_2_size),
+                Write(bitband_peri_region_3_size),
+                Write(bitband_peri_region_3_name),
+            )
+        else:
+            self.add(
+                bitband_peri_region_1_size,
+                bitband_peri_region_1_name,
+                bitband_peri_region_2_size,
+                bitband_peri_region_3_size,
+                bitband_peri_region_3_name,
+            )
+
+        self.wait(2)
 
         # * Formula:
 
