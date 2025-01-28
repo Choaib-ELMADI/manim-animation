@@ -1,6 +1,6 @@
 from manim import *
 
-IS_DEBUGGING = False
+IS_DEBUGGING = True
 
 
 class Main(Scene):
@@ -17,15 +17,15 @@ class Main(Scene):
 
         topics = Paragraph(
             "Definition",
-            "-",
+            "•",
             "Memory Layout",
-            "-",
+            "•",
             "Formula",
-            "-",  #!
+            "•",
             "Example",
-            "-",
+            "•",
             "Demonstration",
-            "-",
+            "•",
             "Conclusion",
             font="Cascadia Code",
             font_size=16,
@@ -71,7 +71,7 @@ class Main(Scene):
             self.add(topics)
 
         self.wait(1)
-
+        """
         # * Definition:
 
         topics[0].set_color(YELLOW)
@@ -288,7 +288,7 @@ class Main(Scene):
                     *memory_areas_rectangles,
                     *memory_areas_names,
                     *memory_areas_starts,
-                    *memory_areas_ends
+                    *memory_areas_ends,
                 ).animate.shift(  # type: ignore
                     RIGHT * 3.25
                 )
@@ -298,7 +298,7 @@ class Main(Scene):
                 *memory_areas_rectangles,
                 *memory_areas_names,
                 *memory_areas_starts,
-                *memory_areas_ends
+                *memory_areas_ends,
             ).shift(RIGHT * 3.25)
 
         # & ---- ---- ---- ---- ----
@@ -606,7 +606,105 @@ class Main(Scene):
 
         self.wait(2)
 
+        self.play(
+            FadeOut(
+                *memory_areas_rectangles,
+                *memory_areas_names,
+                *memory_areas_starts,
+                *memory_areas_ends,
+                bitband_sram_region,
+                bitband_sram_region_line_1,
+                bitband_sram_region_line_2,
+                bitband_sram_region_divider_1,
+                bitband_sram_region_divider_2,
+                bitband_sram_region_1_size,
+                bitband_sram_region_1_name,
+                bitband_sram_region_2_size,
+                bitband_sram_region_3_size,
+                bitband_sram_region_3_name,
+                bitband_sram_region_start,
+                bitband_sram_region_end,
+                bitband_peri_region,
+                bitband_peri_region_line_1,
+                bitband_peri_region_line_2,
+                bitband_peri_region_divider_1,
+                bitband_peri_region_divider_2,
+                bitband_peri_region_1_size,
+                bitband_peri_region_1_name,
+                bitband_peri_region_2_size,
+                bitband_peri_region_3_size,
+                bitband_peri_region_3_name,
+                bitband_peri_region_start,
+                bitband_peri_region_end,
+            )
+        )
+        self.wait(1)
+        """
         # * Formula:
+
+        topics[2].set_color(WHITE)
+        topics[4].set_color(YELLOW)
+        self.wait(0.5)
+
+        formula_part_1 = MarkupText(
+            f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
+            + f'<span fgcolor="{BLUE}"> = </span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        formula_part_2 = MarkupText(
+            f'<span fgcolor="{GOLD}">ALIAS_SRAM_BASE</span>'
+            + f'<span fgcolor="{BLUE}"> + </span>'
+            + f'<span fgcolor="{YELLOW}">(</span>'
+            + f'<span fgcolor="{ORANGE}">(</span>'
+            + f'<span fgcolor="{PURPLE}">(uint32_t)</span>'
+            + f'<span fgcolor="{GREEN}">target</span>'
+            + f'<span fgcolor="{BLUE}"> - </span>'
+            + f'<span fgcolor="{GOLD}">BITBAND_SRAM_BASE</span>'
+            + f'<span fgcolor="{ORANGE}">)</span>'
+            + f'<span fgcolor="{BLUE}"> x </span>'
+            + f'<span fgcolor="{RED}">32</span>'
+            + f'<span fgcolor="{YELLOW}">)</span>'
+            + f'<span fgcolor="{BLUE}"> + </span>'
+            + f'<span fgcolor="{PURPLE}">(</span>'
+            + f'<span fgcolor="{GREEN}">bit_n</span>'
+            + f'<span fgcolor="{BLUE}"> x </span>'
+            + f'<span fgcolor="{RED}">4</span>'
+            + f'<span fgcolor="{PURPLE}">)</span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        formula = VGroup(formula_part_1, formula_part_2).arrange(DOWN, buff=0.15)
+        formula.move_to(ORIGIN)
+
+        box = always_redraw(
+            lambda: SurroundingRectangle(
+                formula, color="WHITE", fill_opacity=0.05, buff=0.25
+            )
+        )
+
+        if not IS_DEBUGGING:
+            self.play(Write(formula))
+            self.play(Create(box))  # type: ignore
+        else:
+            self.add(formula, box)
+
+        self.wait(1)
+
+        self.play(formula.animate.scale(0.75).arrange(RIGHT, buff=0.15).next_to(topics[5], DOWN * 2.25))  # type: ignore
+
+        self.wait(1)
+
+        # * Example:
+
+        topics[4].set_color(WHITE)
+        topics[6].set_color(YELLOW)
+        self.wait(0.5)
+
+        formula_copy = formula.copy()
+        self.play(formula_copy.animate.move_to(ORIGIN))  # type: ignore
 
         # ! ---- ---- ---- ---- ----
 
