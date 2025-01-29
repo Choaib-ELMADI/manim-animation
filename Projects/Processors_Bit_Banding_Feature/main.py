@@ -1,10 +1,13 @@
 from manim import *
 
-IS_DEBUGGING = True
+IS_DEBUGGING = False
 
 
 class Main(Scene):
     def construct(self):
+        self.wait(0.25)  # ! ---- ---- ----
+
+        # + Title Element
         title = Text(
             "Cortex-M3/4 Processors Bit Banding Feature",
             font="Cascadia Code",
@@ -12,9 +15,17 @@ class Main(Scene):
             color="RED",
         ).scale(0.5)
 
-        if IS_DEBUGGING:
+        # - Animate Title Element
+        if not IS_DEBUGGING:
+            self.play(Write(title), run_time=1.5)
+            self.play(title.animate.to_edge(UP), run_time=1)  # type: ignore
+        else:
+            self.add(title)
             title.to_edge(UP)
 
+        self.wait(0.5)  # ! ---- ---- ----
+
+        # + Topics Element
         topics = Paragraph(
             "Definition",
             "•",
@@ -32,11 +43,31 @@ class Main(Scene):
         )
         topics_length = len(topics)
 
+        topics[int(topics_length / 2)].next_to(title, DOWN, buff=0.2)
+        for i in range(int(topics_length / 2) - 1, -1, -1):
+            topics[i].next_to(topics[i + 1], LEFT, buff=0.15)
+        for i in range(int(topics_length / 2), topics_length - 1):
+            topics[i + 1].next_to(topics[i], RIGHT, buff=0.15)
+
+        # - Animate Topics Element
+        if not IS_DEBUGGING:
+            self.play(Write(topics), run_time=1.5)
+        else:
+            self.add(topics)
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        # & Definition                                                          :
+        topics[0].set_color(YELLOW)
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        # + Definition Element
         bit_banding_def = Paragraph(
             "Bit-banding",
             "is a feature that enables every single bit",
-            "in the bit-band region to be directly accessible!",
-            "(in a single instruction)",
+            "in the bit-band region to be directly accessible,",
+            "in a single instruction!",
             font="Cascadia Code",
             font_size=21,
             line_spacing=0.75,
@@ -45,57 +76,38 @@ class Main(Scene):
         bit_banding_def[0].set_color(YELLOW)
         bit_banding_def[-1].set_color(ORANGE)
 
-        self.wait(0.25)
-
-        # ! ---- ---- ---- ---- ----
-
-        if not IS_DEBUGGING:
-            self.play(Write(title), run_time=1.5)
-        else:
-            self.add(title)
-
-        if not IS_DEBUGGING:
-            self.play(title.animate.to_edge(UP), run_time=1)  # type: ignore
-
-        self.wait(0.5)
-
-        topics[int(topics_length / 2)].next_to(title, DOWN, buff=0.2)
-        for i in range(int(topics_length / 2) - 1, -1, -1):
-            topics[i].next_to(topics[i + 1], LEFT, buff=0.15)
-        for i in range(int(topics_length / 2), topics_length - 1):
-            topics[i + 1].next_to(topics[i], RIGHT, buff=0.15)
-
-        if not IS_DEBUGGING:
-            self.play(Write(topics), run_time=1.5)
-        else:
-            self.add(topics)
-
-        self.wait(1)
-        """
-        # * Definition:
-
-        topics[0].set_color(YELLOW)
-        self.wait(0.5)
-
-        for line in bit_banding_def:
+        # - Animate Definition Element
+        for i, line in enumerate(bit_banding_def):
             if not IS_DEBUGGING:
                 self.play(Write(line), run_time=1)
             else:
                 self.add(line)
 
-            self.wait(0.25)
+            if i != len(bit_banding_def) - 1:
+                self.wait(0.25)
 
-        self.wait(2)
+        underline = Underline(
+            bit_banding_def[-1], buff=0.05, color=ORANGE, stroke_width=3
+        )
 
-        self.play(FadeOut(bit_banding_def, shift=DOWN * 0.5))  # type: ignore
-        self.wait(1)
+        if not IS_DEBUGGING:
+            self.play(Create(underline))
+        else:
+            self.add(underline)
 
-        # * Memory Layout:
+        self.wait(2)  # ! ---- ---- ----
 
+        self.play(FadeOut(bit_banding_def, underline))  # type: ignore
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        # & Memory Layout                                                       :
         topics[0].set_color(WHITE)
         topics[2].set_color(YELLOW)
-        self.wait(0.5)
 
+        self.wait(0.5)  # ! ---- ---- ----
+
+        # + Memory Elements
         memory_areas = [
             {
                 "name": "Code Area",
@@ -191,6 +203,7 @@ class Main(Scene):
                         memory_areas_starts[j].shift(UP * rect.get_height())
                         memory_areas_ends[j].shift(UP * rect.get_height())
 
+            # + Memory Area Element
             memory_area_rectangle = Rectangle(
                 color=memory_area["color"],
                 height=memory_area["height"],
@@ -200,42 +213,25 @@ class Main(Scene):
             memory_area_rectangle.move_to(
                 DOWN * memory_area_rectangle.get_height() * 0.75
             )
-
-            if not IS_DEBUGGING:
-                self.play(DrawBorderThenFill(memory_area_rectangle), run_time=1)
-            else:
-                self.add(memory_area_rectangle)
-
             memory_areas_rectangles.append(memory_area_rectangle)
 
+            # + Memory Name Element
             memory_area_name = Text(
                 memory_area["name"],
                 font="Cascadia Code",
                 font_size=16,
                 color=memory_area["color"],
             ).move_to(memory_area_rectangle.get_center())
-
-            if not IS_DEBUGGING:
-                self.play(Write(memory_area_name))
-            else:
-                self.add(memory_area_name)
-
             memory_areas_names.append(memory_area_name)
 
+            # + Memory Size Element
             memory_area_size = Text(
                 memory_area["size"],
                 font="Cascadia Code",
                 font_size=16,
                 color=memory_area["color"],
             ).next_to(memory_area_rectangle, RIGHT, buff=0.25)
-
-            if not IS_DEBUGGING:
-                self.play(Write(memory_area_size))
-            else:
-                self.add(memory_area_size)
-
             memory_areas_sizes.append(memory_area_size)
-
             memory_area_start = (
                 Text(
                     memory_area["start_address"],
@@ -246,7 +242,7 @@ class Main(Scene):
                 .next_to(memory_area_rectangle, LEFT, buff=0.25)
                 .shift(DOWN * (memory_area_rectangle.get_height() / 2) * 0.7)
             )
-
+            memory_areas_starts.append(memory_area_start)
             memory_area_end = (
                 Text(
                     memory_area["end_address"],
@@ -257,20 +253,37 @@ class Main(Scene):
                 .next_to(memory_area_rectangle, LEFT, buff=0.25)
                 .shift(UP * (memory_area_rectangle.get_height() / 2) * 0.7)
             )
-
-            if not IS_DEBUGGING:
-                self.play(Write(memory_area_start), Write(memory_area_end))
-            else:
-                self.add(memory_area_start, memory_area_end)
-
-            memory_areas_starts.append(memory_area_start)
             memory_areas_ends.append(memory_area_end)
 
-            self.wait(0.25)
+            # - Animate Memory Elements
+            if not IS_DEBUGGING:
+                self.play(DrawBorderThenFill(memory_area_rectangle), run_time=1)
+            else:
+                self.add(memory_area_rectangle)
 
-        self.wait(1)
-        self.play(FadeOut(*memory_areas_sizes, shift=DOWN * 0.5))  # type: ignore
+            if not IS_DEBUGGING:
+                self.play(
+                    Write(memory_area_name),
+                    Write(memory_area_size),
+                    Write(memory_area_start),
+                    Write(memory_area_end),
+                )
+            else:
+                self.add(
+                    memory_area_name,
+                    memory_area_size,
+                    memory_area_start,
+                    memory_area_end,
+                )
 
+            if i != len(memory_areas) - 1:
+                self.wait(0.25)  # ! ---- ---- ----
+
+        self.wait(1)  # ! ---- ---- ----
+
+        self.play(FadeOut(*memory_areas_sizes))  # type: ignore
+
+        # - Animate Memory Areas Start and End Elements
         if not IS_DEBUGGING:
             self.play(
                 VGroup(*memory_areas_starts, *memory_areas_ends).animate.next_to(  # type: ignore
@@ -282,6 +295,7 @@ class Main(Scene):
                 memory_areas_rectangles[6], RIGHT, buff=0.25
             )
 
+        # - Animate Memory Elements
         if not IS_DEBUGGING:
             self.play(
                 VGroup(
@@ -301,8 +315,7 @@ class Main(Scene):
                 *memory_areas_ends,
             ).shift(RIGHT * 3.25)
 
-        # & ---- ---- ---- ---- ----
-
+        # + Bit Band Region 1 Elements
         bitband_sram_region = Rectangle(
             GREEN_A,
             height=0.75 * 3,
@@ -310,7 +323,6 @@ class Main(Scene):
             fill_opacity=0.1,
         )
         bitband_sram_region.move_to(DOWN * 0.75 * (0.75 + 2) + LEFT * 3.25)
-
         bitband_sram_region_line_1 = Line(
             start=memory_areas_rectangles[1].get_corner(DL),
             end=bitband_sram_region.get_corner(DR),
@@ -321,7 +333,6 @@ class Main(Scene):
             end=bitband_sram_region.get_corner(UR),
             color=GREEN_A,
         )
-
         bitband_sram_region_divider_1 = Line(
             start=bitband_sram_region.get_corner(DL) + UP * 0.75 * 0.5,
             end=bitband_sram_region.get_corner(DR) + UP * 0.75 * 0.5,
@@ -332,19 +343,19 @@ class Main(Scene):
             end=bitband_sram_region.get_corner(DR) + UP * 0.75 * (2 - 0.25),
             color=GREEN_A,
         )
-
-        # * 1
-        midpoint = 0.5 * (  # type: ignore
-            bitband_sram_region.get_edge_center(DOWN)
-            + bitband_sram_region_divider_1.get_center()
-        )
         bitband_sram_region_1_size = (
             Text(
                 "1MB",
                 font="Cascadia Code",
                 font_size=14,
             )
-            .move_to(midpoint)
+            .move_to(
+                0.5
+                * (  # type: ignore
+                    bitband_sram_region.get_edge_center(DOWN)
+                    + bitband_sram_region_divider_1.get_center()
+                )
+            )
             .shift(LEFT * (2 - 0.35))
         )
         bitband_sram_region_1_name = Text(
@@ -352,11 +363,12 @@ class Main(Scene):
             font="Cascadia Code",
             font_size=16,
             color=GREEN_A,
-        ).move_to(midpoint)
-        # * 2
-        midpoint = 0.5 * (  # type: ignore
-            bitband_sram_region_divider_1.get_center()
-            + bitband_sram_region_divider_2.get_center()
+        ).move_to(
+            0.5
+            * (  # type: ignore
+                bitband_sram_region.get_edge_center(DOWN)
+                + bitband_sram_region_divider_1.get_center()
+            )
         )
         bitband_sram_region_2_size = (
             Text(
@@ -364,13 +376,14 @@ class Main(Scene):
                 font="Cascadia Code",
                 font_size=14,
             )
-            .move_to(midpoint)
+            .move_to(
+                0.5
+                * (  # type: ignore
+                    bitband_sram_region_divider_1.get_center()
+                    + bitband_sram_region_divider_2.get_center()
+                )
+            )
             .shift(LEFT * (2 - 0.35))
-        )
-        # * 3
-        midpoint = 0.5 * (  # type: ignore
-            bitband_sram_region.get_edge_center(UP)
-            + bitband_sram_region_divider_2.get_center()
         )
         bitband_sram_region_3_size = (
             Text(
@@ -378,7 +391,13 @@ class Main(Scene):
                 font="Cascadia Code",
                 font_size=14,
             )
-            .move_to(midpoint)
+            .move_to(
+                0.5
+                * (  # type: ignore
+                    bitband_sram_region.get_edge_center(UP)
+                    + bitband_sram_region_divider_2.get_center()
+                )
+            )
             .shift(LEFT * (2 - 0.35))
         )
         bitband_sram_region_3_name = Text(
@@ -386,20 +405,13 @@ class Main(Scene):
             font="Cascadia Code",
             font_size=16,
             color=GREEN_A,
-        ).move_to(midpoint)
-
-        if not IS_DEBUGGING:
-            self.play(
-                Create(bitband_sram_region_line_1), Create(bitband_sram_region_line_2)
+        ).move_to(
+            0.5
+            * (  # type: ignore
+                bitband_sram_region.get_edge_center(UP)
+                + bitband_sram_region_divider_2.get_center()
             )
-        else:
-            self.add(bitband_sram_region_line_1, bitband_sram_region_line_2)
-
-        if not IS_DEBUGGING:
-            self.play(DrawBorderThenFill(bitband_sram_region), run_time=1.5)
-        else:
-            self.add(bitband_sram_region)
-
+        )
         bitband_sram_region_start = (
             Text(
                 "0x20000000",
@@ -410,7 +422,6 @@ class Main(Scene):
             .next_to(bitband_sram_region, LEFT, buff=0.25)
             .shift(DOWN * (bitband_sram_region.get_height() / 2) * 0.9)
         )
-
         bitband_sram_region_end = (
             Text(
                 "0x23FFFFFF",
@@ -422,21 +433,16 @@ class Main(Scene):
             .shift(UP * (bitband_sram_region.get_height() / 2) * 0.9)
         )
 
+        # - Animate Bit Band Region 1 Elements
         if not IS_DEBUGGING:
+            self.play(
+                Create(bitband_sram_region_line_1), Create(bitband_sram_region_line_2)
+            )
+            self.play(DrawBorderThenFill(bitband_sram_region), run_time=1.5)
             self.play(Write(bitband_sram_region_start), Write(bitband_sram_region_end))
-        else:
-            self.add(bitband_sram_region_start, bitband_sram_region_end)
-
-        if not IS_DEBUGGING:
             self.play(
                 Create(bitband_sram_region_divider_1),
                 Create(bitband_sram_region_divider_2),
-            )
-        else:
-            self.add(bitband_sram_region_divider_1, bitband_sram_region_divider_2)
-
-        if not IS_DEBUGGING:
-            self.play(
                 Write(bitband_sram_region_1_size),
                 Write(bitband_sram_region_1_name),
                 Write(bitband_sram_region_2_size),
@@ -444,7 +450,12 @@ class Main(Scene):
                 Write(bitband_sram_region_3_name),
             )
         else:
+            self.add(bitband_sram_region_line_1, bitband_sram_region_line_2)
+            self.add(bitband_sram_region)
+            self.add(bitband_sram_region_start, bitband_sram_region_end)
             self.add(
+                bitband_sram_region_divider_1,
+                bitband_sram_region_divider_2,
                 bitband_sram_region_1_size,
                 bitband_sram_region_1_name,
                 bitband_sram_region_2_size,
@@ -452,9 +463,9 @@ class Main(Scene):
                 bitband_sram_region_3_name,
             )
 
-        # & ---- ---- ---- ---- ----
-        self.wait(1)
+        self.wait(0.5)  # ! ---- ---- ----
 
+        # + Bit Band Region 2 Elements
         bitband_peri_region = Rectangle(
             BLUE,
             height=0.75 * 3,
@@ -462,7 +473,6 @@ class Main(Scene):
             fill_opacity=0.1,
         )
         bitband_peri_region.move_to(UP * 0.75 * (0.75 + 0.5) + LEFT * 3.25)
-
         bitband_peri_region_line_1 = Line(
             start=memory_areas_rectangles[2].get_corner(DL),
             end=bitband_peri_region.get_corner(DR),
@@ -473,7 +483,6 @@ class Main(Scene):
             end=bitband_peri_region.get_corner(UR),
             color=BLUE,
         )
-
         bitband_peri_region_divider_1 = Line(
             start=bitband_peri_region.get_corner(DL) + UP * 0.75 * 0.5,
             end=bitband_peri_region.get_corner(DR) + UP * 0.75 * 0.5,
@@ -484,19 +493,19 @@ class Main(Scene):
             end=bitband_peri_region.get_corner(DR) + UP * 0.75 * (2 - 0.25),
             color=BLUE,
         )
-
-        # * 1
-        midpoint = 0.5 * (  # type: ignore
-            bitband_peri_region.get_edge_center(DOWN)
-            + bitband_peri_region_divider_1.get_center()
-        )
         bitband_peri_region_1_size = (
             Text(
                 "1MB",
                 font="Cascadia Code",
                 font_size=14,
             )
-            .move_to(midpoint)
+            .move_to(
+                0.5
+                * (  # type: ignore
+                    bitband_peri_region.get_edge_center(DOWN)
+                    + bitband_peri_region_divider_1.get_center()
+                )
+            )
             .shift(LEFT * (2 - 0.35))
         )
         bitband_peri_region_1_name = Text(
@@ -504,11 +513,12 @@ class Main(Scene):
             font="Cascadia Code",
             font_size=16,
             color=BLUE,
-        ).move_to(midpoint)
-        # * 2
-        midpoint = 0.5 * (  # type: ignore
-            bitband_peri_region_divider_1.get_center()
-            + bitband_peri_region_divider_2.get_center()
+        ).move_to(
+            0.5
+            * (  # type: ignore
+                bitband_peri_region.get_edge_center(DOWN)
+                + bitband_peri_region_divider_1.get_center()
+            )
         )
         bitband_peri_region_2_size = (
             Text(
@@ -516,13 +526,14 @@ class Main(Scene):
                 font="Cascadia Code",
                 font_size=14,
             )
-            .move_to(midpoint)
+            .move_to(
+                0.5
+                * (  # type: ignore
+                    bitband_peri_region_divider_1.get_center()
+                    + bitband_peri_region_divider_2.get_center()
+                )
+            )
             .shift(LEFT * (2 - 0.35))
-        )
-        # * 3
-        midpoint = 0.5 * (  # type: ignore
-            bitband_peri_region.get_edge_center(UP)
-            + bitband_peri_region_divider_2.get_center()
         )
         bitband_peri_region_3_size = (
             Text(
@@ -530,7 +541,13 @@ class Main(Scene):
                 font="Cascadia Code",
                 font_size=14,
             )
-            .move_to(midpoint)
+            .move_to(
+                0.5
+                * (  # type: ignore
+                    bitband_peri_region.get_edge_center(UP)
+                    + bitband_peri_region_divider_2.get_center()
+                )
+            )
             .shift(LEFT * (2 - 0.35))
         )
         bitband_peri_region_3_name = Text(
@@ -538,20 +555,13 @@ class Main(Scene):
             font="Cascadia Code",
             font_size=16,
             color=BLUE,
-        ).move_to(midpoint)
-
-        if not IS_DEBUGGING:
-            self.play(
-                Create(bitband_peri_region_line_1), Create(bitband_peri_region_line_2)
+        ).move_to(
+            0.5
+            * (  # type: ignore
+                bitband_peri_region.get_edge_center(UP)
+                + bitband_peri_region_divider_2.get_center()
             )
-        else:
-            self.add(bitband_peri_region_line_1, bitband_peri_region_line_2)
-
-        if not IS_DEBUGGING:
-            self.play(DrawBorderThenFill(bitband_peri_region), run_time=1.5)
-        else:
-            self.add(bitband_peri_region)
-
+        )
         bitband_peri_region_start = (
             Text(
                 "0x40000000",
@@ -562,7 +572,6 @@ class Main(Scene):
             .next_to(bitband_peri_region, LEFT, buff=0.25)
             .shift(DOWN * (bitband_peri_region.get_height() / 2) * 0.9)
         )
-
         bitband_peri_region_end = (
             Text(
                 "0x43FFFFFF",
@@ -574,21 +583,16 @@ class Main(Scene):
             .shift(UP * (bitband_peri_region.get_height() / 2) * 0.9)
         )
 
+        # - Animate Bit Band Region 2 Elements
         if not IS_DEBUGGING:
+            self.play(
+                Create(bitband_peri_region_line_1), Create(bitband_peri_region_line_2)
+            )
+            self.play(DrawBorderThenFill(bitband_peri_region), run_time=1.5)
             self.play(Write(bitband_peri_region_start), Write(bitband_peri_region_end))
-        else:
-            self.add(bitband_peri_region_start, bitband_peri_region_end)
-
-        if not IS_DEBUGGING:
             self.play(
                 Create(bitband_peri_region_divider_1),
                 Create(bitband_peri_region_divider_2),
-            )
-        else:
-            self.add(bitband_peri_region_divider_1, bitband_peri_region_divider_2)
-
-        if not IS_DEBUGGING:
-            self.play(
                 Write(bitband_peri_region_1_size),
                 Write(bitband_peri_region_1_name),
                 Write(bitband_peri_region_2_size),
@@ -596,7 +600,12 @@ class Main(Scene):
                 Write(bitband_peri_region_3_name),
             )
         else:
+            self.add(bitband_peri_region_line_1, bitband_peri_region_line_2)
+            self.add(bitband_peri_region)
+            self.add(bitband_peri_region_start, bitband_peri_region_end)
             self.add(
+                bitband_peri_region_divider_1,
+                bitband_peri_region_divider_2,
                 bitband_peri_region_1_size,
                 bitband_peri_region_1_name,
                 bitband_peri_region_2_size,
@@ -604,7 +613,7 @@ class Main(Scene):
                 bitband_peri_region_3_name,
             )
 
-        self.wait(2)
+        self.wait(2)  # ! ---- ---- ----
 
         self.play(
             FadeOut(
@@ -638,21 +647,22 @@ class Main(Scene):
                 bitband_peri_region_end,
             )
         )
-        self.wait(1)
-        """
-        # * Formula:
 
+        self.wait(0.5)  # ! ---- ---- ----
+
+        # & Formula                                                             :
         topics[2].set_color(WHITE)
         topics[4].set_color(YELLOW)
-        self.wait(0.5)
 
+        self.wait(0.5)  # ! ---- ---- ----
+
+        # + Formula Elements
         formula_part_1 = MarkupText(
             f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
             + f'<span fgcolor="{BLUE}"> = </span>',
             font="Cascadia Code",
             font_size=20,
         )
-
         formula_part_2 = MarkupText(
             f'<span fgcolor="{GOLD}">ALIAS_SRAM_BASE</span>'
             + f'<span fgcolor="{BLUE}"> + </span>'
@@ -675,39 +685,35 @@ class Main(Scene):
             font="Cascadia Code",
             font_size=20,
         )
-
         formula = VGroup(formula_part_1, formula_part_2).arrange(DOWN, buff=0.15)
         formula.move_to(ORIGIN)
-
         box = always_redraw(
             lambda: SurroundingRectangle(
                 formula, color="WHITE", fill_opacity=0.05, buff=0.25
             )
         )
 
+        # - Animate Formula Elements
         if not IS_DEBUGGING:
             self.play(Write(formula))
             self.play(Create(box))  # type: ignore
         else:
             self.add(formula, box)
 
-        self.wait(1)
+        self.wait(1)  # ! ---- ---- ----
 
         self.play(formula.animate.scale(0.75).arrange(RIGHT, buff=0.15).next_to(topics[5], DOWN * 2.25))  # type: ignore
 
-        self.wait(1)
+        self.wait(0.5)  # ! ---- ---- ----
 
-        # * Example:
+        # & Example                                                             :
+        topics[4].set_color(WHITE)
+        topics[6].set_color(YELLOW)
 
-        topics[4].set_color(WHITE)  # type: ignore
-        topics[6].set_color(YELLOW)  # type: ignore
-        self.wait(0.5)
+        self.wait(0.5)  # ! ---- ---- ----
 
+        # + Example Elements
         formula_copy = formula.copy()
-        self.play(formula_copy.animate.move_to(ORIGIN + DOWN * 0.4 * 6))  # type: ignore
-
-        self.wait(1)
-
         alias_sram_base_formula = (
             MarkupText(
                 f'<span fgcolor="{GOLD}">ALIAS_SRAM_BASE</span>'
@@ -719,7 +725,6 @@ class Main(Scene):
             .align_to(box, LEFT)
             .shift(UP * 0.4)
         )
-
         bitband_sram_base_formula = MarkupText(
             f'<span fgcolor="{GOLD}">BITBAND_SRAM_BASE</span>'
             + f'<span fgcolor="{BLUE}"> = </span>'
@@ -727,7 +732,6 @@ class Main(Scene):
             font="Cascadia Code",
             font_size=18,
         ).align_to(box, LEFT)
-
         target_address_formula = (
             MarkupText(
                 f'<span fgcolor="{BLUE}">let </span>'
@@ -740,7 +744,6 @@ class Main(Scene):
             .align_to(box, LEFT)
             .shift(DOWN * 0.4)
         )
-
         bit_n_formula = (
             MarkupText(
                 f'<span fgcolor="{BLUE}">let </span>'
@@ -753,31 +756,12 @@ class Main(Scene):
             .align_to(box, LEFT)
             .shift(DOWN * 0.4 * 2)
         )
-
-        if not IS_DEBUGGING:
-            self.play(
-                Write(alias_sram_base_formula),
-                Write(bitband_sram_base_formula),
-                Write(target_address_formula),
-                Write(bit_n_formula),
-            )
-        else:
-            self.add(
-                alias_sram_base_formula,
-                bitband_sram_base_formula,
-                target_address_formula,
-                bit_n_formula,
-            )
-
-        self.wait(1)
-
         target_formula_part_1 = MarkupText(
             f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
             + f'<span fgcolor="{BLUE}"> = </span>',
             font="Cascadia Code",
             font_size=20,
         )
-
         target_formula_part_2 = MarkupText(
             f'<span fgcolor="{GOLD}">0x22000000</span>'
             + f'<span fgcolor="{BLUE}"> + </span>'
@@ -800,25 +784,18 @@ class Main(Scene):
             font="Cascadia Code",
             font_size=20,
         )
-
         target_formula = (
             VGroup(target_formula_part_1, target_formula_part_2)
             .arrange(RIGHT, buff=0.15)
             .scale(0.75)
             .move_to(ORIGIN + DOWN * 0.4 * 6)
         )
-
-        self.play(Transform(formula_copy, target_formula))
-
-        self.wait(1)
-
         computed_formula_1_part_1 = MarkupText(
             f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
             + f'<span fgcolor="{BLUE}"> = </span>',
             font="Cascadia Code",
             font_size=20,
         )
-
         computed_formula_1_part_2 = MarkupText(
             f'<span fgcolor="{GOLD}">0x22000000</span>'
             + f'<span fgcolor="{BLUE}"> + </span>'
@@ -836,25 +813,18 @@ class Main(Scene):
             font="Cascadia Code",
             font_size=20,
         )
-
         computed_formula_1 = (
             VGroup(computed_formula_1_part_1, computed_formula_1_part_2)
             .arrange(RIGHT, buff=0.15)
             .scale(0.75)
             .move_to(ORIGIN + DOWN * 0.4 * 6)
         )
-
-        self.play(Transform(formula_copy, computed_formula_1))
-
-        self.wait(1)
-
         computed_formula_2_part_1 = MarkupText(
             f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
             + f'<span fgcolor="{BLUE}"> = </span>',
             font="Cascadia Code",
             font_size=20,
         )
-
         computed_formula_2_part_2 = MarkupText(
             f'<span fgcolor="{GOLD}">0x22000000</span>'
             + f'<span fgcolor="{BLUE}"> + </span>'
@@ -864,31 +834,23 @@ class Main(Scene):
             font="Cascadia Code",
             font_size=20,
         )
-
         computed_formula_2 = (
             VGroup(computed_formula_2_part_1, computed_formula_2_part_2)
             .arrange(RIGHT, buff=0.15)
             .scale(0.75)
             .move_to(ORIGIN + DOWN * 0.4 * 6)
         )
-
-        self.play(Transform(formula_copy, computed_formula_2))
-
-        self.wait(1)
-
         computed_formula_3_part_1 = MarkupText(
             f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
             + f'<span fgcolor="{BLUE}"> = </span>',
             font="Cascadia Code",
             font_size=20,
         )
-
         computed_formula_3_part_2 = MarkupText(
             f'<span fgcolor="{YELLOW}">0x224000B4</span>',
             font="Cascadia Code",
             font_size=20,
         )
-
         computed_formula_3 = (
             VGroup(computed_formula_3_part_1, computed_formula_3_part_2)
             .arrange(RIGHT, buff=0.15)
@@ -896,9 +858,41 @@ class Main(Scene):
             .move_to(ORIGIN + DOWN * 0.4 * 6)
         )
 
+        # - Animate Example Elements
+        self.play(formula_copy.animate.move_to(ORIGIN + DOWN * 0.4 * 6))  # type: ignore
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        if not IS_DEBUGGING:
+            self.play(Write(alias_sram_base_formula))
+            self.play(Write(bitband_sram_base_formula))
+            self.play(Write(target_address_formula))
+            self.play(Write(bit_n_formula))
+        else:
+            self.add(
+                alias_sram_base_formula,
+                bitband_sram_base_formula,
+                target_address_formula,
+                bit_n_formula,
+            )
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        self.play(Transform(formula_copy, target_formula))
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        self.play(Transform(formula_copy, computed_formula_1))
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        self.play(Transform(formula_copy, computed_formula_2))
+
+        self.wait(0.5)  # ! ---- ---- ----
+
         self.play(Transform(formula_copy, computed_formula_3))
 
-        self.wait(0.5)
+        self.wait(0.5)  # ! ---- ---- ----
 
         self.play(formula_copy.animate.scale(1.5))  # type: ignore
 
@@ -907,13 +901,29 @@ class Main(Scene):
                 formula_copy, color="WHITE", fill_opacity=0.05, buff=0.25
             )
         )
+        alias_sram_address_explanation = Paragraph(
+            "This 32-bit word controls the specific bit in the alias region,",
+            "allowing direct access to modify it.",
+            "It gives us the possibility of atomic-level access,",
+            "ensuring precise and efficient bit manipulation.",
+            font="Cascadia Code",
+            font_size=18,
+            line_spacing=0.75,
+            alignment="center",
+        ).shift(DOWN * 0.15)
+        explanation_box = SurroundingRectangle(
+            alias_sram_address_explanation,
+            color="WHITE",
+            fill_opacity=0.05,
+            buff=0.25,
+        )
 
         if not IS_DEBUGGING:
             self.play(Create(final_box))  # type: ignore
         else:
             self.add(final_box)
 
-        self.wait(1)
+        self.wait(1)  # ! ---- ---- ----
 
         self.play(
             FadeOut(
@@ -925,55 +935,43 @@ class Main(Scene):
             formula_copy.animate.align_to(box, LEFT).shift(RIGHT * 0.25),  # type: ignore
         )
 
-        self.wait(0.5)
+        self.wait(0.5)  # ! ---- ---- ----
 
-        alias_sram_address_explanation = Paragraph(
-            "This 32-bit word controls the specific bit in the alias region,",
-            "allowing direct access to modify it.",
-            "It gives us the possibility of atomic-level access,",
-            "ensuring precise and efficient bit manipulation.",
-            font="Cascadia Code",
-            font_size=18,
-            line_spacing=0.75,
-            alignment="center",
-        ).shift(DOWN * 0.15)
+        if not IS_DEBUGGING:
+            for i, line in enumerate(alias_sram_address_explanation):
+                self.play(Write(line), run_time=1)
 
-        explanation_box = SurroundingRectangle(
-            alias_sram_address_explanation,
-            color="WHITE",
-            fill_opacity=0.05,
-            buff=0.25,
-        )
+                if i != len(alias_sram_address_explanation) - 1:
+                    self.wait(0.25)  # ! ---- ---- ----
 
-        curved_arrow = CurvedArrow(
-            final_box.get_edge_center(RIGHT),
-            explanation_box.get_edge_center(DOWN)
-            + RIGHT * (explanation_box.get_width() / 4),
-            angle=PI / 3,
-            color=WHITE,
-            stroke_width=3,
-            tip_length=0.2,
+            self.play(Create(explanation_box))  # type: ignore
+        else:
+            for i, line in enumerate(alias_sram_address_explanation):
+                self.add(line)
+
+                if i != len(alias_sram_address_explanation) - 1:
+                    self.wait(0.25)  # ! ---- ---- ----
+
+            self.add(explanation_box)
+
+        curved_arrow = always_redraw(
+            lambda: CurvedArrow(
+                final_box.get_edge_center(RIGHT),
+                explanation_box.get_edge_center(DOWN)
+                + RIGHT * (explanation_box.get_width() / 4),
+                angle=PI / 3,
+                color=WHITE,
+                stroke_width=3,
+                tip_length=0.2,
+            )
         )
 
         if not IS_DEBUGGING:
-            self.play(Create(curved_arrow))
+            self.play(Create(curved_arrow))  # type: ignore
         else:
             self.add(curved_arrow)
 
-        for line in alias_sram_address_explanation:
-            if not IS_DEBUGGING:
-                self.play(Write(line), run_time=1)
-            else:
-                self.add(line)
-
-            self.wait(0.25)
-
-        if not IS_DEBUGGING:
-            self.play(Create(explanation_box))  # type: ignore
-        else:
-            self.add(explanation_box)
-
-        self.wait(2)
+        self.wait(2)  # ! ---- ---- ----
 
         self.play(
             FadeOut(
@@ -987,14 +985,16 @@ class Main(Scene):
             )
         )
 
-        self.wait(1)
+        self.wait(0.5)  # ! ---- ---- ----
 
-        # * Demonstration:
-
+        # & Demonstration                                                        :
         topics[6].set_color(WHITE)
         topics[8].set_color(YELLOW)
-        self.wait(0.5)
 
-        # ! ---- ---- ---- ---- ----
+        self.wait(0.5)  # ! ---- ---- ----
+
+        #
+
+        # & Conclusion                                                           :
 
         self.wait(2)
