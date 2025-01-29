@@ -884,7 +884,7 @@ class Main(Scene):
         )
 
         computed_formula_3_part_2 = MarkupText(
-            f'<span fgcolor="{GREEN}">0x224000B4</span>',
+            f'<span fgcolor="{YELLOW}">0x224000B4</span>',
             font="Cascadia Code",
             font_size=20,
         )
@@ -921,24 +921,79 @@ class Main(Scene):
                 bitband_sram_base_formula,
                 target_address_formula,
                 bit_n_formula,
-            )
+            ),
+            formula_copy.animate.align_to(box, LEFT).shift(RIGHT * 0.25),  # type: ignore
         )
-
-        self.play(formula_copy.animate.align_to(box, LEFT).shift(RIGHT * 0.25))  # type: ignore
 
         self.wait(0.5)
 
+        alias_sram_address_explanation = Paragraph(
+            "This 32-bit word controls the specific bit in the alias region,",
+            "allowing direct access to modify it.",
+            "It gives us the possibility of atomic-level access,",
+            "ensuring precise and efficient bit manipulation.",
+            font="Cascadia Code",
+            font_size=18,
+            line_spacing=0.75,
+            alignment="center",
+        ).shift(DOWN * 0.15)
+
+        explanation_box = SurroundingRectangle(
+            alias_sram_address_explanation,
+            color="WHITE",
+            fill_opacity=0.05,
+            buff=0.25,
+        )
+
         curved_arrow = CurvedArrow(
             final_box.get_edge_center(RIGHT),
-            final_box.get_edge_center(RIGHT) + RIGHT * 2 + UP * 1.5,
-            angle=PI / 2,
+            explanation_box.get_edge_center(DOWN)
+            + RIGHT * (explanation_box.get_width() / 4),
+            angle=PI / 3,
             color=WHITE,
             stroke_width=3,
             tip_length=0.2,
         )
 
-        # self.play(Create(curved_arrow))
-        self.add(curved_arrow)
+        if not IS_DEBUGGING:
+            self.play(Create(curved_arrow))
+        else:
+            self.add(curved_arrow)
+
+        for line in alias_sram_address_explanation:
+            if not IS_DEBUGGING:
+                self.play(Write(line), run_time=1)
+            else:
+                self.add(line)
+
+            self.wait(0.25)
+
+        if not IS_DEBUGGING:
+            self.play(Create(explanation_box))  # type: ignore
+        else:
+            self.add(explanation_box)
+
+        self.wait(2)
+
+        self.play(
+            FadeOut(
+                formula_copy,
+                formula,
+                final_box,
+                box,
+                curved_arrow,
+                alias_sram_address_explanation,
+                explanation_box,
+            )
+        )
+
+        self.wait(1)
+
+        # * Demonstration:
+
+        topics[6].set_color(WHITE)
+        topics[8].set_color(YELLOW)
+        self.wait(0.5)
 
         # ! ---- ---- ---- ---- ----
 
