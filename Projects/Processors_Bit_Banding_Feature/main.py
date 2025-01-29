@@ -699,12 +699,246 @@ class Main(Scene):
 
         # * Example:
 
-        topics[4].set_color(WHITE)
-        topics[6].set_color(YELLOW)
+        topics[4].set_color(WHITE)  # type: ignore
+        topics[6].set_color(YELLOW)  # type: ignore
         self.wait(0.5)
 
         formula_copy = formula.copy()
-        self.play(formula_copy.animate.move_to(ORIGIN))  # type: ignore
+        self.play(formula_copy.animate.move_to(ORIGIN + DOWN * 0.4 * 6))  # type: ignore
+
+        self.wait(1)
+
+        alias_sram_base_formula = (
+            MarkupText(
+                f'<span fgcolor="{GOLD}">ALIAS_SRAM_BASE</span>'
+                + f'<span fgcolor="{BLUE}">   = </span>'
+                + f'<span fgcolor="{GOLD}">0x22000000</span>',
+                font="Cascadia Code",
+                font_size=18,
+            )
+            .align_to(box, LEFT)
+            .shift(UP * 0.4)
+        )
+
+        bitband_sram_base_formula = MarkupText(
+            f'<span fgcolor="{GOLD}">BITBAND_SRAM_BASE</span>'
+            + f'<span fgcolor="{BLUE}"> = </span>'
+            + f'<span fgcolor="{GOLD}">0x20000000</span>',
+            font="Cascadia Code",
+            font_size=18,
+        ).align_to(box, LEFT)
+
+        target_address_formula = (
+            MarkupText(
+                f'<span fgcolor="{BLUE}">let </span>'
+                + f'<span fgcolor="{GREEN}">target</span>'
+                + f'<span fgcolor="{BLUE}">        = </span>'
+                + f'<span fgcolor="{GREEN}">0x20020014</span>',
+                font="Cascadia Code",
+                font_size=18,
+            )
+            .align_to(box, LEFT)
+            .shift(DOWN * 0.4)
+        )
+
+        bit_n_formula = (
+            MarkupText(
+                f'<span fgcolor="{BLUE}">let </span>'
+                + f'<span fgcolor="{GREEN}">bit_n</span>'
+                + f'<span fgcolor="{BLUE}">         = </span>'
+                + f'<span fgcolor="{GREEN}">0x00000005</span>',
+                font="Cascadia Code",
+                font_size=18,
+            )
+            .align_to(box, LEFT)
+            .shift(DOWN * 0.4 * 2)
+        )
+
+        if not IS_DEBUGGING:
+            self.play(
+                Write(alias_sram_base_formula),
+                Write(bitband_sram_base_formula),
+                Write(target_address_formula),
+                Write(bit_n_formula),
+            )
+        else:
+            self.add(
+                alias_sram_base_formula,
+                bitband_sram_base_formula,
+                target_address_formula,
+                bit_n_formula,
+            )
+
+        self.wait(1)
+
+        target_formula_part_1 = MarkupText(
+            f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
+            + f'<span fgcolor="{BLUE}"> = </span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        target_formula_part_2 = MarkupText(
+            f'<span fgcolor="{GOLD}">0x22000000</span>'
+            + f'<span fgcolor="{BLUE}"> + </span>'
+            + f'<span fgcolor="{YELLOW}">(</span>'
+            + f'<span fgcolor="{ORANGE}">(</span>'
+            + f'<span fgcolor="{PURPLE}">(uint32_t)</span>'
+            + f'<span fgcolor="{GREEN}">0x20020014</span>'
+            + f'<span fgcolor="{BLUE}"> - </span>'
+            + f'<span fgcolor="{GOLD}">0x20000000</span>'
+            + f'<span fgcolor="{ORANGE}">)</span>'
+            + f'<span fgcolor="{BLUE}"> x </span>'
+            + f'<span fgcolor="{RED}">32</span>'
+            + f'<span fgcolor="{YELLOW}">)</span>'
+            + f'<span fgcolor="{BLUE}"> + </span>'
+            + f'<span fgcolor="{PURPLE}">(</span>'
+            + f'<span fgcolor="{GREEN}">0x00000005</span>'
+            + f'<span fgcolor="{BLUE}"> x </span>'
+            + f'<span fgcolor="{RED}">4</span>'
+            + f'<span fgcolor="{PURPLE}">)</span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        target_formula = (
+            VGroup(target_formula_part_1, target_formula_part_2)
+            .arrange(RIGHT, buff=0.15)
+            .scale(0.75)
+            .move_to(ORIGIN + DOWN * 0.4 * 6)
+        )
+
+        self.play(Transform(formula_copy, target_formula))
+
+        self.wait(1)
+
+        computed_formula_1_part_1 = MarkupText(
+            f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
+            + f'<span fgcolor="{BLUE}"> = </span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        computed_formula_1_part_2 = MarkupText(
+            f'<span fgcolor="{GOLD}">0x22000000</span>'
+            + f'<span fgcolor="{BLUE}"> + </span>'
+            + f'<span fgcolor="{YELLOW}">(</span>'
+            + f'<span fgcolor="{GREEN}">0x00020014</span>'
+            + f'<span fgcolor="{BLUE}"> x </span>'
+            + f'<span fgcolor="{RED}">32</span>'
+            + f'<span fgcolor="{YELLOW}">)</span>'
+            + f'<span fgcolor="{BLUE}"> + </span>'
+            + f'<span fgcolor="{PURPLE}">(</span>'
+            + f'<span fgcolor="{GREEN}">0x00000005</span>'
+            + f'<span fgcolor="{BLUE}"> x </span>'
+            + f'<span fgcolor="{RED}">4</span>'
+            + f'<span fgcolor="{PURPLE}">)</span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        computed_formula_1 = (
+            VGroup(computed_formula_1_part_1, computed_formula_1_part_2)
+            .arrange(RIGHT, buff=0.15)
+            .scale(0.75)
+            .move_to(ORIGIN + DOWN * 0.4 * 6)
+        )
+
+        self.play(Transform(formula_copy, computed_formula_1))
+
+        self.wait(1)
+
+        computed_formula_2_part_1 = MarkupText(
+            f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
+            + f'<span fgcolor="{BLUE}"> = </span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        computed_formula_2_part_2 = MarkupText(
+            f'<span fgcolor="{GOLD}">0x22000000</span>'
+            + f'<span fgcolor="{BLUE}"> + </span>'
+            + f'<span fgcolor="{GREEN}">0x004000A0</span>'
+            + f'<span fgcolor="{BLUE}"> + </span>'
+            + f'<span fgcolor="{GREEN}">0x00000014</span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        computed_formula_2 = (
+            VGroup(computed_formula_2_part_1, computed_formula_2_part_2)
+            .arrange(RIGHT, buff=0.15)
+            .scale(0.75)
+            .move_to(ORIGIN + DOWN * 0.4 * 6)
+        )
+
+        self.play(Transform(formula_copy, computed_formula_2))
+
+        self.wait(1)
+
+        computed_formula_3_part_1 = MarkupText(
+            f'<span fgcolor="{GREEN}">ALIAS_SRAM_ADDRESS</span>'
+            + f'<span fgcolor="{BLUE}"> = </span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        computed_formula_3_part_2 = MarkupText(
+            f'<span fgcolor="{GREEN}">0x224000B4</span>',
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        computed_formula_3 = (
+            VGroup(computed_formula_3_part_1, computed_formula_3_part_2)
+            .arrange(RIGHT, buff=0.15)
+            .scale(0.75)
+            .move_to(ORIGIN + DOWN * 0.4 * 6)
+        )
+
+        self.play(Transform(formula_copy, computed_formula_3))
+
+        self.wait(0.5)
+
+        self.play(formula_copy.animate.scale(1.5))  # type: ignore
+
+        final_box = always_redraw(
+            lambda: SurroundingRectangle(
+                formula_copy, color="WHITE", fill_opacity=0.05, buff=0.25
+            )
+        )
+
+        if not IS_DEBUGGING:
+            self.play(Create(final_box))  # type: ignore
+        else:
+            self.add(final_box)
+
+        self.wait(1)
+
+        self.play(
+            FadeOut(
+                alias_sram_base_formula,
+                bitband_sram_base_formula,
+                target_address_formula,
+                bit_n_formula,
+            )
+        )
+
+        self.play(formula_copy.animate.align_to(box, LEFT).shift(RIGHT * 0.25))  # type: ignore
+
+        self.wait(0.5)
+
+        curved_arrow = CurvedArrow(
+            final_box.get_edge_center(RIGHT),
+            final_box.get_edge_center(RIGHT) + RIGHT * 2 + UP * 1.5,
+            angle=PI / 2,
+            color=WHITE,
+            stroke_width=3,
+            tip_length=0.2,
+        )
+
+        # self.play(Create(curved_arrow))
+        self.add(curved_arrow)
 
         # ! ---- ---- ---- ---- ----
 
