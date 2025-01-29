@@ -5,6 +5,7 @@ IS_DEBUGGING = False
 
 class Main(Scene):
     def construct(self):
+        """
         self.wait(0.25)  # ! ---- ---- ----
 
         # + Title Element
@@ -689,7 +690,7 @@ class Main(Scene):
         formula.move_to(ORIGIN)
         box = always_redraw(
             lambda: SurroundingRectangle(
-                formula, color="WHITE", fill_opacity=0.05, buff=0.25
+                formula, color=WHITE, fill_opacity=0.05, buff=0.25
             )
         )
 
@@ -992,8 +993,129 @@ class Main(Scene):
         topics[8].set_color(YELLOW)
 
         self.wait(0.5)  # ! ---- ---- ----
+        """
 
-        #
+        # + Demonstration Elements
+        c_code = MarkupText(
+            f"<span fgcolor='{GREEN_A}'>#</span><span fgcolor='{PURPLE}'>include</span> <span fgcolor='{GREEN_A}'>&lt;</span><span fgcolor='{GREEN}'>stdint.h</span><span fgcolor='{GREEN_A}'>&gt;</span>\n"
+            + f"\n"
+            + f"<span fgcolor='{PURPLE}'>void</span> <span fgcolor='{BLUE}'>main</span><span fgcolor='{YELLOW}'>(</span><span fgcolor='{PURPLE}'>void</span><span fgcolor='{YELLOW}'>) {{</span>\n"
+            + f"    <span fgcolor='{ORANGE}'>uint8_t</span> <span fgcolor='{WHITE}'>temp =</span> <span fgcolor='{RED}'>2;</span>\n"
+            + f"\n"
+            + f"    <span fgcolor='{WHITE}'>temp |=</span> <span fgcolor='{PURPLE}'>0x</span><span fgcolor='{RED}'>4;</span>\n"
+            + f"    <span fgcolor='{WHITE}'>temp &amp;= ~</span><span fgcolor='{PURPLE}'>0x</span><span fgcolor='{RED}'>4;</span>\n"
+            + f"<span fgcolor='{YELLOW}'>}}</span>\n"
+            + f"\n",
+            font="Cascadia Code",
+            font_size=20,
+        )
+        c_code_box = always_redraw(
+            lambda: SurroundingRectangle(
+                c_code, color=WHITE, fill_opacity=0.05, buff=0.25
+            )
+        )
+        c_code_title = always_redraw(
+            lambda: Text(
+                "Bit Masking", color=WHITE, font="Cascadia Code", font_size=18
+            ).next_to(c_code_box, UP)
+        )
+        target_c_code = MarkupText(
+            f"<span fgcolor='{WHITE}'>temp |=</span> <span fgcolor='{PURPLE}'>0x</span><span fgcolor='{RED}'>4;</span>",
+            font="Cascadia Code",
+            font_size=20,
+        )
+
+        # - Animate Demonstration Elements
+        if not IS_DEBUGGING:
+            self.play(Write(c_code))
+            self.play(Create(c_code_box))  # type: ignore
+            self.play(Write(c_code_title))  # type: ignore
+        else:
+            self.add(c_code, c_code_box, c_code_title)
+
+        self.play(Transform(c_code, target_c_code))
+
+        self.play(c_code.animate.shift(LEFT * 4.35))  # type: ignore
+
+        arrow = Arrow(
+            start=c_code_box.get_edge_center(RIGHT) + LEFT * 0.25,
+            end=c_code_box.get_edge_center(RIGHT) + RIGHT * 6,
+            color=WHITE,
+            stroke_width=3,
+            tip_length=0.2,
+        )
+
+        if not IS_DEBUGGING:
+            self.play(Create(arrow))
+        else:
+            self.add(arrow)
+
+        assembly_code = MarkupText(
+            f"<span fgcolor='{GREEN}'>ldrb r3,</span> <span fgcolor='{YELLOW}'>[</span><span fgcolor='{WHITE}'>r7,</span> <span fgcolor='{BLUE}'>#7</span><span fgcolor='{YELLOW}'>]</span>\n"
+            + f"<span fgcolor='{GREEN}'>orr  r3, r3,</span> <span fgcolor='{BLUE}'>#4</span>\n"
+            + f"<span fgcolor='{GREEN}'>strb r3,</span> <span fgcolor='{YELLOW}'>[</span><span fgcolor='{WHITE}'>r7,</span> <span fgcolor='{BLUE}'>#7</span><span fgcolor='{YELLOW}'>]</span>\n",
+            font="Cascadia Code",
+            font_size=20,
+        ).next_to(arrow, RIGHT, buff=0.25)
+        assembly_code_box = SurroundingRectangle(
+            assembly_code, color=WHITE, fill_opacity=0.05, buff=0.25
+        )
+        assembly_code_title = Text(
+            "Assembly Code", color=WHITE, font="Cascadia Code", font_size=18
+        ).next_to(assembly_code_box, UP)
+
+        if not IS_DEBUGGING:
+            self.play(Write(assembly_code))
+            self.play(Create(assembly_code_box))  # type: ignore
+            self.play(Write(assembly_code_title))  # type: ignore
+        else:
+            self.add(assembly_code, assembly_code_box, assembly_code_title)
+
+        compiler_note_up = Text(
+            "Using GCC", font="Cascadia Code", font_size=18, color=PURPLE
+        ).next_to(arrow, UP, buff=0.05)
+        compiler_note_down = Text(
+            "(arm-none-eabi-gcc)", font="Cascadia Code", font_size=18, color=ORANGE
+        ).next_to(arrow, DOWN, buff=0.05)
+
+        if not IS_DEBUGGING:
+            self.play(Write(compiler_note_up))
+            self.play(Write(compiler_note_down))
+        else:
+            self.add(compiler_note_up, compiler_note_down)
+
+        code_note_arrow = Arrow(
+            c_code_box.get_edge_center(DOWN) + UP * 0.25,
+            c_code_box.get_edge_center(DOWN) + DOWN * 1,
+            color=WHITE,
+            stroke_width=3,
+            tip_length=0.2,
+        )
+
+        if not IS_DEBUGGING:
+            self.play(Create(code_note_arrow))
+        else:
+            self.add(code_note_arrow)
+
+        code_note = (
+            Text(
+                "This simple operation requires 3 instructions to complete.",
+                font="Cascadia Code",
+                font_size=18,
+            )
+            .next_to(code_note_arrow, DR, buff=0.25)
+            .align_to(c_code_box, LEFT)
+            .shift(RIGHT * 0.25)
+        )
+        code_note_box = SurroundingRectangle(
+            code_note, color=WHITE, fill_opacity=0.05, buff=0.25
+        )
+
+        if not IS_DEBUGGING:
+            self.play(Write(code_note))
+            self.play(Create(code_note_box))
+        else:
+            self.add(code_note, code_note_box)
 
         # & Conclusion                                                           :
 
