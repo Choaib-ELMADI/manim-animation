@@ -5,7 +5,6 @@ IS_DEBUGGING = False
 
 class Main(Scene):
     def construct(self):
-        """
         self.wait(0.25)  # ! ---- ---- ----
 
         # + Title Element
@@ -1136,11 +1135,9 @@ class Main(Scene):
 
         self.wait(0.5)  # ! ---- ---- ----
 
-        """
-
         # & Conclusion                                                           :
-        # topics[8].set_color(WHITE)
-        # topics[10].set_color(YELLOW)
+        topics[8].set_color(WHITE)
+        topics[10].set_color(YELLOW)
 
         self.wait(0.5)  # ! ---- ---- ----
 
