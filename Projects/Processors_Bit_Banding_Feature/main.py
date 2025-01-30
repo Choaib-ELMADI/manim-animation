@@ -56,7 +56,7 @@ class Main(Scene):
             self.add(topics)
 
         self.wait(0.5)  # ! ---- ---- ----
-        """
+
         # & Definition                                                          :
         topics[0].set_color(YELLOW)
 
@@ -279,7 +279,7 @@ class Main(Scene):
             if i != len(memory_areas) - 1:
                 self.wait(0.25)  # ! ---- ---- ----
 
-        self.wait(1)  # ! ---- ---- ----
+        self.wait(2)  # ! ---- ---- ----
 
         self.play(FadeOut(*memory_areas_sizes))  # type: ignore
 
@@ -700,7 +700,7 @@ class Main(Scene):
         else:
             self.add(formula, box)
 
-        self.wait(1)  # ! ---- ---- ----
+        self.wait(2)  # ! ---- ---- ----
 
         self.play(formula.animate.scale(0.75).arrange(RIGHT, buff=0.15).next_to(topics[5], DOWN * 2.25))  # type: ignore
 
@@ -877,21 +877,13 @@ class Main(Scene):
             )
 
         self.wait(0.5)  # ! ---- ---- ----
-
         self.play(Transform(formula_copy, target_formula))
-
         self.wait(0.5)  # ! ---- ---- ----
-
         self.play(Transform(formula_copy, computed_formula_1))
-
         self.wait(0.5)  # ! ---- ---- ----
-
         self.play(Transform(formula_copy, computed_formula_2))
-
         self.wait(0.5)  # ! ---- ---- ----
-
         self.play(Transform(formula_copy, computed_formula_3))
-
         self.wait(0.5)  # ! ---- ---- ----
 
         self.play(formula_copy.animate.scale(1.5))  # type: ignore
@@ -937,6 +929,21 @@ class Main(Scene):
 
         self.wait(0.5)  # ! ---- ---- ----
 
+        curved_arrow = CurvedArrow(
+            final_box.get_edge_center(RIGHT),
+            explanation_box.get_edge_center(DOWN)
+            + RIGHT * (explanation_box.get_width() / 4),
+            angle=PI / 3,
+            color=WHITE,
+            stroke_width=3,
+            tip_length=0.2,
+        )
+
+        if not IS_DEBUGGING:
+            self.play(Create(curved_arrow))  # type: ignore
+        else:
+            self.add(curved_arrow)
+
         if not IS_DEBUGGING:
             for i, line in enumerate(alias_sram_address_explanation):
                 self.play(Write(line), run_time=1)
@@ -953,23 +960,6 @@ class Main(Scene):
                     self.wait(0.25)  # ! ---- ---- ----
 
             self.add(explanation_box)
-
-        curved_arrow = always_redraw(
-            lambda: CurvedArrow(
-                final_box.get_edge_center(RIGHT),
-                explanation_box.get_edge_center(DOWN)
-                + RIGHT * (explanation_box.get_width() / 4),
-                angle=PI / 3,
-                color=WHITE,
-                stroke_width=3,
-                tip_length=0.2,
-            )
-        )
-
-        if not IS_DEBUGGING:
-            self.play(Create(curved_arrow))  # type: ignore
-        else:
-            self.add(curved_arrow)
 
         self.wait(2)  # ! ---- ---- ----
 
@@ -992,7 +982,6 @@ class Main(Scene):
         topics[8].set_color(YELLOW)
 
         self.wait(0.5)  # ! ---- ---- ----
-        """
 
         # + Demonstration Elements
         c_code = MarkupText(
@@ -1032,7 +1021,7 @@ class Main(Scene):
         else:
             self.add(c_code, c_code_box, c_code_title)
 
-        self.wait(1)  # ! ---- ---- ----
+        self.wait(2)  # ! ---- ---- ----
 
         self.play(Transform(c_code, target_c_code))
 
@@ -1084,7 +1073,7 @@ class Main(Scene):
         else:
             self.add(compiler_note_up, compiler_note_down)
 
-        self.wait(1)  # ! ---- ---- ----
+        self.wait(2)  # ! ---- ---- ----
 
         code_note_arrow = Arrow(
             c_code_box.get_edge_center(DOWN) + UP * 0.25,
