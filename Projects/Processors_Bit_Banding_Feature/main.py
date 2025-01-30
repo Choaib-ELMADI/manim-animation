@@ -5,6 +5,7 @@ IS_DEBUGGING = False
 
 class Main(Scene):
     def construct(self):
+        """
         self.wait(0.25)  # ! ---- ---- ----
 
         # + Title Element
@@ -1135,12 +1136,76 @@ class Main(Scene):
 
         self.wait(0.5)  # ! ---- ---- ----
 
+        """
+
         # & Conclusion                                                           :
-        topics[8].set_color(WHITE)
-        topics[10].set_color(YELLOW)
+        # topics[8].set_color(WHITE)
+        # topics[10].set_color(YELLOW)
 
         self.wait(0.5)  # ! ---- ---- ----
 
-        #
+        conclusion = MarkupText(
+            "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+            + f"With <span fgcolor='{YELLOW}'>bit banding</span>,\n"
+            + "&#160;&#160;&#160;&#160;&#160;&#160;"
+            + f"operations that <span fgcolor='{RED}'>once required multiple instructions</span>\n"
+            + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+            + f"can now be done in <span fgcolor='{BLUE}'>a single write operation</span>,\n"
+            + f"making code <span fgcolor='{GREEN}'>cleaner</span>, more <span fgcolor='{GREEN}'>efficient</span>, and sometimes even <span fgcolor='{GREEN}'>faster</span>.",
+            font="Cascadia Code",
+            font_size=18,
+        )
+        conclusion_box = SurroundingRectangle(
+            conclusion, color=WHITE, fill_opacity=0.05, buff=0.25
+        )
 
-        self.wait(2)
+        final_note = MarkupText(
+            f"&#160;This video is part of my learning journey with <span fgcolor='{YELLOW}'><b><i>STM32</i></b></span>,\n"
+            + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+            + "as I explore concepts from the book:\n"
+            + f"&#160;<span fgcolor='{BLUE}'><b><i>Mastering STM32 - Second Edition</i></b></span> by "
+            + f"<span fgcolor='{RED}'><b><i>Carmine Noviello</i></b></span>.\n\n"
+            + f"More <span fgcolor='{YELLOW}'><b><i>STM32</i></b></span> concepts will be explained in future videos!",
+            font="Cascadia Code",
+            font_size=18,
+        )
+        final_note_shadow = MarkupText(
+            f"&#160;This video is part of my learning journey with <b><i>STM32</i></b>,\n"
+            + "&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;"
+            + "as I explore concepts from the book:\n"
+            + f"&#160;<b><i>Mastering STM32 - Second Edition</i></b> by "
+            + f"<b><i>Carmine Noviello</i></b>.\n\n"
+            + f"More <b><i>STM32</i></b> concepts will be explained in future videos!",
+            font="Cascadia Code",
+            font_size=18,
+            color=BLACK,
+            fill_opacity=0.5,
+        )
+        final_note_shadow.shift(DOWN * 0.02 + RIGHT * 0.02)
+        final_note_shadow.set_z_index(final_note.z_index - 1)
+
+        stm32_logo = SVGMobject("C:\\Manim\\Assets\\stm32.svg").move_to(
+            final_note.get_corner(DR)
+        )
+        stm32_logo.set_z_index(final_note.z_index - 2)
+
+        if not IS_DEBUGGING:
+            self.play(Write(conclusion))
+            self.play(Create(conclusion_box))
+        else:
+            self.add(conclusion, conclusion_box)
+
+        self.wait(2)  # ! ---- ---- ----
+
+        self.play(FadeOut(conclusion, conclusion_box))
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        if not IS_DEBUGGING:
+            self.play(Write(final_note))
+            self.add(final_note_shadow)
+            self.play(GrowFromCenter(stm32_logo))
+        else:
+            self.add(final_note, final_note_shadow, stm32_logo)
+
+        self.wait(3)  # ! ---- ---- ----
