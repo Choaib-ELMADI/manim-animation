@@ -5,7 +5,6 @@ IS_DEBUGGING = False
 
 class Main(Scene):
     def construct(self):
-        """
         self.wait(0.25)  # ! ---- ---- ----
 
         # + Title Element
@@ -57,7 +56,7 @@ class Main(Scene):
             self.add(topics)
 
         self.wait(0.5)  # ! ---- ---- ----
-
+        """
         # & Definition                                                          :
         topics[0].set_color(YELLOW)
 
@@ -1033,6 +1032,8 @@ class Main(Scene):
         else:
             self.add(c_code, c_code_box, c_code_title)
 
+        self.wait(1)  # ! ---- ---- ----
+
         self.play(Transform(c_code, target_c_code))
 
         self.play(c_code.animate.shift(LEFT * 4.35))  # type: ignore
@@ -1079,10 +1080,11 @@ class Main(Scene):
         ).next_to(arrow, DOWN, buff=0.05)
 
         if not IS_DEBUGGING:
-            self.play(Write(compiler_note_up))
-            self.play(Write(compiler_note_down))
+            self.play(Write(compiler_note_up), Write(compiler_note_down))
         else:
             self.add(compiler_note_up, compiler_note_down)
+
+        self.wait(1)  # ! ---- ---- ----
 
         code_note_arrow = Arrow(
             c_code_box.get_edge_center(DOWN) + UP * 0.25,
@@ -1098,8 +1100,11 @@ class Main(Scene):
             self.add(code_note_arrow)
 
         code_note = (
-            Text(
-                "This simple operation requires 3 instructions to complete.",
+            MarkupText(
+                f"This <span fgcolor='{BLUE}'>simple operation</span> requires "
+                + f"<span fgcolor='{RED}'>3 instructions</span> to complete,\n"
+                + f"wasting <span fgcolor='{YELLOW}'>clock cycles</span> and risking "
+                + f"<span fgcolor='{YELLOW}'>data changes</span> before completion.",
                 font="Cascadia Code",
                 font_size=18,
             )
@@ -1110,6 +1115,9 @@ class Main(Scene):
         code_note_box = SurroundingRectangle(
             code_note, color=WHITE, fill_opacity=0.05, buff=0.25
         )
+        code_note_box.stretch_to_fit_width(
+            assembly_code_box.get_right()[0] - code_note_box.get_left()[0]
+        ).shift(RIGHT * 0.475)
 
         if not IS_DEBUGGING:
             self.play(Write(code_note))
@@ -1117,6 +1125,33 @@ class Main(Scene):
         else:
             self.add(code_note, code_note_box)
 
+        self.wait(2)  # ! ---- ---- ----
+
+        self.play(
+            FadeOut(
+                c_code,
+                c_code_box,
+                c_code_title,
+                assembly_code,
+                assembly_code_box,
+                assembly_code_title,
+                arrow,
+                compiler_note_up,
+                compiler_note_down,
+                code_note_arrow,
+                code_note,
+                code_note_box,
+            )
+        )  # type: ignore
+
+        self.wait(0.5)  # ! ---- ---- ----
+
         # & Conclusion                                                           :
+        topics[8].set_color(WHITE)
+        topics[10].set_color(YELLOW)
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        #
 
         self.wait(2)
