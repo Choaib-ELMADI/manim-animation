@@ -1,9 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Manim/Projects/Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/3977891868_497767063_1970402443.mp4'
-file 'file:C:/Manim/Projects/Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_745637884_1071484169.mp4'
-file 'file:C:/Manim/Projects/Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_745637884_727239785.mp4'
-file 'file:C:/Manim/Projects/Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_745637884_4004411027.mp4'
-file 'file:C:/Manim/Projects/Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_745637884_4217230180.mp4'
-file 'file:C:/Manim/Projects/Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_745637884_2718691004.mp4'
-file 'file:C:/Manim/Projects/Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_745637884_710759505.mp4'
-file 'file:C:/Manim/Projects/Processors_Bit_Banding_Feature/media/videos/main/1080p60/partial_movie_files/Main/2852726489_745637884_3864704535.mp4'
