@@ -4,6 +4,19 @@ IS_DEBUGGING = False
 
 
 class Main(Scene):
+    def waiting_to_read(self, wait_counter=8, wait_delay=0.6, note_position=0.4):
+        waiting_note = Text(
+            "- Pause to read -", font="Cascadia Code", font_size=16, color=ORANGE
+        ).move_to(
+            DOWN * (self.camera.frame_height / 2) + UP * note_position  # type: ignore
+        )
+
+        for _ in range(int(wait_counter / 2)):
+            self.add(waiting_note)
+            self.wait(wait_delay)
+            self.remove(waiting_note)
+            self.wait(wait_delay)
+
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
 
@@ -95,7 +108,8 @@ class Main(Scene):
         else:
             self.add(underline)
 
-        self.wait(2)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
 
         self.play(FadeOut(bit_banding_def, underline))  # type: ignore
 
@@ -279,7 +293,8 @@ class Main(Scene):
             if i != len(memory_areas) - 1:
                 self.wait(0.25)  # ! ---- ---- ----
 
-        self.wait(2)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
 
         self.play(FadeOut(*memory_areas_sizes))  # type: ignore
 
@@ -613,7 +628,8 @@ class Main(Scene):
                 bitband_peri_region_3_name,
             )
 
-        self.wait(2)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
 
         self.play(
             FadeOut(
@@ -700,7 +716,8 @@ class Main(Scene):
         else:
             self.add(formula, box)
 
-        self.wait(2)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
 
         self.play(formula.animate.scale(0.75).arrange(RIGHT, buff=0.15).next_to(topics[5], DOWN * 2.25))  # type: ignore
 
@@ -899,7 +916,7 @@ class Main(Scene):
             "It gives us the possibility of atomic-level access,",
             "ensuring precise and efficient bit manipulation.",
             font="Cascadia Code",
-            font_size=18,
+            font_size=21,
             line_spacing=0.75,
             alignment="center",
         ).shift(DOWN * 0.15)
@@ -961,7 +978,8 @@ class Main(Scene):
 
             self.add(explanation_box)
 
-        self.wait(2)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
 
         self.play(
             FadeOut(
@@ -1021,7 +1039,8 @@ class Main(Scene):
         else:
             self.add(c_code, c_code_box, c_code_title)
 
-        self.wait(2)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
 
         self.play(Transform(c_code, target_c_code))
 
@@ -1073,7 +1092,8 @@ class Main(Scene):
         else:
             self.add(compiler_note_up, compiler_note_down)
 
-        self.wait(2)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
 
         code_note_arrow = Arrow(
             c_code_box.get_edge_center(DOWN) + UP * 0.25,
@@ -1095,7 +1115,7 @@ class Main(Scene):
                 + f"wasting <span fgcolor='{YELLOW}'>clock cycles</span> and risking "
                 + f"<span fgcolor='{YELLOW}'>data changes</span> before completion.",
                 font="Cascadia Code",
-                font_size=18,
+                font_size=21,
             )
             .next_to(code_note_arrow, DR, buff=0.25)
             .align_to(c_code_box, LEFT)
@@ -1114,7 +1134,8 @@ class Main(Scene):
         else:
             self.add(code_note, code_note_box)
 
-        self.wait(2)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
 
         self.play(
             FadeOut(
@@ -1150,7 +1171,7 @@ class Main(Scene):
             + f"can now be done in <span fgcolor='{BLUE}'>a single write operation</span>,\n"
             + f"making code <span fgcolor='{GREEN}'>cleaner</span>, more <span fgcolor='{GREEN}'>efficient</span>, and sometimes even <span fgcolor='{GREEN}'>faster</span>.",
             font="Cascadia Code",
-            font_size=18,
+            font_size=21,
         )
         conclusion_box = SurroundingRectangle(
             conclusion, color=WHITE, fill_opacity=0.05, buff=0.25
@@ -1164,7 +1185,7 @@ class Main(Scene):
             + f"<span fgcolor='{RED}'><b><i>Carmine Noviello</i></b></span>.\n\n"
             + f"More <span fgcolor='{YELLOW}'><b><i>STM32</i></b></span> concepts will be explained in future videos!",
             font="Cascadia Code",
-            font_size=18,
+            font_size=21,
         )
         final_note_shadow = MarkupText(
             f"&#160;This video is part of my learning journey with <b><i>STM32</i></b>,\n"
@@ -1174,7 +1195,7 @@ class Main(Scene):
             + f"<b><i>Carmine Noviello</i></b>.\n\n"
             + f"More <b><i>STM32</i></b> concepts will be explained in future videos!",
             font="Cascadia Code",
-            font_size=18,
+            font_size=21,
             color=BLACK,
             fill_opacity=0.5,
         )
@@ -1192,7 +1213,8 @@ class Main(Scene):
         else:
             self.add(conclusion, conclusion_box)
 
-        self.wait(2)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
 
         self.play(FadeOut(conclusion, conclusion_box))
 
@@ -1205,4 +1227,5 @@ class Main(Scene):
         else:
             self.add(final_note, final_note_shadow, stm32_logo)
 
-        self.wait(3)  # ! ---- ---- ----
+        # self.wait(4)  # ! ---- ---- ----
+        self.waiting_to_read()
