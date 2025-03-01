@@ -7,5 +7,5 @@ file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/main/1080p60/parti
 file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/main/1080p60/partial_movie_files/Main/2852726489_4207674275_753683477.mp4'
 file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/main/1080p60/partial_movie_files/Main/2852726489_2822572267_2021491568.mp4'
 file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/main/1080p60/partial_movie_files/Main/2852726489_79640510_344337776.mp4'
-file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/main/1080p60/partial_movie_files/Main/2852726489_2560362965_1849046819.mp4'
-file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/main/1080p60/partial_movie_files/Main/2852726489_79640510_1653418660.mp4'
+file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/main/1080p60/partial_movie_files/Main/2852726489_3203825978_2870709292.mp4'
+file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/main/1080p60/partial_movie_files/Main/2852726489_79640510_910539214.mp4'

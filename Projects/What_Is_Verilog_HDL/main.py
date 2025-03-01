@@ -55,10 +55,72 @@ class Main(Scene):
 
         return hdl_definition
 
-    def digital_circuit_example(self):
-        pass
+    def create_and_gate(self, x=0.5):
+        and_top_horiz_line = Line(start=[-x, x, 0], end=[x, x, 0])  # type: ignore
+        and_bot_horiz_line = Line(start=[-x, -x, 0], end=[x, -x, 0])  # type: ignore
+        and_lft_verti_line = Line(
+            and_top_horiz_line.get_start(), and_bot_horiz_line.get_start()
+        )
+        and_rgt_curve_line = ArcBetweenPoints(
+            and_top_horiz_line.get_end(), and_bot_horiz_line.get_end(), radius=-x
+        )
 
+        and_input_1 = Line(
+            start=and_lft_verti_line.get_start() + (2 * x / 4) * DOWN,
+            end=and_lft_verti_line.get_start() + (2 * x / 4) * DOWN + LEFT * x,
+        )
+        and_input_2 = Line(
+            start=and_lft_verti_line.get_start() + 3 * (2 * x / 4) * DOWN,
+            end=and_lft_verti_line.get_start() + 3 * (2 * x / 4) * DOWN + LEFT * x,
+        )
+        and_output = Line(
+            start=and_rgt_curve_line.get_arc_center() + RIGHT * x,
+            end=and_rgt_curve_line.get_arc_center() + RIGHT * x * 2,
+        )
+
+        gate_name = Text(
+            "AND",
+            font="Cascadia Code",
+            font_size=60 * x,
+        ).move_to(
+            (and_lft_verti_line.get_center() + and_output.get_start()) / 2  # type: ignore
+        )
+
+        if not IS_DEBUGGING:
+            self.play(Create(and_top_horiz_line), Create(and_bot_horiz_line))
+            self.play(Create(and_lft_verti_line), Create(and_rgt_curve_line))
+            self.play(Create(and_input_1), Create(and_input_2), Create(and_output))
+            self.play(Write(gate_name))
+        else:
+            self.add(
+                and_top_horiz_line,
+                and_bot_horiz_line,
+                and_lft_verti_line,
+                and_rgt_curve_line,
+            )
+            self.add(and_input_1, and_input_2, and_output)
+            self.add(gate_name)
+
+        return [
+            VGroup(
+                and_top_horiz_line,
+                and_bot_horiz_line,
+                and_lft_verti_line,
+                and_rgt_curve_line,
+                and_input_1,
+                and_input_2,
+                and_output,
+                gate_name,
+            ),
+            (and_lft_verti_line.get_start() + (2 * x / 4) * DOWN + LEFT * x),
+            (and_lft_verti_line.get_start() + 3 * (2 * x / 4) * DOWN + LEFT * x),
+            (and_rgt_curve_line.get_arc_center() + RIGHT * x * 2),
+        ]
+
+    def digital_circuit_example(self, length):
         # + Digital Circuit Example Elements
+        and_gate, and_in_1, and_in_2, and_out = self.create_and_gate(x=length)
+        self.play(and_gate.animate.shift(UP))
 
         # - Animate Digital Circuit Example Elements
 
@@ -79,6 +141,6 @@ class Main(Scene):
 
         self.wait(0.25)  # ! ---- ---- ----
 
-        self.digital_circuit_example()
+        self.digital_circuit_example(length=0.35)
 
         self.wait(0.25)  # ! ---- ---- ----
