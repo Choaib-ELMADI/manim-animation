@@ -56,6 +56,7 @@ class Main(Scene):
         return hdl_definition
 
     def create_and_gate(self, length=0.5):
+        # + AND Gate Elements
         and_top_horiz_line = Line(start=[-length - (length / 2), length, 0], end=[length - (length / 2), length, 0]).shift(RIGHT * 1.25)  # type: ignore
         and_bot_horiz_line = Line(start=[-length - (length / 2), -length, 0], end=[length - (length / 2), -length, 0]).shift(RIGHT * 1.25)  # type: ignore
         and_lft_verti_line = Line(
@@ -90,6 +91,7 @@ class Main(Scene):
             (and_lft_verti_line.get_center() + and_output.get_start()) / 2  # type: ignore
         )
 
+        # - Animate AND Gate Elements
         if not IS_DEBUGGING:
             self.play(Create(and_top_horiz_line), Create(and_bot_horiz_line))
             self.play(Create(and_lft_verti_line), Create(and_rgt_curve_line))
@@ -126,13 +128,77 @@ class Main(Scene):
         ]
 
     def create_or_gate(self, length=0.5):
-        pass
+        # + OR Gate Elements
+        or_top_arc = ArcBetweenPoints(
+            start=[-length, -length, 0], end=[length, 0, 0], angle=PI / 4  # type: ignore
+        ).shift(UP * 1.25 + LEFT * 1.25)
+        or_bot_arc = ArcBetweenPoints(
+            start=[-length, length, 0],  # type: ignore
+            end=[length, 0, 0],  # type: ignore
+            angle=-PI / 4,
+        ).shift(UP * 1.25 + LEFT * 1.25)
+        or_lft_arc = ArcBetweenPoints(
+            start=[-length, length, 0],  # type: ignore
+            end=[-length, -length, 0],  # type: ignore
+            angle=-PI / 3,
+        ).shift(UP * 1.25 + LEFT * 1.25)
+
+        or_input_1 = Line(
+            start=or_lft_arc.get_start()
+            + (2 * length / 4) * DOWN
+            + RIGHT * PI / 15 * length,
+            end=or_lft_arc.get_start() + (2 * length / 4) * DOWN + LEFT * length,
+        )
+        or_input_2 = Line(
+            start=or_lft_arc.get_start()
+            + 3 * (2 * length / 4) * DOWN
+            + RIGHT * PI / 15 * length,
+            end=or_lft_arc.get_start() + 3 * (2 * length / 4) * DOWN + LEFT * length,
+        )
+        or_output = Line(
+            start=or_top_arc.get_end(),
+            end=or_top_arc.get_end() + RIGHT * length,
+        )
+
+        gate_name = Text(
+            "OR",
+            font="Cascadia Code",
+            font_size=60 * length,
+        ).shift(UP * 1.25 + LEFT * 1.25)
+
+        # - Animate OR Gate Elements
+        if not IS_DEBUGGING:
+            self.play(Create(or_top_arc), Create(or_bot_arc))
+            self.play(Create(or_lft_arc))
+            self.play(Create(or_input_1), Create(or_input_2), Create(or_output))
+            self.play(Write(gate_name))
+        else:
+            self.add(
+                or_top_arc,
+                or_bot_arc,
+                or_lft_arc,
+            )
+            self.add(or_input_1, or_input_2, or_output)
+            self.add(gate_name)
+
+        return [
+            VGroup(
+                or_top_arc,
+                or_bot_arc,
+                or_lft_arc,
+                or_input_1,
+                or_input_2,
+                or_output,
+                gate_name,
+            ),
+            (or_lft_arc.get_start() + (2 * length / 4) * DOWN + LEFT * length),
+            (or_lft_arc.get_start() + 3 * (2 * length / 4) * DOWN + LEFT * length),
+            (or_top_arc.get_end() + RIGHT * length),
+        ]
 
     def digital_circuit_example(self, length):
-        # + Digital Circuit Example Elements
         and_gate, and_in_1, and_in_2, and_out = self.create_and_gate(length=length)
-
-        # - Animate Digital Circuit Example Elements
+        or_gate, or_in_1, or_in_2, or_out = self.create_or_gate(length=length)
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
