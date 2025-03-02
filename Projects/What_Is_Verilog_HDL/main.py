@@ -196,27 +196,85 @@ class Main(Scene):
             (or_top_arc.get_end() + RIGHT * length),
         ]
 
+    def create_not_gate(self, length=0.5):
+        # + NOT Gate Elements
+        not_top_line = Line(
+            start=[-length, length, 0], end=[length, 0, 0]  # type: ignore
+        ).shift(DOWN * 1.25 + LEFT * 1.25)
+        not_bot_line = Line(
+            start=[-length, -length, 0], end=[length, 0, 0]  # type: ignore
+        ).shift(DOWN * 1.25 + LEFT * 1.25)
+        not_lft_line = Line(
+            start=[-length, length, 0], end=[-length, -length, 0]  # type: ignore
+        ).shift(DOWN * 1.25 + LEFT * 1.25)
+        not_circle = Circle(radius=length / 5, color=WHITE).next_to(
+            not_top_line.get_end(), buff=0
+        )
+
+        not_input = Line(
+            start=not_lft_line.get_center(),
+            end=not_lft_line.get_center() + LEFT * length,
+        )
+        not_output = Line(
+            start=not_top_line.get_end() + RIGHT * 2 * (length / 5),
+            end=not_top_line.get_end() + RIGHT * 2 * (length / 5) + RIGHT * length,
+        )
+
+        gate_name = Text(
+            "NOT",
+            font="Cascadia Code",
+            font_size=50 * length,
+        ).next_to(not_lft_line, buff=0.15 * length)
+
+        # - Animate NOT Gate Elements
+        if not IS_DEBUGGING:
+            self.play(Create(not_top_line), Create(not_bot_line))
+            self.play(Create(not_lft_line))
+            self.play(Create(not_circle))
+            self.play(Create(not_input), Create(not_output))
+            self.play(Write(gate_name))
+        else:
+            self.add(not_top_line, not_bot_line, not_lft_line, not_circle)
+            self.add(not_input, not_output)
+            self.add(gate_name)
+
+        return [
+            VGroup(
+                not_top_line,
+                not_bot_line,
+                not_lft_line,
+                not_circle,
+                not_input,
+                not_output,
+                gate_name,
+            ),
+            (not_lft_line.get_center() + LEFT * length),
+            (not_top_line.get_end() + RIGHT * 2 * (length / 5) + RIGHT * length),
+        ]
+
     def digital_circuit_example(self, length):
         and_gate, and_in_1, and_in_2, and_out = self.create_and_gate(length=length)
         or_gate, or_in_1, or_in_2, or_out = self.create_or_gate(length=length)
+        not_gate, not_in, not_out = self.create_not_gate(length=length)
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
 
+        # & Introduction                                                        :
         self.topic_introduction("What is HDL?")
 
         self.wait(0.25)  # ! ---- ---- ----
 
+        # & Definition                                                          :
         hdl_definition = self.topic_definition()
-
         self.waiting_to_read(
             wait_counter=4, wait_delay=0.8, note_color=BLUE
         )  # ! ---- ---- ----
-
         self.play(FadeOut(hdl_definition))
 
         self.wait(0.25)  # ! ---- ---- ----
 
+        # & Digital Circuit Example                                             :
         self.digital_circuit_example(length=0.3)
 
-        self.wait(0.25)  # ! ---- ---- ----
+        self.wait(2)  # ! ---- ---- ----
