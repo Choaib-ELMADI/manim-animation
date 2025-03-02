@@ -5,39 +5,41 @@ IS_DEBUGGING = False
 
 
 class Gate_AND(Scene):
-    x = 0.5
+    length = 0.5
 
     def construct(self):
-        and_top_horiz_line = Line(start=[-self.x, self.x, 0], end=[self.x, self.x, 0])  # type: ignore
-        and_bot_horiz_line = Line(start=[-self.x, -self.x, 0], end=[self.x, -self.x, 0])  # type: ignore
+        and_top_horiz_line = Line(start=[-self.length, self.length, 0], end=[self.length, self.length, 0])  # type: ignore
+        and_bot_horiz_line = Line(start=[-self.length, -self.length, 0], end=[self.length, -self.length, 0])  # type: ignore
         and_lft_verti_line = Line(
             and_top_horiz_line.get_start(), and_bot_horiz_line.get_start()
         )
         and_rgt_curve_line = ArcBetweenPoints(
-            and_top_horiz_line.get_end(), and_bot_horiz_line.get_end(), radius=-self.x
+            and_top_horiz_line.get_end(),
+            and_bot_horiz_line.get_end(),
+            radius=-self.length,
         )
 
         and_input_1 = Line(
-            start=and_lft_verti_line.get_start() + (2 * self.x / 4) * DOWN,
+            start=and_lft_verti_line.get_start() + (2 * self.length / 4) * DOWN,
             end=and_lft_verti_line.get_start()
-            + (2 * self.x / 4) * DOWN
-            + LEFT * self.x,
+            + (2 * self.length / 4) * DOWN
+            + LEFT * self.length,
         )
         and_input_2 = Line(
-            start=and_lft_verti_line.get_start() + 3 * (2 * self.x / 4) * DOWN,
+            start=and_lft_verti_line.get_start() + 3 * (2 * self.length / 4) * DOWN,
             end=and_lft_verti_line.get_start()
-            + 3 * (2 * self.x / 4) * DOWN
-            + LEFT * self.x,
+            + 3 * (2 * self.length / 4) * DOWN
+            + LEFT * self.length,
         )
         and_output = Line(
-            start=and_rgt_curve_line.get_arc_center() + RIGHT * self.x,
-            end=and_rgt_curve_line.get_arc_center() + RIGHT * self.x * 2,
+            start=and_rgt_curve_line.get_arc_center() + RIGHT * self.length,
+            end=and_rgt_curve_line.get_arc_center() + RIGHT * self.length * 2,
         )
 
         gate_name = Text(
             "AND",
             font="Cascadia Code",
-            font_size=60 * self.x,
+            font_size=60 * self.length,
         ).move_to(
             (and_lft_verti_line.get_center() + and_output.get_start()) / 2  # type: ignore
         )

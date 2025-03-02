@@ -1,7 +1,7 @@
 from manim import *
 
-# IS_DEBUGGING = False
-IS_DEBUGGING = True
+IS_DEBUGGING = False
+# IS_DEBUGGING = True
 
 
 class Main(Scene):
@@ -55,33 +55,37 @@ class Main(Scene):
 
         return hdl_definition
 
-    def create_and_gate(self, x=0.5):
-        and_top_horiz_line = Line(start=[-x, x, 0], end=[x, x, 0])  # type: ignore
-        and_bot_horiz_line = Line(start=[-x, -x, 0], end=[x, -x, 0])  # type: ignore
+    def create_and_gate(self, length=0.5):
+        and_top_horiz_line = Line(start=[-length - (length / 2), length, 0], end=[length - (length / 2), length, 0]).shift(RIGHT * 1.25)  # type: ignore
+        and_bot_horiz_line = Line(start=[-length - (length / 2), -length, 0], end=[length - (length / 2), -length, 0]).shift(RIGHT * 1.25)  # type: ignore
         and_lft_verti_line = Line(
             and_top_horiz_line.get_start(), and_bot_horiz_line.get_start()
         )
         and_rgt_curve_line = ArcBetweenPoints(
-            and_top_horiz_line.get_end(), and_bot_horiz_line.get_end(), radius=-x
+            and_top_horiz_line.get_end(), and_bot_horiz_line.get_end(), radius=-length
         )
 
         and_input_1 = Line(
-            start=and_lft_verti_line.get_start() + (2 * x / 4) * DOWN,
-            end=and_lft_verti_line.get_start() + (2 * x / 4) * DOWN + LEFT * x,
+            start=and_lft_verti_line.get_start() + (2 * length / 4) * DOWN,
+            end=and_lft_verti_line.get_start()
+            + (2 * length / 4) * DOWN
+            + LEFT * length,
         )
         and_input_2 = Line(
-            start=and_lft_verti_line.get_start() + 3 * (2 * x / 4) * DOWN,
-            end=and_lft_verti_line.get_start() + 3 * (2 * x / 4) * DOWN + LEFT * x,
+            start=and_lft_verti_line.get_start() + 3 * (2 * length / 4) * DOWN,
+            end=and_lft_verti_line.get_start()
+            + 3 * (2 * length / 4) * DOWN
+            + LEFT * length,
         )
         and_output = Line(
-            start=and_rgt_curve_line.get_arc_center() + RIGHT * x,
-            end=and_rgt_curve_line.get_arc_center() + RIGHT * x * 2,
+            start=and_rgt_curve_line.get_arc_center() + RIGHT * length,
+            end=and_rgt_curve_line.get_arc_center() + RIGHT * length * 2,
         )
 
         gate_name = Text(
             "AND",
             font="Cascadia Code",
-            font_size=60 * x,
+            font_size=60 * length,
         ).move_to(
             (and_lft_verti_line.get_center() + and_output.get_start()) / 2  # type: ignore
         )
@@ -112,15 +116,21 @@ class Main(Scene):
                 and_output,
                 gate_name,
             ),
-            (and_lft_verti_line.get_start() + (2 * x / 4) * DOWN + LEFT * x),
-            (and_lft_verti_line.get_start() + 3 * (2 * x / 4) * DOWN + LEFT * x),
-            (and_rgt_curve_line.get_arc_center() + RIGHT * x * 2),
+            (and_lft_verti_line.get_start() + (2 * length / 4) * DOWN + LEFT * length),
+            (
+                and_lft_verti_line.get_start()
+                + 3 * (2 * length / 4) * DOWN
+                + LEFT * length
+            ),
+            (and_rgt_curve_line.get_arc_center() + RIGHT * length * 2),
         ]
+
+    def create_or_gate(self, length=0.5):
+        pass
 
     def digital_circuit_example(self, length):
         # + Digital Circuit Example Elements
-        and_gate, and_in_1, and_in_2, and_out = self.create_and_gate(x=length)
-        self.play(and_gate.animate.shift(UP))
+        and_gate, and_in_1, and_in_2, and_out = self.create_and_gate(length=length)
 
         # - Animate Digital Circuit Example Elements
 
@@ -141,6 +151,6 @@ class Main(Scene):
 
         self.wait(0.25)  # ! ---- ---- ----
 
-        self.digital_circuit_example(length=0.35)
+        self.digital_circuit_example(length=0.3)
 
         self.wait(0.25)  # ! ---- ---- ----
