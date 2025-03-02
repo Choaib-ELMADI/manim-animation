@@ -293,19 +293,20 @@ class Main(Scene):
         wire_2_part_3 = Line(and_in_2 + LEFT * (1.15 / 2), and_in_2, color=WHITE)
 
         or_in_1_extend = Line(start=or_in_1, end=or_in_1 + LEFT * 0.5, color=WHITE)
-        or_in_2_extend = Line(start=or_in_2, end=or_in_2 + LEFT * 0.5, color=WHITE)
-        not_in_extend = Line(start=not_in, end=not_in + LEFT * 0.5, color=WHITE)
+        or_not_vert_extend = Line(start=or_in_2, end=not_in, color=WHITE)
+        or_not_hori_extend = Line(
+            start=or_not_vert_extend.get_center(),
+            end=or_not_vert_extend.get_center() + LEFT * 0.5,
+            color=WHITE,
+        )
         and_out_extend = Line(start=and_out, end=and_out + RIGHT * 0.5, color=WHITE)
 
         or_in_1_label = Text(
             "a", font="Cascadia Code", font_size=21, color=WHITE
         ).next_to(or_in_1_extend, LEFT, buff=0.1)
-        or_in_2_label = Text(
+        or_not_hori_label = Text(
             "b", font="Cascadia Code", font_size=21, color=WHITE
-        ).next_to(or_in_2_extend, LEFT, buff=0.1)
-        not_in_label = Text(
-            "c", font="Cascadia Code", font_size=21, color=WHITE
-        ).next_to(not_in_extend, LEFT, buff=0.1)
+        ).next_to(or_not_hori_extend, LEFT, buff=0.1)
         and_out_label = Text(
             "out", font="Cascadia Code", font_size=21, color=WHITE
         ).next_to(and_out_extend, RIGHT, buff=0.1)
@@ -344,6 +345,57 @@ class Main(Scene):
             dashed_ratio=0.6,
         )
 
+        digital_circuit_example = VGroup(
+            and_gate,
+            or_gate,
+            not_gate,
+            wire_1_part_1,
+            wire_1_part_2,
+            wire_1_part_3,
+            wire_2_part_1,
+            wire_2_part_2,
+            wire_2_part_3,
+            or_in_1_extend,
+            or_not_vert_extend,
+            or_not_hori_extend,
+            and_out_extend,
+            or_in_1_label,
+            or_not_hori_label,
+            and_out_label,
+        )
+        # digital_circuit_example_box = always_redraw(
+        #     lambda: SurroundingRectangle(digital_circuit_example, buff=0)
+        # )
+
+        verilog_hdl_code = MarkupText(
+            f"<span fgcolor='{ORANGE}'>module</span> <span fgcolor='{YELLOW}'>circuit (</span>out, a, b<span fgcolor='{YELLOW}'>)</span>;\n"
+            + f"    <span fgcolor='{PURPLE}'>output reg  </span>out;\n"
+            + f"    <span fgcolor='{PURPLE}'>input  wire </span>a;\n"
+            + f"    <span fgcolor='{PURPLE}'>input  wire </span>b;\n"
+            + f"\n"
+            + f"    <span fgcolor='{PURPLE}'>wire </span>wire_1;\n"
+            + f"    <span fgcolor='{PURPLE}'>wire </span>wire_2;\n"
+            + f"\n"
+            + f"    <span fgcolor='{RED}'>or  or_1  </span><span fgcolor='{YELLOW}'>(</span>wire_1, a, b<span fgcolor='{YELLOW}'>)</span>;\n"
+            + f"    <span fgcolor='{RED}'>not not_1 </span><span fgcolor='{YELLOW}'>(</span>wire_2, b<span fgcolor='{YELLOW}'>)</span>;\n"
+            + f"    <span fgcolor='{RED}'>and and_1 </span><span fgcolor='{YELLOW}'>(</span>out, wire_1, wire_2<span fgcolor='{YELLOW}'>)</span>;\n"
+            + f"\n"
+            + f"<span fgcolor='{ORANGE}'>endmodule </span><span fgcolor='{GREEN}'>// circuit</span>\n"
+            + f"\n",
+            font="Cascadia Code",
+            font_size=20,
+        ).shift(RIGHT * 3)
+        verilog_hdl_code_box = always_redraw(
+            lambda: SurroundingRectangle(
+                verilog_hdl_code, color=WHITE, fill_opacity=0.05, buff=0.25
+            )
+        )
+        verilog_hdl_code_title = always_redraw(
+            lambda: Text(
+                "Verilog HDL", color=WHITE, font="Cascadia Code", font_size=18
+            ).next_to(verilog_hdl_code_box, DOWN)
+        )
+
         design_modules = Text(
             "These are the design modules!",
             font="Cascadia Code",
@@ -361,22 +413,23 @@ class Main(Scene):
             self.play(Create(wire_2_part_3), run_time=0.35)
             self.play(
                 Create(or_in_1_extend),
-                Create(or_in_2_extend),
-                Create(not_in_extend),
+                Create(or_not_vert_extend),
+                Create(or_not_hori_extend),
                 run_time=0.35,
             )
             self.play(Create(and_out_extend), run_time=0.35)
             self.play(
                 Write(or_in_1_label),
-                Write(or_in_2_label),
-                Write(not_in_label),
+                Write(or_not_hori_label),
                 Write(and_out_label),
             )
         else:
             self.add(wire_1_part_1, wire_1_part_2, wire_1_part_3)
             self.add(wire_2_part_1, wire_2_part_2, wire_2_part_3)
-            self.add(or_in_1_extend, or_in_2_extend, not_in_extend, and_out_extend)
-            self.add(or_in_1_label, or_in_2_label, not_in_label, and_out_label)
+            self.add(
+                or_in_1_extend, or_not_vert_extend, or_not_hori_extend, and_out_extend
+            )
+            self.add(or_in_1_label, or_not_hori_label, and_out_label)
 
         if not IS_DEBUGGING:
             self.play(
@@ -400,6 +453,28 @@ class Main(Scene):
         self.waiting_to_read(
             wait_counter=4, wait_delay=0.8, note_color=BLUE
         )  # ! ---- ---- ----
+
+        self.play(
+            FadeOut(
+                or_gate_module_box,
+                not_gate_module_box,
+                and_gate_module_box,
+                module_box,
+                design_modules,
+                underline,
+            )
+        )
+
+        # self.play(Create(digital_circuit_example_box))  # type: ignore
+
+        self.play(digital_circuit_example.animate.shift(LEFT * 3.5))  # type: ignore
+
+        if not IS_DEBUGGING:
+            self.play(Write(verilog_hdl_code))
+            self.play(Create(verilog_hdl_code_box))  # type: ignore
+            self.play(Write(verilog_hdl_code_title))  # type: ignore
+        else:
+            self.add(verilog_hdl_code, verilog_hdl_code_box, verilog_hdl_code_title)
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
