@@ -37,6 +37,8 @@ class Main(Scene):
             self.add(title)
             title.to_edge(UP)
 
+        return title
+
     def topic_definition(self):
         # + Definition Element
         hdl_definition = MarkupText(
@@ -92,20 +94,20 @@ class Main(Scene):
         )
 
         # - Animate AND Gate Elements
-        if not IS_DEBUGGING:
-            self.play(Create(and_top_horiz_line), Create(and_bot_horiz_line))
-            self.play(Create(and_lft_verti_line), Create(and_rgt_curve_line))
-            self.play(Create(and_input_1), Create(and_input_2), Create(and_output))
-            self.play(Write(gate_name))
-        else:
-            self.add(
-                and_top_horiz_line,
-                and_bot_horiz_line,
-                and_lft_verti_line,
-                and_rgt_curve_line,
-            )
-            self.add(and_input_1, and_input_2, and_output)
-            self.add(gate_name)
+        # if not IS_DEBUGGING:
+        #     self.play(Create(and_top_horiz_line), Create(and_bot_horiz_line))
+        #     self.play(Create(and_lft_verti_line), Create(and_rgt_curve_line))
+        #     self.play(Create(and_input_1), Create(and_input_2), Create(and_output))
+        #     self.play(Write(gate_name))
+        # else:
+        self.add(
+            and_top_horiz_line,
+            and_bot_horiz_line,
+            and_lft_verti_line,
+            and_rgt_curve_line,
+        )
+        self.add(and_input_1, and_input_2, and_output)
+        self.add(gate_name)
 
         return [
             VGroup(
@@ -167,19 +169,19 @@ class Main(Scene):
         ).shift(UP * 1.25 + LEFT * 1.25)
 
         # - Animate OR Gate Elements
-        if not IS_DEBUGGING:
-            self.play(Create(or_top_arc), Create(or_bot_arc))
-            self.play(Create(or_lft_arc))
-            self.play(Create(or_input_1), Create(or_input_2), Create(or_output))
-            self.play(Write(gate_name))
-        else:
-            self.add(
-                or_top_arc,
-                or_bot_arc,
-                or_lft_arc,
-            )
-            self.add(or_input_1, or_input_2, or_output)
-            self.add(gate_name)
+        # if not IS_DEBUGGING:
+        #     self.play(Create(or_top_arc), Create(or_bot_arc))
+        #     self.play(Create(or_lft_arc))
+        #     self.play(Create(or_input_1), Create(or_input_2), Create(or_output))
+        #     self.play(Write(gate_name))
+        # else:
+        self.add(
+            or_top_arc,
+            or_bot_arc,
+            or_lft_arc,
+        )
+        self.add(or_input_1, or_input_2, or_output)
+        self.add(gate_name)
 
         return [
             VGroup(
@@ -227,16 +229,16 @@ class Main(Scene):
         ).next_to(not_lft_line, buff=0.15 * length)
 
         # - Animate NOT Gate Elements
-        if not IS_DEBUGGING:
-            self.play(Create(not_top_line), Create(not_bot_line))
-            self.play(Create(not_lft_line))
-            self.play(Create(not_circle))
-            self.play(Create(not_input), Create(not_output))
-            self.play(Write(gate_name))
-        else:
-            self.add(not_top_line, not_bot_line, not_lft_line, not_circle)
-            self.add(not_input, not_output)
-            self.add(gate_name)
+        # if not IS_DEBUGGING:
+        #     self.play(Create(not_top_line), Create(not_bot_line))
+        #     self.play(Create(not_lft_line))
+        #     self.play(Create(not_circle))
+        #     self.play(Create(not_input), Create(not_output))
+        #     self.play(Write(gate_name))
+        # else:
+        self.add(not_top_line, not_bot_line, not_lft_line, not_circle)
+        self.add(not_input, not_output)
+        self.add(gate_name)
 
         return [
             VGroup(
@@ -252,16 +254,75 @@ class Main(Scene):
             (not_top_line.get_end() + RIGHT * 2 * (length / 5) + RIGHT * length),
         ]
 
-    def digital_circuit_example(self, length):
+    def digital_circuit_example(self, length, title_element):
+        # + Title Element
+        digital_circuit_title = Text(
+            "Digital Circuit Example",
+            font="Cascadia Code",
+            font_size=54,
+            color="RED",
+        ).scale(0.5)
+
+        # - Animate Title Element
+        if not IS_DEBUGGING:
+            self.play(Write(digital_circuit_title))
+            self.play(
+                title_element.animate.shift(LEFT * 10),
+                digital_circuit_title.animate.to_edge(UP),  # type: ignore
+                run_time=1,
+            )
+        else:
+            self.add(digital_circuit_title)
+            self.remove(title_element)
+            digital_circuit_title.to_edge(UP)
+
         and_gate, and_in_1, and_in_2, and_out = self.create_and_gate(length=length)
         or_gate, or_in_1, or_in_2, or_out = self.create_or_gate(length=length)
         not_gate, not_in, not_out = self.create_not_gate(length=length)
+
+        wire_1_part_1 = Line(or_out, or_out + RIGHT * (1.15 / 2), color=ORANGE)
+        wire_1_part_2 = Line(
+            or_out + RIGHT * (1.15 / 2), and_in_1 + LEFT * (1.15 / 2), color=ORANGE
+        )
+        wire_1_part_3 = Line(and_in_1 + LEFT * (1.15 / 2), and_in_1, color=ORANGE)
+
+        wire_2_part_1 = Line(not_out, not_out + RIGHT * (1.03 - 1.15 / 2), color=GREEN)
+        wire_2_part_2 = Line(
+            not_out + RIGHT * (1.03 - 1.15 / 2),
+            and_in_2 + LEFT * (1.15 / 2),
+            color=GREEN,
+        )
+        wire_2_part_3 = Line(and_in_2 + LEFT * (1.15 / 2), and_in_2, color=GREEN)
+
+        or_in_1_extend = Line(start=or_in_1, end=or_in_1 + LEFT * 0.5, color=YELLOW)
+        or_in_2_extend = Line(start=or_in_2, end=or_in_2 + LEFT * 0.5, color=YELLOW)
+        not_in_extend = Line(start=not_in, end=not_in + LEFT * 0.5, color=YELLOW)
+        and_out_extend = Line(start=and_out, end=and_out + RIGHT * 0.5, color=BLUE)
+
+        if not IS_DEBUGGING:
+            self.play(Create(wire_1_part_1))
+            self.play(Create(wire_1_part_2))
+            self.play(Create(wire_1_part_3))
+            self.play(Create(wire_2_part_1))
+            self.play(Create(wire_2_part_2))
+            self.play(Create(wire_2_part_3))
+            self.play(
+                Create(or_in_1_extend), Create(or_in_2_extend), Create(not_in_extend)
+            )
+            self.play(Create(and_out_extend))
+        else:
+            self.add(wire_1_part_1, wire_1_part_2, wire_1_part_3)
+            self.add(wire_2_part_1, wire_2_part_2, wire_2_part_3)
+            self.add(or_in_1_extend, or_in_2_extend, not_in_extend, and_out_extend)
+
+        # dist = Text(f"{not_out[0] - and_in_2[0]}")
+        # self.add(dist)
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
 
         # & Introduction                                                        :
-        self.topic_introduction("What is HDL?")
+        title = self.topic_introduction("What is HDL?")
 
         self.wait(0.25)  # ! ---- ---- ----
 
@@ -275,6 +336,6 @@ class Main(Scene):
         self.wait(0.25)  # ! ---- ---- ----
 
         # & Digital Circuit Example                                             :
-        self.digital_circuit_example(length=0.3)
+        self.digital_circuit_example(length=0.3, title_element=title)
 
         self.wait(2)  # ! ---- ---- ----
