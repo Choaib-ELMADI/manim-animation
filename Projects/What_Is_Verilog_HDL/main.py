@@ -254,7 +254,7 @@ class Main(Scene):
             (not_top_line.get_end() + RIGHT * 2 * (length / 5) + RIGHT * length),
         ]
 
-    def digital_circuit_example(self, length, title_element):
+    def digital_circuit_example(self, length):
         # + Title Element
         digital_circuit_title = Text(
             "Digital Circuit Example",
@@ -267,56 +267,139 @@ class Main(Scene):
         if not IS_DEBUGGING:
             self.play(Write(digital_circuit_title))
             self.play(
-                title_element.animate.shift(LEFT * 10),
                 digital_circuit_title.animate.to_edge(UP),  # type: ignore
                 run_time=1,
             )
         else:
             self.add(digital_circuit_title)
-            self.remove(title_element)
             digital_circuit_title.to_edge(UP)
 
         and_gate, and_in_1, and_in_2, and_out = self.create_and_gate(length=length)
         or_gate, or_in_1, or_in_2, or_out = self.create_or_gate(length=length)
         not_gate, not_in, not_out = self.create_not_gate(length=length)
 
-        wire_1_part_1 = Line(or_out, or_out + RIGHT * (1.15 / 2), color=ORANGE)
+        wire_1_part_1 = Line(or_out, or_out + RIGHT * (1.15 / 2), color=WHITE)
         wire_1_part_2 = Line(
-            or_out + RIGHT * (1.15 / 2), and_in_1 + LEFT * (1.15 / 2), color=ORANGE
+            or_out + RIGHT * (1.15 / 2), and_in_1 + LEFT * (1.15 / 2), color=WHITE
         )
-        wire_1_part_3 = Line(and_in_1 + LEFT * (1.15 / 2), and_in_1, color=ORANGE)
+        wire_1_part_3 = Line(and_in_1 + LEFT * (1.15 / 2), and_in_1, color=WHITE)
 
-        wire_2_part_1 = Line(not_out, not_out + RIGHT * (1.03 - 1.15 / 2), color=GREEN)
+        wire_2_part_1 = Line(not_out, not_out + RIGHT * (1.03 - 1.15 / 2), color=WHITE)
         wire_2_part_2 = Line(
             not_out + RIGHT * (1.03 - 1.15 / 2),
             and_in_2 + LEFT * (1.15 / 2),
-            color=GREEN,
+            color=WHITE,
         )
-        wire_2_part_3 = Line(and_in_2 + LEFT * (1.15 / 2), and_in_2, color=GREEN)
+        wire_2_part_3 = Line(and_in_2 + LEFT * (1.15 / 2), and_in_2, color=WHITE)
 
-        or_in_1_extend = Line(start=or_in_1, end=or_in_1 + LEFT * 0.5, color=YELLOW)
-        or_in_2_extend = Line(start=or_in_2, end=or_in_2 + LEFT * 0.5, color=YELLOW)
-        not_in_extend = Line(start=not_in, end=not_in + LEFT * 0.5, color=YELLOW)
-        and_out_extend = Line(start=and_out, end=and_out + RIGHT * 0.5, color=BLUE)
+        or_in_1_extend = Line(start=or_in_1, end=or_in_1 + LEFT * 0.5, color=WHITE)
+        or_in_2_extend = Line(start=or_in_2, end=or_in_2 + LEFT * 0.5, color=WHITE)
+        not_in_extend = Line(start=not_in, end=not_in + LEFT * 0.5, color=WHITE)
+        and_out_extend = Line(start=and_out, end=and_out + RIGHT * 0.5, color=WHITE)
+
+        or_in_1_label = Text(
+            "a", font="Cascadia Code", font_size=21, color=WHITE
+        ).next_to(or_in_1_extend, LEFT, buff=0.1)
+        or_in_2_label = Text(
+            "b", font="Cascadia Code", font_size=21, color=WHITE
+        ).next_to(or_in_2_extend, LEFT, buff=0.1)
+        not_in_label = Text(
+            "c", font="Cascadia Code", font_size=21, color=WHITE
+        ).next_to(not_in_extend, LEFT, buff=0.1)
+        and_out_label = Text(
+            "out", font="Cascadia Code", font_size=21, color=WHITE
+        ).next_to(and_out_extend, RIGHT, buff=0.1)
+
+        or_gate_module_box = DashedVMobject(
+            SurroundingRectangle(
+                or_gate,
+                buff=0.15,
+            ),
+            num_dashes=30,
+            dashed_ratio=0.6,
+        )
+        not_gate_module_box = DashedVMobject(
+            SurroundingRectangle(
+                not_gate,
+                buff=0.15,
+            ),
+            num_dashes=30,
+            dashed_ratio=0.6,
+        )
+        and_gate_module_box = DashedVMobject(
+            SurroundingRectangle(
+                and_gate,
+                buff=0.15,
+            ),
+            num_dashes=30,
+            dashed_ratio=0.6,
+        )
+        module_box = DashedVMobject(
+            SurroundingRectangle(
+                VGroup(or_gate_module_box, not_gate_module_box, and_gate_module_box),
+                buff=0.15,
+                color=GREEN,
+            ),
+            num_dashes=40,
+            dashed_ratio=0.6,
+        )
+
+        design_modules = Text(
+            "These are the design modules!",
+            font="Cascadia Code",
+            font_size=21,
+            color=ORANGE,
+        ).next_to(module_box, DOWN, buff=0.5)
+        underline = Underline(design_modules, buff=0.05, color=ORANGE, stroke_width=3)
 
         if not IS_DEBUGGING:
-            self.play(Create(wire_1_part_1))
-            self.play(Create(wire_1_part_2))
-            self.play(Create(wire_1_part_3))
-            self.play(Create(wire_2_part_1))
-            self.play(Create(wire_2_part_2))
-            self.play(Create(wire_2_part_3))
+            self.play(Create(wire_1_part_1), run_time=0.35)
+            self.play(Create(wire_1_part_2), run_time=0.35)
+            self.play(Create(wire_1_part_3), run_time=0.35)
+            self.play(Create(wire_2_part_1), run_time=0.35)
+            self.play(Create(wire_2_part_2), run_time=0.35)
+            self.play(Create(wire_2_part_3), run_time=0.35)
             self.play(
-                Create(or_in_1_extend), Create(or_in_2_extend), Create(not_in_extend)
+                Create(or_in_1_extend),
+                Create(or_in_2_extend),
+                Create(not_in_extend),
+                run_time=0.35,
             )
-            self.play(Create(and_out_extend))
+            self.play(Create(and_out_extend), run_time=0.35)
+            self.play(
+                Write(or_in_1_label),
+                Write(or_in_2_label),
+                Write(not_in_label),
+                Write(and_out_label),
+            )
         else:
             self.add(wire_1_part_1, wire_1_part_2, wire_1_part_3)
             self.add(wire_2_part_1, wire_2_part_2, wire_2_part_3)
             self.add(or_in_1_extend, or_in_2_extend, not_in_extend, and_out_extend)
+            self.add(or_in_1_label, or_in_2_label, not_in_label, and_out_label)
 
-        # dist = Text(f"{not_out[0] - and_in_2[0]}")
-        # self.add(dist)
+        if not IS_DEBUGGING:
+            self.play(
+                Create(or_gate_module_box),
+                Create(not_gate_module_box),
+                Create(and_gate_module_box),
+            )
+            self.play(
+                Create(module_box),
+            )
+        else:
+            self.add(or_gate_module_box, not_gate_module_box, and_gate_module_box)
+            self.add(module_box)
+
+        if not IS_DEBUGGING:
+            self.play(Write(design_modules))
+            self.play(Create(underline))
+        else:
+            self.add(design_modules, underline)
+
+        self.waiting_to_read(
+            wait_counter=4, wait_delay=0.8, note_color=BLUE
+        )  # ! ---- ---- ----
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
@@ -331,11 +414,11 @@ class Main(Scene):
         self.waiting_to_read(
             wait_counter=4, wait_delay=0.8, note_color=BLUE
         )  # ! ---- ---- ----
-        self.play(FadeOut(hdl_definition))
+        self.play(FadeOut(hdl_definition, title))
 
         self.wait(0.25)  # ! ---- ---- ----
 
         # & Digital Circuit Example                                             :
-        self.digital_circuit_example(length=0.3, title_element=title)
+        self.digital_circuit_example(length=0.3)
 
         self.wait(2)  # ! ---- ---- ----
