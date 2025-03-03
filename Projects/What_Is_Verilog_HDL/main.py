@@ -419,13 +419,16 @@ class Main(Scene):
             self.play(Create(wire_2_part_2), run_time=0.35)
             self.play(Create(wire_2_part_3), run_time=0.35)
             self.play(
-                Create(or_in_1_extend),
                 Create(or_not_vert_extend_top),
                 Create(or_not_vert_extend_bot),
                 run_time=0.35,
             )
-            self.play(Create(or_not_hori_extend), run_time=0.35)
-            self.play(Create(and_out_extend), run_time=0.35)
+            self.play(
+                Create(or_in_1_extend),
+                Create(or_not_hori_extend),
+                Create(and_out_extend),
+                run_time=0.35,
+            )
             self.play(
                 Write(or_in_1_label),
                 Write(or_not_hori_label),
@@ -462,6 +465,8 @@ class Main(Scene):
         else:
             self.add(design_modules, underline)
 
+        # TODO: Higher and lower level modules
+
         self.waiting_to_read(
             wait_counter=4, wait_delay=0.8, note_color=BLUE
         )  # ! ---- ---- ----
@@ -487,6 +492,10 @@ class Main(Scene):
             self.play(Write(verilog_hdl_code_title))  # type: ignore
         else:
             self.add(verilog_hdl_code, verilog_hdl_code_box, verilog_hdl_code_title)
+
+        self.waiting_to_read(
+            wait_counter=4, wait_delay=0.8, note_color=BLUE
+        )  # ! ---- ---- ----
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
