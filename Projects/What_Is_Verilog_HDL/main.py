@@ -292,12 +292,18 @@ class Main(Scene):
         )
         wire_2_part_3 = Line(and_in_2 + LEFT * (1.15 / 2), and_in_2, color=WHITE)
 
-        or_in_1_extend = Line(start=or_in_1, end=or_in_1 + LEFT * 0.5, color=WHITE)
+        or_in_1_extend = Line(end=or_in_1 + LEFT * 0.5, start=or_in_1, color=WHITE)
         or_not_vert_extend = Line(start=or_in_2, end=not_in, color=WHITE)
         or_not_hori_extend = Line(
-            start=or_not_vert_extend.get_center(),
             end=or_not_vert_extend.get_center() + LEFT * 0.5,
+            start=or_not_vert_extend.get_center(),
             color=WHITE,
+        )
+        or_not_vert_extend_top = Line(
+            end=or_not_vert_extend.get_center(), start=or_in_2, color=WHITE
+        )
+        or_not_vert_extend_bot = Line(
+            end=or_not_vert_extend.get_center(), start=not_in, color=WHITE
         )
         and_out_extend = Line(start=and_out, end=and_out + RIGHT * 0.5, color=WHITE)
 
@@ -356,7 +362,8 @@ class Main(Scene):
             wire_2_part_2,
             wire_2_part_3,
             or_in_1_extend,
-            or_not_vert_extend,
+            or_not_vert_extend_top,
+            or_not_vert_extend_bot,
             or_not_hori_extend,
             and_out_extend,
             or_in_1_label,
@@ -413,10 +420,11 @@ class Main(Scene):
             self.play(Create(wire_2_part_3), run_time=0.35)
             self.play(
                 Create(or_in_1_extend),
-                Create(or_not_vert_extend),
-                Create(or_not_hori_extend),
+                Create(or_not_vert_extend_top),
+                Create(or_not_vert_extend_bot),
                 run_time=0.35,
             )
+            self.play(Create(or_not_hori_extend), run_time=0.35)
             self.play(Create(and_out_extend), run_time=0.35)
             self.play(
                 Write(or_in_1_label),
@@ -427,7 +435,11 @@ class Main(Scene):
             self.add(wire_1_part_1, wire_1_part_2, wire_1_part_3)
             self.add(wire_2_part_1, wire_2_part_2, wire_2_part_3)
             self.add(
-                or_in_1_extend, or_not_vert_extend, or_not_hori_extend, and_out_extend
+                or_in_1_extend,
+                or_not_vert_extend_top,
+                or_not_vert_extend_bot,
+                or_not_hori_extend,
+                and_out_extend,
             )
             self.add(or_in_1_label, or_not_hori_label, and_out_label)
 
