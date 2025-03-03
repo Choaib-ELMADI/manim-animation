@@ -370,9 +370,6 @@ class Main(Scene):
             or_not_hori_label,
             and_out_label,
         )
-        # digital_circuit_example_box = always_redraw(
-        #     lambda: SurroundingRectangle(digital_circuit_example, buff=0)
-        # )
 
         verilog_hdl_code = MarkupText(
             f"<span fgcolor='{ORANGE}'>module</span> <span fgcolor='{YELLOW}'>circuit (</span>out, a, b<span fgcolor='{YELLOW}'>)</span>;\n"
@@ -410,6 +407,73 @@ class Main(Scene):
             color=ORANGE,
         ).next_to(module_box, DOWN, buff=0.5)
         underline = Underline(design_modules, buff=0.05, color=ORANGE, stroke_width=3)
+
+        lower_level_modules = Text(
+            "Lower Level Modules",
+            font="Cascadia Code",
+            font_size=20,
+            color=YELLOW,
+        ).next_to(or_not_hori_label, LEFT, buff=0.5)
+        lower_level_modules_box = SurroundingRectangle(
+            lower_level_modules,
+            buff=0.1,
+        )
+        or_gate_module_arrow = CurvedArrow(
+            start_point=or_gate_module_box.get_edge_center(LEFT),
+            end_point=lower_level_modules_box.get_corner(UR) + LEFT * 0.2,
+            angle=PI / 4,
+            color=YELLOW,
+            stroke_width=3,
+            tip_length=0.1,
+        )
+        or_gate_module_arrow_circle = Circle(
+            radius=0.02, color=YELLOW, fill_color=YELLOW, fill_opacity=1
+        ).move_to(or_gate_module_arrow.get_start())
+        not_gate_module_arrow = CurvedArrow(
+            start_point=not_gate_module_box.get_edge_center(LEFT),
+            end_point=lower_level_modules_box.get_corner(DR) + LEFT * 0.2,
+            angle=-PI / 4,
+            color=YELLOW,
+            stroke_width=3,
+            tip_length=0.1,
+        )
+        not_gate_module_arrow_circle = Circle(
+            radius=0.02, color=YELLOW, fill_color=YELLOW, fill_opacity=1
+        ).move_to(not_gate_module_arrow.get_start())
+        and_gate_module_arrow = CurvedArrow(
+            start_point=and_gate_module_box.get_edge_center(LEFT),
+            end_point=lower_level_modules_box.get_edge_center(RIGHT),
+            angle=-PI / 3,
+            color=YELLOW,
+            stroke_width=3,
+            tip_length=0.1,
+        )
+        and_gate_module_arrow_circle = Circle(
+            radius=0.02, color=YELLOW, fill_color=YELLOW, fill_opacity=1
+        ).move_to(and_gate_module_arrow.get_start())
+
+        higher_level_module = Text(
+            "Higher Level Module",
+            font="Cascadia Code",
+            font_size=20,
+            color=GREEN,
+        ).next_to(and_out_label, RIGHT, buff=0.5)
+        higher_level_module_box = SurroundingRectangle(
+            higher_level_module,
+            buff=0.1,
+        )
+        digital_circuit_arrow = CurvedArrow(
+            start_point=module_box.get_edge_center(RIGHT)
+            + (module_box.get_height() / 4) * DOWN,
+            end_point=higher_level_module_box.get_edge_center(DOWN),
+            angle=PI / 2,
+            color=GREEN,
+            stroke_width=3,
+            tip_length=0.1,
+        )
+        digital_circuit_arrow_circle = Circle(
+            radius=0.02, color=GREEN, fill_color=GREEN, fill_opacity=1
+        ).move_to(digital_circuit_arrow.get_start())
 
         if not IS_DEBUGGING:
             self.play(Create(wire_1_part_1), run_time=0.35)
@@ -462,10 +526,41 @@ class Main(Scene):
         if not IS_DEBUGGING:
             self.play(Write(design_modules))
             self.play(Create(underline))
+            self.play(Write(lower_level_modules))
+            self.add(
+                or_gate_module_arrow_circle,
+                not_gate_module_arrow_circle,
+                and_gate_module_arrow_circle,
+            )
+            self.play(
+                Create(or_gate_module_arrow),
+                Create(not_gate_module_arrow),
+                Create(and_gate_module_arrow),
+                run_time=0.5,
+            )
+            self.play(Write(higher_level_module))
+            self.add(
+                digital_circuit_arrow_circle,
+            )
+            self.play(
+                Create(digital_circuit_arrow),
+                run_time=0.5,
+            )
         else:
             self.add(design_modules, underline)
-
-        # TODO: Higher and lower level modules
+            self.add(lower_level_modules, higher_level_module)
+            self.add(
+                or_gate_module_arrow_circle,
+                not_gate_module_arrow_circle,
+                and_gate_module_arrow_circle,
+                digital_circuit_arrow_circle,
+            )
+            self.add(
+                or_gate_module_arrow,
+                not_gate_module_arrow,
+                and_gate_module_arrow,
+                digital_circuit_arrow,
+            )
 
         self.waiting_to_read(
             wait_counter=4, wait_delay=0.8, note_color=BLUE
@@ -479,10 +574,18 @@ class Main(Scene):
                 module_box,
                 design_modules,
                 underline,
+                lower_level_modules,
+                higher_level_module,
+                or_gate_module_arrow,
+                not_gate_module_arrow,
+                and_gate_module_arrow,
+                digital_circuit_arrow,
+                or_gate_module_arrow_circle,
+                not_gate_module_arrow_circle,
+                and_gate_module_arrow_circle,
+                digital_circuit_arrow_circle,
             )
         )
-
-        # self.play(Create(digital_circuit_example_box))  # type: ignore
 
         self.play(digital_circuit_example.animate.shift(LEFT * 3.5))  # type: ignore
 
