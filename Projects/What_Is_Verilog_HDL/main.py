@@ -69,9 +69,10 @@ class Main(Scene):
     def topic_definition(self):
         # + Definition Element
         hdl_definition = MarkupText(
-            f"&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span fgcolor='{ORANGE}'>HDL</span> stands for\n"
-            + f"&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span fgcolor='{ORANGE}'>H</span>ardware <span fgcolor='{ORANGE}'>D</span>escription <span fgcolor='{ORANGE}'>L</span>anguage.\n"
-            + f"It describes <span fgcolor='{YELLOW}'>digital circuits</span> in textual format!",
+            f"&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span fgcolor='{ORANGE}'>HDL</span> stands for\n"
+            + f"&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span fgcolor='{ORANGE}'>H</span>ardware <span fgcolor='{ORANGE}'>D</span>escription <span fgcolor='{ORANGE}'>L</span>anguage.\n"
+            + f"&#160;&#160;&#160;It describes <span fgcolor='{YELLOW}'>digital circuits</span> in a textual format,\n"
+            + f"allowing us to <span fgcolor='{PURPLE}'>model</span>, <span fgcolor='{GREEN}'>simulate</span>, and <span fgcolor='{BLUE}'>synthesize</span> hardware!\n",
             font="Cascadia Code",
             font_size=21,
         )
@@ -597,8 +598,12 @@ class Main(Scene):
             )
         )
 
+        self.wait(0.25)  # ! ---- ---- ----
+
         topics[2].set_color(WHITE)
         topics[4].set_color(YELLOW)
+
+        self.wait(0.25)  # ! ---- ---- ----
 
         self.play(digital_circuit_example.animate.shift(LEFT * 3.5))  # type: ignore
 
@@ -628,6 +633,9 @@ class Main(Scene):
 
         # & Definition                                                          :
         topics[0].set_color(YELLOW)
+
+        self.wait(0.25)  # ! ---- ---- ----
+
         hdl_definition = self.topic_definition()
         self.waiting_to_read(
             wait_counter=4, wait_delay=0.8, note_color=BLUE
@@ -639,6 +647,9 @@ class Main(Scene):
         # & Digital Circuit Example                                             :
         topics[0].set_color(WHITE)
         topics[2].set_color(YELLOW)
+
+        self.wait(0.25)  # ! ---- ---- ----
+
         self.digital_circuit_example(length=0.3, topics=topics)
 
         self.wait(2)  # ! ---- ---- ----
