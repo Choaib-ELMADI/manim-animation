@@ -1,7 +1,7 @@
 from manim import *
 
-IS_DEBUGGING = False
-# IS_DEBUGGING = True
+# IS_DEBUGGING = False
+IS_DEBUGGING = True
 
 
 class Main(Scene):
@@ -137,7 +137,8 @@ class Main(Scene):
         self.add(and_input_1, and_input_2, and_output)
         self.add(gate_name)
 
-        return [
+        # Returns: gate, gate_in_1_start, gate_in_2_start, gate_out_end, gate_in_1, gate_in_2, gate_out
+        return (
             VGroup(
                 and_top_horiz_line,
                 and_bot_horiz_line,
@@ -155,7 +156,10 @@ class Main(Scene):
                 + LEFT * length
             ),
             (and_rgt_curve_line.get_arc_center() + RIGHT * length * 2),
-        ]
+            and_input_1,
+            and_input_2,
+            and_output,
+        )
 
     def create_or_gate(self, length=0.5):
         # + OR Gate Elements
@@ -211,7 +215,8 @@ class Main(Scene):
         self.add(or_input_1, or_input_2, or_output)
         self.add(gate_name)
 
-        return [
+        # Returns: gate, gate_in_1_start, gate_in_2_start, gate_out_end, gate_in_1, gate_in_2, gate_out
+        return (
             VGroup(
                 or_top_arc,
                 or_bot_arc,
@@ -224,7 +229,10 @@ class Main(Scene):
             (or_lft_arc.get_start() + (2 * length / 4) * DOWN + LEFT * length),
             (or_lft_arc.get_start() + 3 * (2 * length / 4) * DOWN + LEFT * length),
             (or_top_arc.get_end() + RIGHT * length),
-        ]
+            or_input_1,
+            or_input_2,
+            or_output,
+        )
 
     def create_not_gate(self, length=0.5):
         # + NOT Gate Elements
@@ -268,7 +276,8 @@ class Main(Scene):
         self.add(not_input, not_output)
         self.add(gate_name)
 
-        return [
+        # Returns: gate, gate_in_start, gate_out_end, gate_in, gate_out
+        return (
             VGroup(
                 not_top_line,
                 not_bot_line,
@@ -280,13 +289,37 @@ class Main(Scene):
             ),
             (not_lft_line.get_center() + LEFT * length),
             (not_top_line.get_end() + RIGHT * 2 * (length / 5) + RIGHT * length),
-        ]
+            not_input,
+            not_output,
+        )
 
     def digital_circuit_example(self, length, topics):
         # + Digital Circuit Example Elements
-        and_gate, and_in_1, and_in_2, and_out = self.create_and_gate(length=length)
-        or_gate, or_in_1, or_in_2, or_out = self.create_or_gate(length=length)
-        not_gate, not_in, not_out = self.create_not_gate(length=length)
+        (
+            and_gate,
+            and_in_1,
+            and_in_2,
+            and_out,
+            and_pin_1_in,
+            and_pin_2_in,
+            and_pin_out,
+        ) = self.create_and_gate(length=length)
+        (
+            or_gate,
+            or_in_1,
+            or_in_2,
+            or_out,
+            or_pin_1_in,
+            or_pin_2_in,
+            or_pin_out,
+        ) = self.create_or_gate(length=length)
+        (
+            not_gate,
+            not_in,
+            not_out,
+            not_pin_in,
+            not_pin_out,
+        ) = self.create_not_gate(length=length)
 
         wire_1_part_1 = Line(or_out, or_out + RIGHT * (1.15 / 2), color=WHITE)
         wire_1_part_2 = Line(
@@ -617,6 +650,120 @@ class Main(Scene):
         self.waiting_to_read(
             wait_counter=4, wait_delay=0.8, note_color=BLUE
         )  # ! ---- ---- ----
+
+        # TODO: WORKING HERE
+
+        code_highlight_box = (
+            Rectangle(
+                color=YELLOW,
+                height=0.35,
+                width=2.55,
+                stroke_width=1.5,
+                fill_opacity=0.05,
+            )
+            .align_to(verilog_hdl_code, UL)
+            .shift((UP * 0.03) + (DOWN * 0.32) + RIGHT * 0.5)
+        )
+
+        # ! 1
+        self.play(Create(code_highlight_box), run_time=0.5)
+        self.play(
+            ApplyMethod(and_pin_out.set_color, YELLOW),
+            ApplyMethod(and_out_extend.set_color, YELLOW),
+            ApplyMethod(and_out_label.set_color, YELLOW),
+            run_time=0.1,
+        )
+        self.play(
+            VGroup(
+                and_pin_out,
+                and_out_extend,
+                and_out_label,
+            ).animate.scale(
+                1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(
+            VGroup(
+                and_pin_out,
+                and_out_extend,
+                and_out_label,
+            ).animate.scale(
+                1 / 1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+
+        # ! 2
+        self.play(code_highlight_box.animate.shift(DOWN * 0.32))  # type: ignore
+        self.play(
+            ApplyMethod(or_in_1_label.set_color, YELLOW),
+            ApplyMethod(or_in_1_extend.set_color, YELLOW),
+            ApplyMethod(or_pin_1_in.set_color, YELLOW),
+            run_time=0.1,
+        )
+        self.play(
+            VGroup(
+                or_in_1_label,
+                or_in_1_extend,
+                or_pin_1_in,
+            ).animate.scale(
+                1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(
+            VGroup(
+                or_in_1_label,
+                or_in_1_extend,
+                or_pin_1_in,
+            ).animate.scale(
+                1 / 1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+
+        # ! 3
+        self.play(code_highlight_box.animate.shift(DOWN * 0.32))  # type: ignore
+        self.play(
+            ApplyMethod(or_not_hori_label.set_color, YELLOW),
+            ApplyMethod(or_not_hori_extend.set_color, YELLOW),
+            ApplyMethod(or_not_vert_extend_top.set_color, YELLOW),
+            ApplyMethod(or_not_vert_extend_bot.set_color, YELLOW),
+            ApplyMethod(or_pin_2_in.set_color, YELLOW),
+            ApplyMethod(not_pin_in.set_color, YELLOW),
+            run_time=0.1,
+        )
+        self.play(
+            VGroup(
+                or_not_hori_label,
+                or_not_hori_extend,
+                or_not_vert_extend_top,
+                or_not_vert_extend_bot,
+                or_pin_2_in,
+                not_pin_in,
+            ).animate.scale(
+                1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(
+            VGroup(
+                or_not_hori_label,
+                or_not_hori_extend,
+                or_not_vert_extend_top,
+                or_not_vert_extend_bot,
+                or_pin_2_in,
+                not_pin_in,
+            ).animate.scale(
+                1 / 1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+
+        # ! 4
+
+        # ! 5
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
