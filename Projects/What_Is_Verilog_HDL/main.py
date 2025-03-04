@@ -39,6 +39,33 @@ class Main(Scene):
 
         return title
 
+    def topics(self, title):
+        # + Topics Element
+        topics = Paragraph(
+            "Definition",
+            "•",
+            "Digital Circuit Example",
+            "•",
+            "Verilog HDL",
+            font="Cascadia Code",
+            font_size=16,
+        )
+        topics_length = len(topics)
+
+        topics[int(topics_length / 2)].next_to(title, DOWN, buff=0.2)
+        for i in range(int(topics_length / 2) - 1, -1, -1):
+            topics[i].next_to(topics[i + 1], LEFT, buff=0.15)
+        for i in range(int(topics_length / 2), topics_length - 1):
+            topics[i + 1].next_to(topics[i], RIGHT, buff=0.15)
+
+        # - Animate Topics Element
+        if not IS_DEBUGGING:
+            self.play(Write(topics))
+        else:
+            self.add(topics)
+
+        return topics
+
     def topic_definition(self):
         # + Definition Element
         hdl_definition = MarkupText(
@@ -254,26 +281,8 @@ class Main(Scene):
             (not_top_line.get_end() + RIGHT * 2 * (length / 5) + RIGHT * length),
         ]
 
-    def digital_circuit_example(self, length):
-        # + Title Element
-        digital_circuit_title = Text(
-            "Digital Circuit Example",
-            font="Cascadia Code",
-            font_size=54,
-            color="RED",
-        ).scale(0.5)
-
-        # - Animate Title Element
-        if not IS_DEBUGGING:
-            self.play(Write(digital_circuit_title))
-            self.play(
-                digital_circuit_title.animate.to_edge(UP),  # type: ignore
-                run_time=1,
-            )
-        else:
-            self.add(digital_circuit_title)
-            digital_circuit_title.to_edge(UP)
-
+    def digital_circuit_example(self, length, topics):
+        # + Digital Circuit Example Elements
         and_gate, and_in_1, and_in_2, and_out = self.create_and_gate(length=length)
         or_gate, or_in_1, or_in_2, or_out = self.create_or_gate(length=length)
         not_gate, not_in, not_out = self.create_not_gate(length=length)
@@ -475,6 +484,7 @@ class Main(Scene):
             radius=0.02, color=GREEN, fill_color=GREEN, fill_opacity=1
         ).move_to(digital_circuit_arrow.get_start())
 
+        # - Animate Digital Circuit Example Elements
         if not IS_DEBUGGING:
             self.play(Create(wire_1_part_1), run_time=0.35)
             self.play(Create(wire_1_part_2), run_time=0.35)
@@ -536,7 +546,7 @@ class Main(Scene):
                 Create(or_gate_module_arrow),
                 Create(not_gate_module_arrow),
                 Create(and_gate_module_arrow),
-                run_time=0.5,
+                run_time=0.75,
             )
             self.play(Write(higher_level_module))
             self.add(
@@ -544,7 +554,7 @@ class Main(Scene):
             )
             self.play(
                 Create(digital_circuit_arrow),
-                run_time=0.5,
+                run_time=0.75,
             )
         else:
             self.add(design_modules, underline)
@@ -587,6 +597,9 @@ class Main(Scene):
             )
         )
 
+        topics[2].set_color(WHITE)
+        topics[4].set_color(YELLOW)
+
         self.play(digital_circuit_example.animate.shift(LEFT * 3.5))  # type: ignore
 
         if not IS_DEBUGGING:
@@ -608,16 +621,24 @@ class Main(Scene):
 
         self.wait(0.25)  # ! ---- ---- ----
 
+        # & Topics                                                              :
+        topics = self.topics(title)
+
+        self.wait(0.5)  # ! ---- ---- ----
+
         # & Definition                                                          :
+        topics[0].set_color(YELLOW)
         hdl_definition = self.topic_definition()
         self.waiting_to_read(
             wait_counter=4, wait_delay=0.8, note_color=BLUE
         )  # ! ---- ---- ----
-        self.play(FadeOut(hdl_definition, title))
+        self.play(FadeOut(hdl_definition))
 
-        self.wait(0.25)  # ! ---- ---- ----
+        self.wait(0.5)  # ! ---- ---- ----
 
         # & Digital Circuit Example                                             :
-        self.digital_circuit_example(length=0.3)
+        topics[0].set_color(WHITE)
+        topics[2].set_color(YELLOW)
+        self.digital_circuit_example(length=0.3, topics=topics)
 
         self.wait(2)  # ! ---- ---- ----

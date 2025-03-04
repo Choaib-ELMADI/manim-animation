@@ -1,7 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/Gate_NOT/1080p60/partial_movie_files/Gate_NOT/3977891868_2352029633_223132457.mp4'
-file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/Gate_NOT/1080p60/partial_movie_files/Gate_NOT/2852726489_2758509378_2838751674.mp4'
-file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/Gate_NOT/1080p60/partial_movie_files/Gate_NOT/2852726489_505560844_1268595557.mp4'
-file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/Gate_NOT/1080p60/partial_movie_files/Gate_NOT/2852726489_3809128710_1076231835.mp4'
-file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/Gate_NOT/1080p60/partial_movie_files/Gate_NOT/2852726489_3519328795_4154889264.mp4'
-file 'file:C:/Manim/Projects/What_Is_Verilog_HDL/media/videos/Gate_NOT/1080p60/partial_movie_files/Gate_NOT/2852726489_1141282389_1202856805.mp4'
