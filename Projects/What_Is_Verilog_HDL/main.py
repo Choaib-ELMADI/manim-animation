@@ -518,6 +518,97 @@ class Main(Scene):
             radius=0.02, color=GREEN, fill_color=GREEN, fill_opacity=1
         ).move_to(digital_circuit_arrow.get_start())
 
+        code_highlight_box_1 = (
+            Rectangle(
+                color=YELLOW,
+                height=0.34,
+                width=2.55,
+                stroke_width=1.5,
+                fill_opacity=0.05,
+            )
+            .align_to(verilog_hdl_code, LEFT)
+            .shift(UP * 1.58 + RIGHT * 0.5)
+        )
+        code_highlight_box_2 = (
+            Rectangle(
+                color=YELLOW,
+                height=0.34,
+                width=2.55,
+                stroke_width=1.5,
+                fill_opacity=0.05,
+            )
+            .align_to(verilog_hdl_code, LEFT)
+            .shift(UP * 1.58 + DOWN * 0.32 + RIGHT * 0.5)
+        )
+        code_highlight_box_3 = (
+            Rectangle(
+                color=YELLOW,
+                height=0.34,
+                width=2.55,
+                stroke_width=1.5,
+                fill_opacity=0.05,
+            )
+            .align_to(verilog_hdl_code, LEFT)
+            .shift(UP * 1.58 + 2 * DOWN * 0.32 + RIGHT * 0.5)
+        )
+
+        code_highlight_box_4 = (
+            Rectangle(
+                color=RED,
+                height=0.34,
+                width=1.95,
+                stroke_width=1.5,
+                fill_opacity=0.05,
+            )
+            .align_to(verilog_hdl_code, LEFT)
+            .shift(UP * 1.58 + 4 * DOWN * 0.32 + RIGHT * 0.5)
+        )
+        code_highlight_box_5 = (
+            Rectangle(
+                color=RED,
+                height=0.34,
+                width=1.95,
+                stroke_width=1.5,
+                fill_opacity=0.05,
+            )
+            .align_to(verilog_hdl_code, LEFT)
+            .shift(UP * 1.58 + 5 * DOWN * 0.32 + RIGHT * 0.5)
+        )
+
+        code_highlight_box_6 = (
+            Rectangle(
+                color=PURPLE,
+                height=0.34,
+                width=4.95,
+                stroke_width=1.5,
+                fill_opacity=0.05,
+            )
+            .align_to(verilog_hdl_code, LEFT)
+            .shift(UP * 1.58 + 7 * DOWN * 0.32 + RIGHT * 0.5)
+        )
+        code_highlight_box_7 = (
+            Rectangle(
+                color=GOLD,
+                height=0.34,
+                width=4.95,
+                stroke_width=1.5,
+                fill_opacity=0.05,
+            )
+            .align_to(verilog_hdl_code, LEFT)
+            .shift(UP * 1.58 + 8 * DOWN * 0.32 + RIGHT * 0.5)
+        )
+        code_highlight_box_8 = (
+            Rectangle(
+                color=GRAY,
+                height=0.34,
+                width=4.95,
+                stroke_width=1.5,
+                fill_opacity=0.05,
+            )
+            .align_to(verilog_hdl_code, LEFT)
+            .shift(UP * 1.57 + 9 * DOWN * 0.32 + RIGHT * 0.5)
+        )
+
         # - Animate Digital Circuit Example Elements
         if not IS_DEBUGGING:
             self.play(Create(wire_1_part_1), run_time=0.35)
@@ -651,22 +742,9 @@ class Main(Scene):
             wait_counter=4, wait_delay=0.8, note_color=BLUE
         )  # ! ---- ---- ----
 
-        # TODO: WORKING HERE
-
-        code_highlight_box = (
-            Rectangle(
-                color=YELLOW,
-                height=0.35,
-                width=2.55,
-                stroke_width=1.5,
-                fill_opacity=0.05,
-            )
-            .align_to(verilog_hdl_code, UL)
-            .shift((UP * 0.03) + (DOWN * 0.32) + RIGHT * 0.5)
-        )
-
         # ! 1
-        self.play(Create(code_highlight_box), run_time=0.5)
+        self.play(Create(code_highlight_box_1), run_time=0.5)
+        self.wait(0.1)  # ! ---- ---- ----
         self.play(
             ApplyMethod(and_pin_out.set_color, YELLOW),
             ApplyMethod(and_out_extend.set_color, YELLOW),
@@ -693,9 +771,12 @@ class Main(Scene):
             ),  # type: ignore
             run_time=0.5,
         )
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(FadeOut(code_highlight_box_1), run_time=0.5)
 
         # ! 2
-        self.play(code_highlight_box.animate.shift(DOWN * 0.32))  # type: ignore
+        self.play(Create(code_highlight_box_2), run_time=0.5)
+        self.wait(0.1)  # ! ---- ---- ----
         self.play(
             ApplyMethod(or_in_1_label.set_color, YELLOW),
             ApplyMethod(or_in_1_extend.set_color, YELLOW),
@@ -722,9 +803,12 @@ class Main(Scene):
             ),  # type: ignore
             run_time=0.5,
         )
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(FadeOut(code_highlight_box_2), run_time=0.5)
 
         # ! 3
-        self.play(code_highlight_box.animate.shift(DOWN * 0.32))  # type: ignore
+        self.play(Create(code_highlight_box_3), run_time=0.5)
+        self.wait(0.1)  # ! ---- ---- ----
         self.play(
             ApplyMethod(or_not_hori_label.set_color, YELLOW),
             ApplyMethod(or_not_hori_extend.set_color, YELLOW),
@@ -760,10 +844,202 @@ class Main(Scene):
             ),  # type: ignore
             run_time=0.5,
         )
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(FadeOut(code_highlight_box_3), run_time=0.5)
 
         # ! 4
+        self.play(Create(code_highlight_box_4), run_time=0.5)
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(
+            ApplyMethod(or_pin_out.set_color, RED),
+            ApplyMethod(wire_1_part_1.set_color, RED),
+            ApplyMethod(wire_1_part_2.set_color, RED),
+            ApplyMethod(wire_1_part_3.set_color, RED),
+            ApplyMethod(and_pin_1_in.set_color, RED),
+            run_time=0.1,
+        )
+        self.play(
+            VGroup(
+                or_pin_out,
+                wire_1_part_1,
+                wire_1_part_2,
+                wire_1_part_3,
+                and_pin_1_in,
+            ).animate.scale(
+                1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(
+            VGroup(
+                or_pin_out,
+                wire_1_part_1,
+                wire_1_part_2,
+                wire_1_part_3,
+                and_pin_1_in,
+            ).animate.scale(
+                1 / 1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        wire_1_name = Text(
+            "wire_1", font="Cascadia Code", font_size=18, color=RED
+        ).next_to(wire_1_part_2, UR, buff=0.1)
+        self.play(Write(wire_1_name))
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(FadeOut(code_highlight_box_4), run_time=0.5)
 
         # ! 5
+        self.play(Create(code_highlight_box_5), run_time=0.5)
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(
+            ApplyMethod(not_pin_out.set_color, RED),
+            ApplyMethod(wire_2_part_1.set_color, RED),
+            ApplyMethod(wire_2_part_2.set_color, RED),
+            ApplyMethod(wire_2_part_3.set_color, RED),
+            ApplyMethod(and_pin_2_in.set_color, RED),
+            run_time=0.1,
+        )
+        self.play(
+            VGroup(
+                not_pin_out,
+                wire_2_part_1,
+                wire_2_part_2,
+                wire_2_part_3,
+                and_pin_2_in,
+            ).animate.scale(
+                1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(
+            VGroup(
+                not_pin_out,
+                wire_2_part_1,
+                wire_2_part_2,
+                wire_2_part_3,
+                and_pin_2_in,
+            ).animate.scale(
+                1 / 1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        wire_2_name = Text(
+            "wire_2", font="Cascadia Code", font_size=18, color=RED
+        ).next_to(wire_2_part_2, DR, buff=0.1)
+        self.play(Write(wire_2_name))
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(FadeOut(code_highlight_box_5), run_time=0.5)
+
+        """
+        # ! 6
+        self.play(Create(code_highlight_box_5), run_time=0.5)
+        self.play(
+            ApplyMethod(not_pin_out.set_color, RED),
+            ApplyMethod(wire_2_part_1.set_color, RED),
+            ApplyMethod(wire_2_part_2.set_color, RED),
+            ApplyMethod(wire_2_part_3.set_color, RED),
+            ApplyMethod(and_pin_2_in.set_color, RED),
+            run_time=0.1,
+        )
+        self.play(
+            VGroup(
+                not_pin_out,
+                wire_2_part_1,
+                wire_2_part_2,
+                wire_2_part_3,
+                and_pin_2_in,
+            ).animate.scale(
+                1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(
+            VGroup(
+                not_pin_out,
+                wire_2_part_1,
+                wire_2_part_2,
+                wire_2_part_3,
+                and_pin_2_in,
+            ).animate.scale(
+                1 / 1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(FadeOut(code_highlight_box_5), run_time=0.5)
+
+        # ! 7
+        self.play(Create(code_highlight_box_5), run_time=0.5)
+        self.play(
+            ApplyMethod(not_pin_out.set_color, RED),
+            ApplyMethod(wire_2_part_1.set_color, RED),
+            ApplyMethod(wire_2_part_2.set_color, RED),
+            ApplyMethod(wire_2_part_3.set_color, RED),
+            ApplyMethod(and_pin_2_in.set_color, RED),
+            run_time=0.1,
+        )
+        self.play(
+            VGroup(
+                not_pin_out,
+                wire_2_part_1,
+                wire_2_part_2,
+                wire_2_part_3,
+                and_pin_2_in,
+            ).animate.scale(
+                1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(
+            VGroup(
+                not_pin_out,
+                wire_2_part_1,
+                wire_2_part_2,
+                wire_2_part_3,
+                and_pin_2_in,
+            ).animate.scale(
+                1 / 1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(FadeOut(code_highlight_box_5), run_time=0.5)
+
+        # ! 8
+        self.play(Create(code_highlight_box_5), run_time=0.5)
+        self.play(
+            ApplyMethod(not_pin_out.set_color, RED),
+            ApplyMethod(wire_2_part_1.set_color, RED),
+            ApplyMethod(wire_2_part_2.set_color, RED),
+            ApplyMethod(wire_2_part_3.set_color, RED),
+            ApplyMethod(and_pin_2_in.set_color, RED),
+            run_time=0.1,
+        )
+        self.play(
+            VGroup(
+                not_pin_out,
+                wire_2_part_1,
+                wire_2_part_2,
+                wire_2_part_3,
+                and_pin_2_in,
+            ).animate.scale(
+                1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(
+            VGroup(
+                not_pin_out,
+                wire_2_part_1,
+                wire_2_part_2,
+                wire_2_part_3,
+                and_pin_2_in,
+            ).animate.scale(
+                1 / 1.1
+            ),  # type: ignore
+            run_time=0.5,
+        )
+        self.play(FadeOut(code_highlight_box_5), run_time=0.5)
+        """
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
