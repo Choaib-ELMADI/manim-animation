@@ -588,7 +588,7 @@ class Main(Scene):
         )
         code_highlight_box_7 = (
             Rectangle(
-                color=GOLD,
+                color=PURPLE,
                 height=0.34,
                 width=4.95,
                 stroke_width=1.5,
@@ -599,7 +599,7 @@ class Main(Scene):
         )
         code_highlight_box_8 = (
             Rectangle(
-                color=GRAY,
+                color=PURPLE,
                 height=0.34,
                 width=4.95,
                 stroke_width=1.5,
@@ -931,115 +931,50 @@ class Main(Scene):
         self.wait(0.1)  # ! ---- ---- ----
         self.play(FadeOut(code_highlight_box_5), run_time=0.5)
 
-        """
         # ! 6
-        self.play(Create(code_highlight_box_5), run_time=0.5)
-        self.play(
-            ApplyMethod(not_pin_out.set_color, RED),
-            ApplyMethod(wire_2_part_1.set_color, RED),
-            ApplyMethod(wire_2_part_2.set_color, RED),
-            ApplyMethod(wire_2_part_3.set_color, RED),
-            ApplyMethod(and_pin_2_in.set_color, RED),
-            run_time=0.1,
+        or_gate_module_box = DashedVMobject(
+            SurroundingRectangle(or_gate, buff=0.15, color=PURPLE),
+            num_dashes=30,
+            dashed_ratio=0.6,
         )
-        self.play(
-            VGroup(
-                not_pin_out,
-                wire_2_part_1,
-                wire_2_part_2,
-                wire_2_part_3,
-                and_pin_2_in,
-            ).animate.scale(
-                1.1
-            ),  # type: ignore
-            run_time=0.5,
-        )
-        self.play(
-            VGroup(
-                not_pin_out,
-                wire_2_part_1,
-                wire_2_part_2,
-                wire_2_part_3,
-                and_pin_2_in,
-            ).animate.scale(
-                1 / 1.1
-            ),  # type: ignore
-            run_time=0.5,
-        )
-        self.play(FadeOut(code_highlight_box_5), run_time=0.5)
+
+        self.play(Create(code_highlight_box_6), run_time=0.75)
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(Create(or_gate_module_box), run_time=0.5)
+        self.wait(0.5)  # ! ---- ---- ----
+        self.play(FadeOut(or_gate_module_box))
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(FadeOut(code_highlight_box_6), run_time=0.5)
 
         # ! 7
-        self.play(Create(code_highlight_box_5), run_time=0.5)
-        self.play(
-            ApplyMethod(not_pin_out.set_color, RED),
-            ApplyMethod(wire_2_part_1.set_color, RED),
-            ApplyMethod(wire_2_part_2.set_color, RED),
-            ApplyMethod(wire_2_part_3.set_color, RED),
-            ApplyMethod(and_pin_2_in.set_color, RED),
-            run_time=0.1,
+        not_gate_module_box = DashedVMobject(
+            SurroundingRectangle(not_gate, buff=0.15, color=PURPLE),
+            num_dashes=30,
+            dashed_ratio=0.6,
         )
-        self.play(
-            VGroup(
-                not_pin_out,
-                wire_2_part_1,
-                wire_2_part_2,
-                wire_2_part_3,
-                and_pin_2_in,
-            ).animate.scale(
-                1.1
-            ),  # type: ignore
-            run_time=0.5,
-        )
-        self.play(
-            VGroup(
-                not_pin_out,
-                wire_2_part_1,
-                wire_2_part_2,
-                wire_2_part_3,
-                and_pin_2_in,
-            ).animate.scale(
-                1 / 1.1
-            ),  # type: ignore
-            run_time=0.5,
-        )
-        self.play(FadeOut(code_highlight_box_5), run_time=0.5)
+
+        self.play(Create(code_highlight_box_7), run_time=0.75)
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(Create(not_gate_module_box), run_time=0.5)
+        self.wait(0.5)  # ! ---- ---- ----
+        self.play(FadeOut(not_gate_module_box))
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(FadeOut(code_highlight_box_7), run_time=0.5)
 
         # ! 8
-        self.play(Create(code_highlight_box_5), run_time=0.5)
-        self.play(
-            ApplyMethod(not_pin_out.set_color, RED),
-            ApplyMethod(wire_2_part_1.set_color, RED),
-            ApplyMethod(wire_2_part_2.set_color, RED),
-            ApplyMethod(wire_2_part_3.set_color, RED),
-            ApplyMethod(and_pin_2_in.set_color, RED),
-            run_time=0.1,
+        and_gate_module_box = DashedVMobject(
+            SurroundingRectangle(and_gate, buff=0.15, color=PURPLE),
+            num_dashes=30,
+            dashed_ratio=0.6,
         )
-        self.play(
-            VGroup(
-                not_pin_out,
-                wire_2_part_1,
-                wire_2_part_2,
-                wire_2_part_3,
-                and_pin_2_in,
-            ).animate.scale(
-                1.1
-            ),  # type: ignore
-            run_time=0.5,
-        )
-        self.play(
-            VGroup(
-                not_pin_out,
-                wire_2_part_1,
-                wire_2_part_2,
-                wire_2_part_3,
-                and_pin_2_in,
-            ).animate.scale(
-                1 / 1.1
-            ),  # type: ignore
-            run_time=0.5,
-        )
-        self.play(FadeOut(code_highlight_box_5), run_time=0.5)
-        """
+
+        self.play(Create(code_highlight_box_8), run_time=0.75)
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(Create(and_gate_module_box), run_time=0.5)
+        self.wait(0.5)  # ! ---- ---- ----
+        self.play(FadeOut(and_gate_module_box))
+        self.wait(0.1)  # ! ---- ---- ----
+        self.play(FadeOut(code_highlight_box_8), run_time=0.5)
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
