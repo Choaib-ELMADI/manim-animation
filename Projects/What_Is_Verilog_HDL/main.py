@@ -456,7 +456,7 @@ class Main(Scene):
         lower_level_modules = Text(
             "Lower Level Modules",
             font="Cascadia Code",
-            font_size=20,
+            font_size=18,
             color=YELLOW,
         ).next_to(or_not_hori_label, LEFT, buff=0.5)
         lower_level_modules_box = SurroundingRectangle(
@@ -500,7 +500,7 @@ class Main(Scene):
         higher_level_module = Text(
             "Higher Level Module",
             font="Cascadia Code",
-            font_size=20,
+            font_size=18,
             color=GREEN,
         ).next_to(and_out_label, RIGHT, buff=0.5)
         higher_level_module_box = SurroundingRectangle(
