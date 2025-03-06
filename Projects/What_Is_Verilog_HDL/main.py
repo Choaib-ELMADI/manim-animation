@@ -1,7 +1,7 @@
 from manim import *
 
-# IS_DEBUGGING = False
-IS_DEBUGGING = True
+IS_DEBUGGING = False
+# IS_DEBUGGING = True
 
 
 class Main(Scene):
@@ -44,9 +44,11 @@ class Main(Scene):
         topics = Paragraph(
             "Definition",
             "•",
-            "Digital Circuit Example",
+            "Circuit Example",
             "•",
             "Verilog HDL",
+            "•",
+            "Conclusion",
             font="Cascadia Code",
             font_size=16,
         )
@@ -660,7 +662,7 @@ class Main(Scene):
 
         if not IS_DEBUGGING:
             self.play(Write(design_modules))
-            self.play(Create(underline))
+            self.play(Create(underline), run_time=0.5)
             self.play(Write(lower_level_modules))
             self.add(
                 or_gate_module_arrow_circle,
@@ -698,7 +700,7 @@ class Main(Scene):
             )
 
         self.waiting_to_read(
-            wait_counter=4, wait_delay=0.8, note_color=BLUE
+            wait_counter=6, wait_delay=0.5, note_color=BLUE
         )  # ! ---- ---- ----
 
         self.play(
@@ -739,7 +741,7 @@ class Main(Scene):
             self.add(verilog_hdl_code, verilog_hdl_code_box, verilog_hdl_code_title)
 
         self.waiting_to_read(
-            wait_counter=4, wait_delay=0.8, note_color=BLUE
+            wait_counter=6, wait_delay=0.5, note_color=BLUE
         )  # ! ---- ---- ----
 
         # ! 1
@@ -943,7 +945,7 @@ class Main(Scene):
         self.play(Create(or_gate_module_box), run_time=0.5)
         self.wait(0.5)  # ! ---- ---- ----
         self.play(FadeOut(or_gate_module_box))
-        self.wait(0.1)  # ! ---- ---- ----
+        # self.wait(0.1)  # ! ---- ---- ----
         self.play(FadeOut(code_highlight_box_6), run_time=0.5)
 
         # ! 7
@@ -958,7 +960,7 @@ class Main(Scene):
         self.play(Create(not_gate_module_box), run_time=0.5)
         self.wait(0.5)  # ! ---- ---- ----
         self.play(FadeOut(not_gate_module_box))
-        self.wait(0.1)  # ! ---- ---- ----
+        # self.wait(0.1)  # ! ---- ---- ----
         self.play(FadeOut(code_highlight_box_7), run_time=0.5)
 
         # ! 8
@@ -973,8 +975,54 @@ class Main(Scene):
         self.play(Create(and_gate_module_box), run_time=0.5)
         self.wait(0.5)  # ! ---- ---- ----
         self.play(FadeOut(and_gate_module_box))
-        self.wait(0.1)  # ! ---- ---- ----
+        # self.wait(0.1)  # ! ---- ---- ----
         self.play(FadeOut(code_highlight_box_8), run_time=0.5)
+
+        self.wait(0.5)  # ! ---- ---- ----
+
+        self.play(
+            FadeOut(
+                digital_circuit_example,
+                wire_1_name,
+                wire_2_name,
+                verilog_hdl_code,
+                verilog_hdl_code_box,
+                verilog_hdl_code_title,
+            )
+        )
+
+    def conclusion(self):
+        conclusion = MarkupText(
+            f"&#160;&#160;&#160;&#160;Our <span fgcolor='{YELLOW}'>HDL</span> code <span fgcolor='{YELLOW}'>describes</span> exactly what happens in our <span fgcolor='{YELLOW}'>circuit</span>.\n"
+            + f"Each <span fgcolor='{BLUE}'>line of code</span> <span fgcolor='{RED}'>maps</span> directly to a specific <span fgcolor='{BLUE}'>part of the hardware</span>!\n",
+            font="Cascadia Code",
+            font_size=21,
+        )
+        soft = Text(
+            "Each line of code maps", font="Cascadia Code", font_size=21
+        ).align_to(conclusion, DL)
+        hard = Text(
+            " part of the hardware!", font="Cascadia Code", font_size=21
+        ).align_to(conclusion, DR)
+        mapping_arrow = CurvedArrow(
+            start_point=soft.get_edge_center(DOWN),
+            end_point=hard.get_edge_center(DOWN),
+            color=RED,
+            angle=PI / 2.5,
+            stroke_width=3,
+            tip_length=0.2,
+        ).shift(DOWN * 0.02)
+
+        if not IS_DEBUGGING:
+            self.play(Write(conclusion))
+            self.play(Create(mapping_arrow))
+        else:
+            self.add(conclusion)
+            self.add(mapping_arrow)
+
+        self.waiting_to_read(
+            wait_counter=6, wait_delay=0.5, note_color=BLUE
+        )  # ! ---- ---- ----
 
     def construct(self):
         self.wait(0.25)  # ! ---- ---- ----
@@ -996,7 +1044,7 @@ class Main(Scene):
 
         hdl_definition = self.topic_definition()
         self.waiting_to_read(
-            wait_counter=4, wait_delay=0.8, note_color=BLUE
+            wait_counter=6, wait_delay=0.5, note_color=BLUE
         )  # ! ---- ---- ----
         self.play(FadeOut(hdl_definition))
 
@@ -1010,4 +1058,15 @@ class Main(Scene):
 
         self.digital_circuit_example(length=0.3, topics=topics)
 
-        self.wait(2)  # ! ---- ---- ----
+        # & Conclusion                                                         :
+
+        self.wait(0.25)  # ! ---- ---- ----
+
+        topics[4].set_color(WHITE)
+        topics[6].set_color(YELLOW)
+
+        self.wait(0.25)  # ! ---- ---- ----
+
+        self.conclusion()
+
+        self.wait(1)  # ! ---- ---- ----
